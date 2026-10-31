@@ -4,26 +4,33 @@
 # Tanpa persentase. Hanya tulis skill yang benar-benar bisa dibuktikan.
 
 groups:
-  - category: "Machine learning"
+  - category: "Machine learning & AI"
     items:
       - name: "Machine Learning"
         projectSlugs: ["proyek-1"]
         evidence: ["Sertifikat Machine Learning Terapan, Dicoding"]
       - name: "Deep Learning"
         evidence: ["Sertifikat Belajar Fundamental Deep Learning, Dicoding"]
+      - name: "Speech-to-Text & NLP"
+        projectSlugs: ["proyek-1"]
+        evidence: ["Capstone Project Samsung Innovation Campus Batch 5"]
 
-  - category: "Data dan pemrograman"
+  - category: "Pemrograman & Rekayasa Perangkat Lunak"
     items:
-      - name: "Pemrosesan data"
-        evidence: ["Sertifikat Belajar Fundamental Pemrosesan Data, Dicoding"]
       - name: "Python"
+        projectSlugs: ["proyek-1"]
         evidence: ["Predikat Master, tahap Coding & Programming Samsung Innovation Campus"]
-      - name: "Algoritma dan struktur data"
-        evidence: ["Predikat Master, tahap Coding & Programming Samsung Innovation Campus"]
+      - name: "Algoritma dan Struktur Data"
+        projectSlugs: ["proyek-1"]
+        evidence: ["Predikat Master (skor 95.63), Samsung Innovation Campus Batch 5"]
+      - name: "Pemrosesan Data"
+        projectSlugs: ["proyek-1"]
+        evidence: ["Sertifikat Belajar Fundamental Pemrosesan Data, Dicoding"]
+      - name: "Internet of Things (ESP32)"
+        projectSlugs: ["proyek-1"]
+        evidence: ["Perangkat IoT Samsung Innovation Campus Batch 5"]
 
-# Skill lain dari CV. Aktifkan (pindahkan ke atas) setelah ada proyek atau
-# sertifikat yang membuktikannya:
-#   - Natural Language Processing (NLP)
+# Skill lain dari CV. Aktifkan setelah ada proyek tambahan atau sertifikat pendukung:
 #   - SQL / manajemen basis data
-#   - Visualisasi data / analisis data
-#   - Git / GitHub
+#   - Visualisasi data / analisis kuantitatif
+#   - Git / GitHub (Version Control)

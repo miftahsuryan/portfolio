@@ -56,7 +56,7 @@ training:
 achievements:
   - title: "Semi Finalist Samsung Innovation Campus Batch 5"
     year: "2024"
-    note: "Proyek tim alat komunikasi IoT berbasis machine learning untuk tunarungu. Predikat Master (skor 95.63) pada tahap Coding & Programming (Python, Algorithm & Data Structure)."
+    note: "Pengembangan perangkat Speech-to-Text berbasis ESP32 dan AI untuk pemerataan informasi pengumuman suara bagi tunarungu (diselenggarakan oleh Skilvul & Samsung Indonesia). Meraih predikat Master (skor 95.63) tahap Coding & Programming."
   - title: "Juara 1 Basket Putra, Pekan Olahraga Kampus UIN Sunan Kalijaga"
     year: "2025"
     note: "Sebagai Ketua Divisi Basket dan pemain inti."
