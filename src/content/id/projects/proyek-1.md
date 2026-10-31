@@ -16,8 +16,8 @@ stack:
   - "C/C++"
 repoUrl: "https://github.com/askarhabibulloh/SIC-5-Team-28"
 demoUrl: "https://youtu.be/E6jOqyUa1pk"
-coverImage: null # Ganti dengan path gambar jika sudah ditaruh di src/assets/projects/
-coverAlt: "Prototipe perangkat Speech-to-Text ESP32 untuk pemerataan informasi tunarungu"
+coverImage: "src/assets/projects/SIC/hasil_alat.jpeg"
+coverAlt: "Prototipe perangkat keras Speech-to-Text berbasis ESP32 dengan modul audio dan layar display"
 ---
 
 ## Konteks & Latar Belakang
