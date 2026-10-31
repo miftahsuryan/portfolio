@@ -7,7 +7,7 @@ period: "2023 - 2024 · Samsung Innovation Campus Batch 5"
 summary: "Perangkat Speech-to-Text berbasis ESP32 dan AI untuk menampilkan teks pengumuman suara di ruang publik secara real-time bagi teman tunarungu."
 problem: "Penyandang disabilitas pendengaran dan tunarungu kesulitan menangkap informasi penting yang disampaikan melalui pengeras suara di tempat umum seperti stasiun atau taman bermain."
 approach: "Mengintegrasikan mikrokontroler ESP32 dengan penangkapan audio dan model Speech-to-Text berbasis machine learning untuk memproses pengumuman suara secara langsung dan menampilkannya ke layar."
-outcome: "Terpilih sebagai Semi Finalist Samsung Innovation Campus Batch 5 (2024), meraih predikat Master (skor 95.63) tahap Coding & Programming, serta menghasilkan prototipe fungsional dan video demo."
+outcome: "Terpilih sebagai Semi Finalist Samsung Innovation Campus Batch 5 (2024), serta menghasilkan prototipe fungsional dan video demo produk."
 stack:
   - "Python"
   - "ESP32 (IoT)"
@@ -23,7 +23,7 @@ coverAlt: "Prototipe perangkat keras Speech-to-Text berbasis ESP32 dengan modul 
 ## Konteks & Latar Belakang
 Program **Samsung Innovation Campus (SIC) Batch 5** diselenggarakan oleh **Samsung Indonesia** bekerja sama dengan **Skilvul** dengan fokus pada integrasi Artificial Intelligence (AI) dan Internet of Things (IoT). Melalui program ini, peserta melewati serangkaian tahapan intensif:
 1. **Dasar-Dasar AI & IoT**: Pembelajaran konsep fundamental sensor, mikrokontroler, machine learning, dan pemrograman Python.
-2. **Bootcamp AI & IoT**: Pelatihan teknis lanjutan, problem-solving, serta pemantapan algoritma dan struktur data (meraih predikat *Master* dengan skor 95.63).
+2. **Bootcamp AI & IoT**: Pelatihan teknis lanjutan, problem-solving, serta pemantapan algoritma dan struktur data.
 3. **Pengembangan Proyek Akhir (Capstone Project)**: Perancangan prototipe produk teknologi untuk memecahkan masalah sosial nyata (*Tech for Good*).
 
 ## Masalah yang Diselesaikan

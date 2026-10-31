@@ -19,10 +19,10 @@ groups:
     items:
       - name: "Python"
         projectSlugs: ["proyek-1"]
-        evidence: ["Predikat Master, tahap Coding & Programming Samsung Innovation Campus"]
+        evidence: ["Pelatihan dan Capstone Project Samsung Innovation Campus Batch 5"]
       - name: "Algoritma dan Struktur Data"
         projectSlugs: ["proyek-1"]
-        evidence: ["Predikat Master (skor 95.63), Samsung Innovation Campus Batch 5"]
+        evidence: ["Bootcamp AI & IoT Samsung Innovation Campus Batch 5"]
       - name: "Pemrosesan Data"
         projectSlugs: ["proyek-1"]
         evidence: ["Sertifikat Belajar Fundamental Pemrosesan Data, Dicoding"]
