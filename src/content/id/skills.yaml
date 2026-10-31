@@ -29,8 +29,10 @@ groups:
       - name: "Internet of Things (ESP32)"
         projectSlugs: ["proyek-1"]
         evidence: ["Perangkat IoT Samsung Innovation Campus Batch 5"]
+      - name: "Git & GitHub (Version Control)"
+        projectSlugs: ["proyek-1"]
+        evidence: ["Kolaborasi tim dan repositori kode proyek SIC di GitHub"]
 
 # Skill lain dari CV. Aktifkan setelah ada proyek tambahan atau sertifikat pendukung:
 #   - SQL / manajemen basis data
 #   - Visualisasi data / analisis kuantitatif
-#   - Git / GitHub (Version Control)
