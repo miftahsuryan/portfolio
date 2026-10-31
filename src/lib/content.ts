@@ -9,7 +9,7 @@ export interface Profile {
   role: string;
   tagline: string;
   availability: string;
-  location: string;
+  location: string | null;
   avatar: string | null;
   avatarAlt: string;
   about: string;

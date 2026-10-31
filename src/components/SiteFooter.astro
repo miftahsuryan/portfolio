@@ -7,7 +7,7 @@ const year = new Date().getFullYear();
 <footer class="site-footer no-print">
   <div class="wrap content">
     <p>
-      © {year} {p.name} · {p.location}
+      © {year} {p.name}{p.location ? ` · ${p.location}` : ''}
     </p>
     <p class="tech">
       Dirancang mandiri · Dibangun dengan Astro & CSS Modern

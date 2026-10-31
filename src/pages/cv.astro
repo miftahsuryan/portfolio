@@ -27,7 +27,7 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
       <h1>{p.name}</h1>
       <p class="role">{p.role}</p>
       <p class="contact">
-        {p.location} ·
+        {p.location ? `${p.location} · ` : ''}
         <a href={`mailto:${p.contact.email}`}>{p.contact.email}</a> ·
         {isLink(p.contact.linkedin) ? <a href={p.contact.linkedin}>{bare(p.contact.linkedin)}</a> : p.contact.linkedin} ·
         {isLink(p.contact.github) ? <a href={p.contact.github}>{bare(p.contact.github)}</a> : p.contact.github}

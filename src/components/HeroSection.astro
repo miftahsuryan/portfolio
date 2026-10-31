@@ -13,7 +13,7 @@ const p = getProfile();
       <h1 id="hero-title">{p.name}</h1>
       <p class="role">{p.role}</p>
       <p class="tagline">{p.tagline}</p>
-      <p class="loc"><MapPin size={16} aria-hidden="true" />{p.location}</p>
+      {p.location && <p class="loc"><MapPin size={16} aria-hidden="true" />{p.location}</p>}
       <div class="actions">
         <a class="btn btn-primary" href="/cv"><Download size={18} aria-hidden="true" />Unduh CV</a>
         <a class="btn" href="#kontak"><Mail size={18} aria-hidden="true" />Hubungi</a>
