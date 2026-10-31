@@ -81,3 +81,4 @@
 :root:has(> head > meta[name='color-scheme'][content='light']) {
   color-scheme: light;
 }
+

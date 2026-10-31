@@ -21,20 +21,40 @@ export interface Profile {
     showGpa: boolean;
     thesis: string | null;
   };
-  certifications: { name: string; issuer: string; year: string; verificationUrl: string }[];
+  certifications: { name: string; issuer: string; year: string; verificationUrl: string | null }[];
+  training: { name: string; issuer: string; period: string; note: string | null }[];
+  achievements: { title: string; year: string; note: string | null }[];
+  organizations: { role: string; org: string; period: string | null }[];
   contact: { email: string; linkedin: string; github: string };
 }
 
 export interface SkillGroup {
   category: string;
-  items: { name: string; projectSlugs: string[] }[];
+  items: { name: string; projectSlugs: string[]; evidence: string[] }[];
 }
 
 const readYaml = <T,>(file: string): T => load(readFileSync(file, 'utf-8')) as T;
 
-export const getProfile = () => readYaml<Profile>('src/content/id/profile.yaml');
-export const getSkillGroups = () =>
-  readYaml<{ groups: SkillGroup[] }>('src/content/id/skills.yaml').groups;
+export function getProfile(): Profile {
+  const p = readYaml<Profile>('src/content/id/profile.yaml');
+  return {
+    ...p,
+    certifications: p.certifications ?? [],
+    training: p.training ?? [],
+    achievements: p.achievements ?? [],
+    organizations: p.organizations ?? [],
+  };
+}
+
+export const getSkillGroups = (): SkillGroup[] =>
+  readYaml<{ groups: SkillGroup[] }>('src/content/id/skills.yaml').groups.map((g) => ({
+    ...g,
+    items: (g.items ?? []).map((it) => ({
+      ...it,
+      projectSlugs: it.projectSlugs ?? [],
+      evidence: it.evidence ?? [],
+    })),
+  }));
 
 export async function getProjects() {
   const all = await getCollection('projects');
@@ -63,3 +83,4 @@ export const statusLabel: Record<string, string> = {
 
 export const isTodo = (v?: string | null) => !!v && /\bTODO\b/i.test(v);
 export const isLink = (v?: string | null): v is string => !!v && /^https?:\/\//.test(v);
+

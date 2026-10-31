@@ -11,3 +11,4 @@
   a[href^='mailto:']::after { content: ''; }
   .cv-block { break-inside: avoid; }
 }
+

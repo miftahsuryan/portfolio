@@ -15,19 +15,28 @@ const e = p.education;
       <p>{p.about}</p>
     </div>
     <div class="side">
-      <h3>Pendidikan</h3>
-      <p class="inst">{e.institution}</p>
-      <p>{e.degree} · {e.period}</p>
-      {e.showGpa && e.gpa && <p>IPK {e.gpa}</p>}
-      {e.thesis && <p class="muted">Tugas akhir: {e.thesis}</p>}
+      <div class="block">
+        <h3>Pendidikan</h3>
+        <p class="strong">{e.institution}</p>
+        <p>{e.degree} · {e.period}</p>
+        {e.showGpa && e.gpa && <p>IPK {e.gpa}</p>}
+        {e.thesis && <p class="muted">Tugas akhir: {e.thesis}</p>}
+      </div>
 
-      {p.certifications.length > 0 && (
-        <>
-          <h3 class="cert-title">Sertifikasi</h3>
+      {(p.certifications.length > 0 || p.training.length > 0) && (
+        <div class="block">
+          <h3>Sertifikasi dan pelatihan</h3>
           <ul>
+            {p.training.map((t) => (
+              <li>
+                <span class="strong">{t.name}</span>
+                <span class="muted">{t.issuer} · {t.period}</span>
+                {t.note && <span class="muted">{t.note}</span>}
+              </li>
+            ))}
             {p.certifications.map((c) => (
               <li>
-                <span class="inst">{c.name}</span>
+                <span class="strong">{c.name}</span>
                 <span class="muted">{c.issuer} · {c.year}</span>
                 {isLink(c.verificationUrl) && (
                   <a href={c.verificationUrl} rel="noopener">Verifikasi<ArrowUpRight size={16} aria-hidden="true" /></a>
@@ -35,7 +44,27 @@ const e = p.education;
               </li>
             ))}
           </ul>
-        </>
+        </div>
+      )}
+
+      {(p.organizations.length > 0 || p.achievements.length > 0) && (
+        <div class="block">
+          <h3>Organisasi dan pencapaian</h3>
+          <ul>
+            {p.organizations.map((o) => (
+              <li>
+                <span class="strong">{o.role}</span>
+                <span class="muted">{o.org}{o.period && ` · ${o.period}`}</span>
+              </li>
+            ))}
+            {p.achievements.map((a) => (
+              <li>
+                <span class="strong">{a.title}</span>
+                <span class="muted">{a.year}{a.note && ` · ${a.note}`}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   </div>
@@ -43,13 +72,13 @@ const e = p.education;
 
 <style>
   .grid { display: grid; gap: var(--space-6); }
-  .side h3 { margin-bottom: var(--space-3); }
-  .inst { font-weight: 600; }
+  .side { display: grid; gap: var(--space-5); }
+  .block h3 { margin-bottom: var(--space-3); }
+  .strong { font-weight: 600; }
   .muted { color: var(--text-2); font-size: var(--step--1); }
-  .cert-title { margin-top: var(--space-5); }
   li { display: grid; gap: var(--space-1); padding-block: var(--space-2); border-bottom: 1px solid var(--line); }
   li a { display: inline-flex; align-items: center; gap: var(--space-1); padding-block: var(--space-1); }
   @media (min-width: 48rem) {
-    .grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--space-7); }
+    .grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: var(--space-7); }
   }
 </style>

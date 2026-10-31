@@ -11,7 +11,7 @@ const index = new Map(projects.map((p, i) => [p.id, { n: String(i + 1).padStart(
     <div class="section-head">
       <h2 id="skill-title">Skill</h2>
     </div>
-    <p class="lead">Setiap skill ditautkan ke proyek tempat saya memakainya.</p>
+    <p class="lead">Setiap skill disertai buktinya: proyek atau sertifikat.</p>
     <div class="groups">
       {groups.map((g) => (
         <div class="group">
@@ -20,14 +20,19 @@ const index = new Map(projects.map((p, i) => [p.id, { n: String(i + 1).padStart(
             {g.items.map((it) => (
               <li>
                 <span class="name">{it.name}</span>
-                <span class="used">
-                  dipakai di
-                  {it.projectSlugs.map((s) => {
-                    const pr = index.get(s);
-                    return pr ? (
-                      <a href={`#${s}`} aria-label={`Proyek ${pr.n}: ${pr.title}`}>{pr.n}</a>
-                    ) : null;
-                  })}
+                <span class="proof">
+                  {it.projectSlugs.length > 0 && (
+                    <span>
+                      Proyek
+                      {it.projectSlugs.map((s) => {
+                        const pr = index.get(s);
+                        return pr ? (
+                          <a href={`#${s}`} aria-label={`Proyek ${pr.n}: ${pr.title}`}>{pr.n}</a>
+                        ) : null;
+                      })}
+                    </span>
+                  )}
+                  {it.evidence.map((ev) => <span>{ev}</span>)}
                 </span>
               </li>
             ))}
@@ -43,16 +48,14 @@ const index = new Map(projects.map((p, i) => [p.id, { n: String(i + 1).padStart(
   .groups { display: grid; gap: var(--space-6); }
   h3 { margin-bottom: var(--space-3); }
   li {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--space-1) var(--space-4);
-    padding-block: var(--space-2);
+    display: grid;
+    gap: var(--space-1);
+    padding-block: var(--space-3);
     border-bottom: 1px solid var(--line);
   }
   .name { font-weight: 600; }
-  .used { font-size: var(--step--1); color: var(--text-2); }
-  .used a {
+  .proof { display: grid; gap: 0.125rem; font-size: var(--step--1); color: var(--text-2); }
+  .proof a {
     display: inline-block;
     min-width: 1.75rem;
     margin-inline-start: var(--space-2);

@@ -1,13 +1,29 @@
-# Skill dikelompokkan dan WAJIB ditautkan ke proyek tempat skill itu dipakai
-# (projectSlugs = nama file di src/content/id/projects/ tanpa .md).
-# Tanpa persentase. Hanya tulis skill yang benar-benar terbukti di proyek.
+# Setiap skill WAJIB punya bukti:
+#   projectSlugs: nama file di src/content/id/projects/ (tanpa .md), dan/atau
+#   evidence:     nama sertifikat/pelatihan/pencapaian yang membuktikannya.
+# Tanpa persentase. Hanya tulis skill yang benar-benar bisa dibuktikan.
 
 groups:
-  - category: "TODO: Nama kelompok, misal Bahasa pemrograman"
+  - category: "Machine learning"
     items:
-      - name: "TODO: Nama skill"
+      - name: "Machine Learning"
         projectSlugs: ["proyek-1"]
-  - category: "TODO: Nama kelompok kedua"
+        evidence: ["Sertifikat Machine Learning Terapan, Dicoding"]
+      - name: "Deep Learning"
+        evidence: ["Sertifikat Belajar Fundamental Deep Learning, Dicoding"]
+
+  - category: "Data dan pemrograman"
     items:
-      - name: "TODO: Nama skill"
-        projectSlugs: ["proyek-2"]
+      - name: "Pemrosesan data"
+        evidence: ["Sertifikat Belajar Fundamental Pemrosesan Data, Dicoding"]
+      - name: "Python"
+        evidence: ["Predikat Master, tahap Coding & Programming Samsung Innovation Campus"]
+      - name: "Algoritma dan struktur data"
+        evidence: ["Predikat Master, tahap Coding & Programming Samsung Innovation Campus"]
+
+# Skill lain dari CV. Aktifkan (pindahkan ke atas) setelah ada proyek atau
+# sertifikat yang membuktikannya:
+#   - Natural Language Processing (NLP)
+#   - SQL / manajemen basis data
+#   - Visualisasi data / analisis data
+#   - Git / GitHub

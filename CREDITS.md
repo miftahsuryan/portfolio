@@ -14,3 +14,4 @@ Semua aset eksternal yang dipakai, beserta sumber dan lisensinya.
 | Tekstur kertas, favicon | Ditulis sendiri sebagai SVG | Proyek ini | Bagian dari proyek ini |
 
 Tidak ada foto stok, avatar AI, logo klien, atau logo/atribut pemerintah di situs ini.
+

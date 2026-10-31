@@ -4,37 +4,74 @@
 
 siteUrl: "TODO: alamat situs, misal https://namaanda.vercel.app"
 
-name: "TODO: Nama lengkap"
-role: "TODO: Peran yang diincar, misal Junior Front-End Developer"
-tagline: "TODO: Satu kalimat nilai: apa yang bisa saya kerjakan untuk tim"
+name: "Miftahullah Surya Nugraha"
+role: "Machine Learning Engineer / Data Analyst (Magang)"
+tagline: "Saya mengolah data dan membangun model machine learning dengan Python, dari pemrosesan data sampai evaluasi model."
 availability: "TODO: Status ketersediaan, misal Siap magang mulai bulan/tahun ..."
-location: "TODO: Kota, Provinsi"
+location: "Yogyakarta, DI Yogyakarta"
 
 # Foto asli: taruh file di src/assets/profile/ lalu isi path-nya, misal
 # "src/assets/profile/foto.jpg". Biarkan null kalau belum ada.
 avatar: null
-avatarAlt: "TODO: Deskripsi foto untuk pembaca layar"
+avatarAlt: "Foto Miftahullah Surya Nugraha"
 
 # Maksimal 120 kata, sudut pandang orang pertama.
-about: "TODO: Tentang saya, maksimal 120 kata."
+about: >-
+  Saya lulusan S1 Informatika UIN Sunan Kalijaga Yogyakarta (2026) dengan fokus pada
+  machine learning terapan dan analisis data. Pada 2025 saya lulus penuh dari Coding Camp
+  powered by DBS Foundation dengan nilai A. Saya juga menyelesaikan kelas Machine Learning
+  Terapan dan Fundamental Deep Learning di Dicoding. Bersama tim, saya mencapai semi final
+  Samsung Innovation Campus Batch 5 dengan proyek alat komunikasi berbasis machine learning
+  untuk teman tunarungu. Di luar kelas, saya memimpin Divisi Basket UKM Olahraga kampus.
 
 education:
-  institution: "TODO: Nama kampus"
+  institution: "UIN Sunan Kalijaga Yogyakarta"
   degree: "S1 Informatika"
-  period: "TODO: Tahun masuk - tahun lulus"
-  gpa: "TODO: IPK"
-  showGpa: false # ubah ke true bila IPK ingin ditampilkan
+  period: "2022 - 2026"
+  gpa: "3.77 / 4.00"
+  showGpa: true # ubah ke false bila IPK tidak ingin ditampilkan
   thesis: null # opsional: topik tugas akhir
 
-# Opsional. Hapus tanda [] dan isi dengan format berikut bila ada:
-# certifications:
-#   - name: "Nama sertifikat"
-#     issuer: "Penyelenggara"
-#     year: "2025"
-#     verificationUrl: "https://tautan-verifikasi"
-certifications: []
+# verificationUrl: isi link kredensial (misal dari dicoding.com/certificates/...) bila ada.
+certifications:
+  - name: "Machine Learning Terapan"
+    issuer: "Dicoding Indonesia"
+    year: "2025"
+    verificationUrl: null
+  - name: "Belajar Fundamental Pemrosesan Data"
+    issuer: "Dicoding Indonesia"
+    year: "2025"
+    verificationUrl: null
+  - name: "Belajar Fundamental Deep Learning"
+    issuer: "Dicoding Indonesia"
+    year: "2025"
+    verificationUrl: null
+
+training:
+  - name: "Coding Camp powered by DBS Foundation"
+    issuer: "Dicoding Indonesia"
+    period: "Februari - Juli 2025"
+    note: "Full Graduate, skor 90.7 (A)"
+
+achievements:
+  - title: "Semi Finalist Samsung Innovation Campus Batch 5"
+    year: "2024"
+    note: "Proyek tim alat komunikasi IoT berbasis machine learning untuk tunarungu. Predikat Master (skor 95.63) pada tahap Coding & Programming (Python, Algorithm & Data Structure)."
+  - title: "Juara 1 Basket Putra, Pekan Olahraga Kampus UIN Sunan Kalijaga"
+    year: "2025"
+    note: "Sebagai Ketua Divisi Basket dan pemain inti."
+  - title: "Juara 3 Lomba Basket 3x3 FeArstyc"
+    year: "2024"
+    note: "Kompetisi antarmahasiswa se-DIY."
+
+organizations:
+  - role: "Ketua Divisi Basket"
+    org: "UKM Olahraga UIN Sunan Kalijaga"
+    period: "TODO: periode jabatan"
+  # Pengurus organisasi kemahasiswaan tingkat fakultas: tambahkan nama organisasi,
+  # jabatan, dan periode bila ingin ditampilkan.
 
 contact:
-  email: "TODO: email publik"
+  email: "miftahullahsuryan@gmail.com"
   linkedin: "TODO: URL LinkedIn"
   github: "TODO: URL GitHub"

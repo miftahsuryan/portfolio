@@ -88,7 +88,8 @@ for (const loc of fs.readdirSync(CONTENT)) {
     const s = load(fs.readFileSync(skillsFile, 'utf-8')) ?? {};
     for (const g of s.groups ?? [])
       for (const it of g.items ?? []) {
-        if (!it.projectSlugs?.length) errors.push(`${rel(skillsFile)}  skill "${it.name}" belum ditautkan ke proyek`);
+        if (!it.projectSlugs?.length && !it.evidence?.length)
+          errors.push(`${rel(skillsFile)}  skill "${it.name}" belum punya bukti (projectSlugs atau evidence)`);
         for (const slug of it.projectSlugs ?? [])
           if (!slugs.has(slug)) errors.push(`${rel(skillsFile)}  skill "${it.name}" merujuk proyek "${slug}" yang tidak ada`);
       }
@@ -113,3 +114,4 @@ if (todos.length) {
 
 if (errors.length || (todos.length && !allowTodo)) process.exit(1);
 console.log('Pengecekan konten lolos.');
+

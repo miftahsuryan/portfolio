@@ -102,3 +102,4 @@ if (problems.length) {
   process.exit(1);
 }
 console.log(`Verifikasi lolos. Screenshot: ${OUT}`);
+

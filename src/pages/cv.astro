@@ -76,15 +76,34 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
       {e.thesis && <p class="meta">Tugas akhir: {e.thesis}</p>}
     </section>
 
-    {p.certifications.length > 0 && (
+    {(p.training.length > 0 || p.certifications.length > 0) && (
       <section class="cv-block" aria-labelledby="cv-cert">
-        <h2 id="cv-cert">Sertifikasi</h2>
+        <h2 id="cv-cert">Sertifikasi dan pelatihan</h2>
         <ul>
+          {p.training.map((t) => (
+            <li>
+              <strong>{t.name}</strong>, {t.issuer}, {t.period}{t.note && ` · ${t.note}`}
+            </li>
+          ))}
           {p.certifications.map((c) => (
             <li>
               {c.name}, {c.issuer}, {c.year}
               {isLink(c.verificationUrl) && <> · <a href={c.verificationUrl}>Verifikasi</a></>}
             </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {(p.organizations.length > 0 || p.achievements.length > 0) && (
+      <section class="cv-block" aria-labelledby="cv-org">
+        <h2 id="cv-org">Organisasi dan pencapaian</h2>
+        <ul>
+          {p.organizations.map((o) => (
+            <li><strong>{o.role}</strong>, {o.org}{o.period && ` · ${o.period}`}</li>
+          ))}
+          {p.achievements.map((a) => (
+            <li><strong>{a.title}</strong> ({a.year}){a.note && `. ${a.note}`}</li>
           ))}
         </ul>
       </section>
@@ -135,3 +154,4 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
     .role, .contact, .meta, h2 { color: #333 !important; }
   }
 </style>
+
