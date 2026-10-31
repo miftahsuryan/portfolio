@@ -1,0 +1,13 @@
+# Skill dikelompokkan dan WAJIB ditautkan ke proyek tempat skill itu dipakai
+# (projectSlugs = nama file di src/content/id/projects/ tanpa .md).
+# Tanpa persentase. Hanya tulis skill yang benar-benar terbukti di proyek.
+
+groups:
+  - category: "TODO: Nama kelompok, misal Bahasa pemrograman"
+    items:
+      - name: "TODO: Nama skill"
+        projectSlugs: ["proyek-1"]
+  - category: "TODO: Nama kelompok kedua"
+    items:
+      - name: "TODO: Nama skill"
+        projectSlugs: ["proyek-2"]

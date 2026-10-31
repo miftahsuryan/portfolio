@@ -1,0 +1,55 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import { getProfile, isLink } from '../lib/content';
+
+const p = getProfile();
+const e = p.education;
+---
+
+<section class="section" id="tentang" aria-labelledby="tentang-title">
+  <div class="wrap grid">
+    <div>
+      <div class="section-head">
+        <h2 id="tentang-title">Tentang saya</h2>
+      </div>
+      <p>{p.about}</p>
+    </div>
+    <div class="side">
+      <h3>Pendidikan</h3>
+      <p class="inst">{e.institution}</p>
+      <p>{e.degree} · {e.period}</p>
+      {e.showGpa && e.gpa && <p>IPK {e.gpa}</p>}
+      {e.thesis && <p class="muted">Tugas akhir: {e.thesis}</p>}
+
+      {p.certifications.length > 0 && (
+        <>
+          <h3 class="cert-title">Sertifikasi</h3>
+          <ul>
+            {p.certifications.map((c) => (
+              <li>
+                <span class="inst">{c.name}</span>
+                <span class="muted">{c.issuer} · {c.year}</span>
+                {isLink(c.verificationUrl) && (
+                  <a href={c.verificationUrl} rel="noopener">Verifikasi<ArrowUpRight size={16} aria-hidden="true" /></a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; gap: var(--space-6); }
+  .side h3 { margin-bottom: var(--space-3); }
+  .inst { font-weight: 600; }
+  .muted { color: var(--text-2); font-size: var(--step--1); }
+  .cert-title { margin-top: var(--space-5); }
+  li { display: grid; gap: var(--space-1); padding-block: var(--space-2); border-bottom: 1px solid var(--line); }
+  li a { display: inline-flex; align-items: center; gap: var(--space-1); padding-block: var(--space-1); }
+  @media (min-width: 48rem) {
+    .grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--space-7); }
+  }
+</style>

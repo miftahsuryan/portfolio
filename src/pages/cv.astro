@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Printer, Download, ArrowLeft } from '@lucide/astro';
+import { getProfile, getSkillGroups, getProjects, hasCvPdf, statusLabel, isLink } from '../lib/content';
+
+const p = getProfile();
+const groups = getSkillGroups();
+const projects = await getProjects();
+const pdf = hasCvPdf();
+const e = p.education;
+const bare = (u: string) => u.replace(/^https?:\/\//, '');
+---
+
+<BaseLayout title={`CV · ${p.name}`} description={`CV ${p.name}, ${p.role}.`} path="/cv" bare>
+  <div class="wrap cv">
+    <div class="actions no-print">
+      <a class="back" href="/"><ArrowLeft size={16} aria-hidden="true" />Kembali</a>
+      <div class="buttons">
+        <button type="button" class="btn btn-primary" data-print>
+          <Printer size={18} aria-hidden="true" />Cetak / Simpan PDF
+        </button>
+        {pdf && <a class="btn" href="/cv.pdf" download><Download size={18} aria-hidden="true" />Unduh cv.pdf</a>}
+      </div>
+    </div>
+
+    <header class="cv-block">
+      <h1>{p.name}</h1>
+      <p class="role">{p.role}</p>
+      <p class="contact">
+        {p.location} ·
+        <a href={`mailto:${p.contact.email}`}>{p.contact.email}</a> ·
+        {isLink(p.contact.linkedin) ? <a href={p.contact.linkedin}>{bare(p.contact.linkedin)}</a> : p.contact.linkedin} ·
+        {isLink(p.contact.github) ? <a href={p.contact.github}>{bare(p.contact.github)}</a> : p.contact.github}
+      </p>
+    </header>
+
+    <section class="cv-block" aria-labelledby="cv-about">
+      <h2 id="cv-about">Tentang</h2>
+      <p>{p.about}</p>
+    </section>
+
+    <section aria-labelledby="cv-proyek">
+      <h2 id="cv-proyek">Proyek</h2>
+      {projects.map((proj) => {
+        const d = proj.data;
+        return (
+          <article class="cv-block item">
+            <h3>{d.title} <span class="meta">· {statusLabel[d.status] ?? d.status}</span></h3>
+            <p class="meta">{d.role} · {d.period}</p>
+            <p>{d.summary}</p>
+            <p><strong>Hasil:</strong> {d.outcome}</p>
+            <p class="meta">Stack: {d.stack.join(', ')}</p>
+            <p class="meta">
+              {isLink(d.repoUrl) && <a href={d.repoUrl}>Repositori</a>}
+              {isLink(d.repoUrl) && isLink(d.demoUrl) && ' · '}
+              {isLink(d.demoUrl) && <a href={d.demoUrl}>Demo</a>}
+            </p>
+          </article>
+        );
+      })}
+    </section>
+
+    <section class="cv-block" aria-labelledby="cv-skill">
+      <h2 id="cv-skill">Skill</h2>
+      <ul>
+        {groups.map((g) => (
+          <li><strong>{g.category}:</strong> {g.items.map((i) => i.name).join(', ')}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="cv-block" aria-labelledby="cv-edu">
+      <h2 id="cv-edu">Pendidikan</h2>
+      <p><strong>{e.institution}</strong></p>
+      <p>{e.degree} · {e.period}{e.showGpa && e.gpa ? ` · IPK ${e.gpa}` : ''}</p>
+      {e.thesis && <p class="meta">Tugas akhir: {e.thesis}</p>}
+    </section>
+
+    {p.certifications.length > 0 && (
+      <section class="cv-block" aria-labelledby="cv-cert">
+        <h2 id="cv-cert">Sertifikasi</h2>
+        <ul>
+          {p.certifications.map((c) => (
+            <li>
+              {c.name}, {c.issuer}, {c.year}
+              {isLink(c.verificationUrl) && <> · <a href={c.verificationUrl}>Verifikasi</a></>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </div>
+
+  <script>
+    document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+  </script>
+</BaseLayout>
+
+<style>
+  .cv { padding-block: var(--space-5) var(--space-7); max-width: 48rem; }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+  .back { display: inline-flex; align-items: center; gap: var(--space-1); padding-block: var(--space-2); }
+  .buttons { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  h1 { font-size: var(--step-3); }
+  .role { font-family: var(--font-heading); font-size: var(--step-1); color: var(--accent); margin-top: var(--space-1); }
+  .contact { margin-top: var(--space-3); font-size: var(--step--1); color: var(--text-2); max-width: none; }
+  section { margin-top: var(--space-6); }
+  h2 {
+    font-size: var(--step--1);
+    font-family: var(--font-body);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+  .item { margin-bottom: var(--space-5); }
+  .item p, li { margin-top: var(--space-1); }
+  .meta { font-size: var(--step--1); color: var(--text-2); font-weight: 400; font-family: var(--font-body); }
+  ul { display: grid; gap: var(--space-2); }
+
+  @media print {
+    .cv { padding: 0; max-width: none; }
+    section { margin-top: 5mm; }
+    h1 { font-size: 22pt; }
+    .role, .contact, .meta, h2 { color: #333 !important; }
+  }
+</style>

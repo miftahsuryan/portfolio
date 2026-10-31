@@ -1,0 +1,71 @@
+---
+import { Sun, Moon } from '@lucide/astro';
+---
+
+<button type="button" class="theme-toggle" data-theme-toggle>
+  <span class="to-dark">
+    <Moon size={18} aria-hidden="true" />
+    <span class="sr-only">Ganti ke tema gelap</span>
+  </span>
+  <span class="to-light">
+    <Sun size={18} aria-hidden="true" />
+    <span class="sr-only">Ganti ke tema terang</span>
+  </span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .theme-toggle:hover { border-color: var(--text); }
+  .to-dark, .to-light { display: inline-grid; place-items: center; }
+  .to-light { display: none; }
+
+  /* Tampilkan ikon sesuai tema yang sedang terlihat; tanpa JS pun benar. */
+  @media (prefers-color-scheme: dark) {
+    .to-dark { display: none; }
+    .to-light { display: inline-grid; }
+  }
+  :global(:root:has(> head > meta[name='color-scheme'][content='dark'])) {
+    & .to-dark { display: none; }
+    & .to-light { display: inline-grid; }
+  }
+  :global(:root:has(> head > meta[name='color-scheme'][content='light'])) {
+    & .to-dark { display: inline-grid; }
+    & .to-light { display: none; }
+  }
+</style>
+
+<script>
+  const meta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]')!;
+  const sys = matchMedia('(prefers-color-scheme: dark)');
+
+  const rendered = () => {
+    const v = meta.content;
+    return v === 'dark' || v === 'light' ? v : sys.matches ? 'dark' : 'light';
+  };
+
+  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+    const target = rendered() === 'dark' ? 'light' : 'dark';
+    const systemScheme = sys.matches ? 'dark' : 'light';
+    try {
+      if (target === systemScheme) localStorage.removeItem('color-scheme');
+      else localStorage.setItem('color-scheme', target);
+    } catch {}
+    meta.content = target === systemScheme ? 'light dark' : target;
+  });
+
+  // Sinkron antar-tab.
+  addEventListener('storage', (e) => {
+    if (e.key === 'color-scheme' || e.key === null)
+      meta.content = localStorage.getItem('color-scheme') ?? 'light dark';
+  });
+</script>

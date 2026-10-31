@@ -1,0 +1,13 @@
+/* Tanpa @layer agar mengalahkan gaya komponen saat mencetak. */
+@page { size: A4; margin: 14mm 16mm; }
+
+@media print {
+  :root { color-scheme: light !important; }
+  body { background: #fff !important; color: #000 !important; font-size: 10.5pt; line-height: 1.45; }
+  body::before { display: none !important; }
+  .no-print { display: none !important; }
+  a { color: #000 !important; text-decoration: none; }
+  a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 8.5pt; color: #444; word-break: break-all; }
+  a[href^='mailto:']::after { content: ''; }
+  .cv-block { break-inside: avoid; }
+}

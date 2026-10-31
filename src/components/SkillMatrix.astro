@@ -1,0 +1,65 @@
+---
+import { getSkillGroups, getProjects } from '../lib/content';
+
+const groups = getSkillGroups();
+const projects = await getProjects();
+const index = new Map(projects.map((p, i) => [p.id, { n: String(i + 1).padStart(2, '0'), title: p.data.title }]));
+---
+
+<section class="section" id="skill" aria-labelledby="skill-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="skill-title">Skill</h2>
+    </div>
+    <p class="lead">Setiap skill ditautkan ke proyek tempat saya memakainya.</p>
+    <div class="groups">
+      {groups.map((g) => (
+        <div class="group">
+          <h3>{g.category}</h3>
+          <ul>
+            {g.items.map((it) => (
+              <li>
+                <span class="name">{it.name}</span>
+                <span class="used">
+                  dipakai di
+                  {it.projectSlugs.map((s) => {
+                    const pr = index.get(s);
+                    return pr ? (
+                      <a href={`#${s}`} aria-label={`Proyek ${pr.n}: ${pr.title}`}>{pr.n}</a>
+                    ) : null;
+                  })}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lead { color: var(--text-2); margin-bottom: var(--space-5); }
+  .groups { display: grid; gap: var(--space-6); }
+  h3 { margin-bottom: var(--space-3); }
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-4);
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .name { font-weight: 600; }
+  .used { font-size: var(--step--1); color: var(--text-2); }
+  .used a {
+    display: inline-block;
+    min-width: 1.75rem;
+    margin-inline-start: var(--space-2);
+    text-align: center;
+    font-weight: 700;
+  }
+  @media (min-width: 48rem) {
+    .groups { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6) var(--space-7); }
+  }
+</style>

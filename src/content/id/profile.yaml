@@ -1,0 +1,40 @@
+# Semua teks profil ada di sini. Ganti setiap nilai berawalan penanda placeholder
+# dengan data asli Anda. Build produksi akan GAGAL selama penanda itu masih ada.
+# Jangan isi NIK, nomor telepon, atau alamat lengkap. Lokasi cukup kota/provinsi.
+
+siteUrl: "TODO: alamat situs, misal https://namaanda.vercel.app"
+
+name: "TODO: Nama lengkap"
+role: "TODO: Peran yang diincar, misal Junior Front-End Developer"
+tagline: "TODO: Satu kalimat nilai: apa yang bisa saya kerjakan untuk tim"
+availability: "TODO: Status ketersediaan, misal Siap magang mulai bulan/tahun ..."
+location: "TODO: Kota, Provinsi"
+
+# Foto asli: taruh file di src/assets/profile/ lalu isi path-nya, misal
+# "src/assets/profile/foto.jpg". Biarkan null kalau belum ada.
+avatar: null
+avatarAlt: "TODO: Deskripsi foto untuk pembaca layar"
+
+# Maksimal 120 kata, sudut pandang orang pertama.
+about: "TODO: Tentang saya, maksimal 120 kata."
+
+education:
+  institution: "TODO: Nama kampus"
+  degree: "S1 Informatika"
+  period: "TODO: Tahun masuk - tahun lulus"
+  gpa: "TODO: IPK"
+  showGpa: false # ubah ke true bila IPK ingin ditampilkan
+  thesis: null # opsional: topik tugas akhir
+
+# Opsional. Hapus tanda [] dan isi dengan format berikut bila ada:
+# certifications:
+#   - name: "Nama sertifikat"
+#     issuer: "Penyelenggara"
+#     year: "2025"
+#     verificationUrl: "https://tautan-verifikasi"
+certifications: []
+
+contact:
+  email: "TODO: email publik"
+  linkedin: "TODO: URL LinkedIn"
+  github: "TODO: URL GitHub"

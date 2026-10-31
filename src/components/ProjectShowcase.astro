@@ -1,0 +1,99 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import ImageSlot from './ImageSlot.astro';
+import { getProjects, statusLabel, isLink } from '../lib/content';
+
+const projects = await getProjects();
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<section class="section" id="proyek" aria-labelledby="proyek-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="proyek-title">Proyek</h2>
+    </div>
+    <ol class="list">
+      {projects.map((proj, i) => {
+        const d = proj.data;
+        return (
+          <li class="project" id={proj.id}>
+            <header>
+              <p class="num" aria-hidden="true">{pad(i + 1)}</p>
+              <div>
+                <h3>{d.title}</h3>
+                <p class="meta">
+                  <span class="badge">{statusLabel[d.status] ?? d.status}</span>
+                  <span>{d.role} · {d.period}</span>
+                </p>
+              </div>
+            </header>
+            <p class="summary">{d.summary}</p>
+            <ImageSlot
+              path={d.coverImage}
+              alt={d.coverAlt}
+              label={`screenshot atau diagram di src/assets/projects/ (${proj.id})`}
+              ratio="16 / 9"
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 60rem) 56rem, 100vw"
+            />
+            <dl>
+              <div><dt>Masalah</dt><dd>{d.problem}</dd></div>
+              <div><dt>Pendekatan</dt><dd>{d.approach}</dd></div>
+              <div><dt>Hasil</dt><dd>{d.outcome}</dd></div>
+            </dl>
+            <p class="stack"><span class="label">Stack</span> {d.stack.join(' · ')}</p>
+            <p class="links">
+              {isLink(d.repoUrl)
+                ? <a href={d.repoUrl} rel="noopener">Repositori<ArrowUpRight size={16} aria-hidden="true" /></a>
+                : <span class="muted">Repositori: {d.repoUrl ?? 'privat'}</span>}
+              {isLink(d.demoUrl)
+                ? <a href={d.demoUrl} rel="noopener">Demo<ArrowUpRight size={16} aria-hidden="true" /></a>
+                : <span class="muted">Demo: belum tersedia publik</span>}
+            </p>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .list { display: grid; gap: var(--space-7); }
+  .project { display: grid; gap: var(--space-4); scroll-margin-top: 1rem; }
+  header { display: flex; gap: var(--space-4); align-items: baseline; }
+  .num {
+    font-family: var(--font-heading);
+    font-size: var(--step-2);
+    color: var(--accent);
+    line-height: 1;
+    min-width: 2.2ch;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    margin-top: var(--space-2);
+    font-size: var(--step--1);
+    color: var(--text-2);
+  }
+  .summary { font-size: var(--step-1); }
+  dl { display: grid; gap: var(--space-4); border-top: 1px solid var(--line); padding-top: var(--space-4); }
+  dt {
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-2);
+  }
+  dd { max-width: var(--measure); }
+  .stack { font-size: var(--step--1); color: var(--text-2); }
+  .label { font-weight: 700; margin-inline-end: var(--space-2); color: var(--text); }
+  .links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); font-weight: 600; }
+  .links a { display: inline-flex; align-items: center; gap: var(--space-1); padding-block: var(--space-2); }
+  .muted { color: var(--text-2); font-weight: 400; font-size: var(--step--1); padding-block: var(--space-2); }
+
+  @media (min-width: 48rem) {
+    dl { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+  }
+</style>

@@ -1,0 +1,26 @@
+{
+  "name": "portofolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portofolio pribadi lulusan S1 Informatika untuk Magang Hub",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "check:content": "node scripts/check-content.mjs",
+    "build": "node scripts/check-content.mjs && astro build",
+    "build:preview": "ALLOW_TODO=true node scripts/check-content.mjs && astro build",
+    "preview": "astro preview",
+    "verify": "node scripts/verify-site.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/newsreader": "^5.3.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
+    "@lucide/astro": "^1.65.0",
+    "astro": "^7.4.4",
+    "js-yaml": "^5.5.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.1"
+  }
+}

@@ -1,0 +1,26 @@
+---
+import { getProfile } from '../lib/content';
+const p = getProfile();
+---
+
+<footer class="site-footer no-print">
+  <div class="wrap">
+    <p>
+      {p.name} · {p.location}
+    </p>
+    <p>
+      Situs pribadi ini tidak berafiliasi dengan, dan bukan situs resmi, program Magang Hub atau instansi
+      pemerintah mana pun.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding-block: var(--space-5);
+    color: var(--text-2);
+    font-size: var(--step--1);
+  }
+  p + p { margin-top: var(--space-1); }
+</style>

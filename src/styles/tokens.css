@@ -1,0 +1,83 @@
+/* Design tokens. Arah visual: Editorial Teknis Hangat. */
+@layer reset, base, components, utilities;
+
+:root {
+  color-scheme: light dark;
+
+  /* Tier 1: nilai mentah */
+  --paper-light: #faf8f5;
+  --paper-2-light: #f2efe9;
+  --ink-light: #1c1b18;
+  --ink-2-light: #57534e;
+  --line-light: #e4dfd7;
+  --accent-light: #1f5e4b;
+
+  --paper-dark: #161513;
+  --paper-2-dark: #1f1e1b;
+  --ink-dark: #edeae4;
+  --ink-2-dark: #a8a298;
+  --line-dark: #2e2c27;
+  --accent-dark: #52b798;
+
+  /* Tier 2: semantik. Default terang; gelap lewat media query (fallback). */
+  --bg: var(--paper-light);
+  --bg-2: var(--paper-2-light);
+  --text: var(--ink-light);
+  --text-2: var(--ink-2-light);
+  --line: var(--line-light);
+  --accent: var(--accent-light);
+  --on-accent: var(--paper-light);
+
+  @media (prefers-color-scheme: dark) {
+    --bg: var(--paper-dark);
+    --bg-2: var(--paper-2-dark);
+    --text: var(--ink-dark);
+    --text-2: var(--ink-2-dark);
+    --line: var(--line-dark);
+    --accent: var(--accent-dark);
+    --on-accent: var(--paper-dark);
+  }
+
+  /* light-dark() mengikuti color-scheme, sehingga toggle manual bekerja. */
+  @supports (color: light-dark(red, blue)) {
+    --bg: light-dark(var(--paper-light), var(--paper-dark));
+    --bg-2: light-dark(var(--paper-2-light), var(--paper-2-dark));
+    --text: light-dark(var(--ink-light), var(--ink-dark));
+    --text-2: light-dark(var(--ink-2-light), var(--ink-2-dark));
+    --line: light-dark(var(--line-light), var(--line-dark));
+    --accent: light-dark(var(--accent-light), var(--accent-dark));
+    --on-accent: light-dark(var(--paper-light), var(--paper-dark));
+  }
+
+  /* Tipografi: maksimal dua keluarga. */
+  --font-heading: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
+  --font-body: 'Plus Jakarta Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --step--1: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --step-1: clamp(1.15rem, 1.08rem + 0.35vw, 1.3rem);
+  --step-2: clamp(1.4rem, 1.25rem + 0.7vw, 1.8rem);
+  --step-3: clamp(2.1rem, 1.5rem + 3vw, 3.6rem);
+
+  /* Spasi */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2.5rem;
+  --space-7: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+
+  --measure: 66ch;
+  --page-width: 60rem;
+  --gutter: clamp(1.25rem, 5vw, 2.5rem);
+  --radius: 4px;
+}
+
+/* Override manual dari tombol tema (meta color-scheme). */
+:root:has(> head > meta[name='color-scheme'][content='dark']) {
+  color-scheme: dark;
+}
+:root:has(> head > meta[name='color-scheme'][content='light']) {
+  color-scheme: light;
+}

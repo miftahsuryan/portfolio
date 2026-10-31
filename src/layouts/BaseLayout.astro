@@ -1,0 +1,80 @@
+---
+import '@fontsource-variable/newsreader/index.css';
+import '@fontsource-variable/plus-jakarta-sans/index.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/print.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { getProfile, isTodo, isLink } from '../lib/content';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  ogImage?: string;
+  bare?: boolean; // halaman tanpa header/footer situs
+}
+const { title, description, path = '/', ogImage, bare = false } = Astro.props;
+
+const p = getProfile();
+const canonical = new URL(path, Astro.site).href;
+const og = ogImage ? new URL(ogImage, Astro.site).href : undefined;
+
+// JSON-LD hanya berisi fakta dari profile.yaml; field kosong/placeholder dilewati.
+const ok = (v?: string | null) => !!v && !isTodo(v);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  ...(ok(p.name) && { name: p.name }),
+  ...(ok(p.role) && { jobTitle: p.role }),
+  url: canonical,
+  ...(ok(p.location) && { address: { '@type': 'PostalAddress', addressLocality: p.location } }),
+  ...(ok(p.education.institution) && {
+    alumniOf: { '@type': 'CollegeOrUniversity', name: p.education.institution },
+  }),
+  ...(ok(p.contact.email) && { email: p.contact.email }),
+  sameAs: [p.contact.linkedin, p.contact.github].filter(isLink),
+};
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      try {
+        document.querySelector('meta[name="color-scheme"]').content =
+          localStorage.getItem('color-scheme') ?? 'light dark';
+      } catch {}
+    </script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {og && <meta property="og:image" content={og} />}
+    <meta name="twitter:card" content={og ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {og && <meta name="twitter:image" content={og} />}
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    {!bare && <a class="skip-link" href="#main">Lompat ke konten</a>}
+    {!bare && <SiteHeader />}
+    <main id="main" style="flex: 1">
+      <slot />
+    </main>
+    {!bare && <SiteFooter />}
+  </body>
+</html>

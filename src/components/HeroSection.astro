@@ -1,0 +1,73 @@
+---
+import { Download, Mail, MapPin } from '@lucide/astro';
+import ImageSlot from './ImageSlot.astro';
+import { getProfile } from '../lib/content';
+
+const p = getProfile();
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap grid">
+    <div class="text">
+      <p class="status"><span class="dot" aria-hidden="true"></span>{p.availability}</p>
+      <h1 id="hero-title">{p.name}</h1>
+      <p class="role">{p.role}</p>
+      <p class="tagline">{p.tagline}</p>
+      <p class="loc"><MapPin size={16} aria-hidden="true" />{p.location}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="/cv"><Download size={18} aria-hidden="true" />Unduh CV</a>
+        <a class="btn" href="#kontak"><Mail size={18} aria-hidden="true" />Hubungi</a>
+      </div>
+    </div>
+    <div class="photo">
+      <ImageSlot
+        path={p.avatar}
+        alt={p.avatarAlt}
+        label="foto profil asli di src/assets/profile/"
+        ratio="4 / 5"
+        priority
+        widths={[320, 480, 640]}
+        sizes="(min-width: 48rem) 20rem, 60vw"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: var(--space-6) var(--space-7); }
+  .grid { display: grid; gap: var(--space-6); }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--text-2);
+  }
+  .dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--accent); }
+  .role {
+    margin-top: var(--space-3);
+    font-family: var(--font-heading);
+    font-size: var(--step-2);
+    color: var(--accent);
+    line-height: 1.2;
+  }
+  .tagline { margin-top: var(--space-4); font-size: var(--step-1); max-width: 34ch; }
+  .loc {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    color: var(--text-2);
+    font-size: var(--step--1);
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+  .photo { max-width: 16rem; }
+  .photo:empty { display: none; }
+
+  @media (min-width: 48rem) {
+    .grid { grid-template-columns: minmax(0, 1fr) 15rem; align-items: end; gap: var(--space-7); }
+    .photo { order: 2; }
+  }
+</style>

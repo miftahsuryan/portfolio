@@ -1,0 +1,62 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import { getProfile, isTodo } from '../lib/content';
+
+const p = getProfile();
+const links = [
+  { href: '/#proyek', label: 'Proyek' },
+  { href: '/#skill', label: 'Skill' },
+  { href: '/#tentang', label: 'Tentang' },
+  { href: '/#kontak', label: 'Kontak' },
+  { href: '/cv', label: 'CV' },
+];
+---
+
+<header class="site-header no-print">
+  <div class="wrap bar">
+    <a class="brand" href="/">{p.name}</a>
+    <nav aria-label="Utama">
+      <ul>
+        {links.map((l) => (
+          <li><a href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <ThemeToggle />
+  </div>
+</header>
+
+<style>
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    padding-block: var(--space-4);
+  }
+  .brand {
+    font-family: var(--font-heading);
+    font-size: var(--step-1);
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    margin-inline-end: auto;
+  }
+  nav { order: 3; flex-basis: 100%; }
+  ul { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
+  nav a {
+    display: inline-block;
+    padding-block: var(--space-2);
+    color: var(--text-2);
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  nav a:hover { color: var(--text); text-decoration: underline; }
+
+  @media (min-width: 48rem) {
+    nav { order: 0; flex-basis: auto; }
+    .brand { margin-inline-end: 0; }
+  }
+</style>
