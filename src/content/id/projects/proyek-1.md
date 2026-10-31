@@ -2,7 +2,7 @@
 title: "Alat Komunikasi IoT Berbasis Machine Learning untuk Tunarungu"
 order: 1
 status: "prototipe"
-role: "Team Lead & Feature Developer (Tim 3 Orang)"
+role: "Feature Developer & Technical Documentation (Tim 3 Orang)"
 period: "2023 - 2024 · Samsung Innovation Campus Batch 5"
 summary: "Perangkat Speech-to-Text berbasis ESP32 dan AI untuk menampilkan teks pengumuman suara di ruang publik secara real-time bagi teman tunarungu."
 problem: "Penyandang disabilitas pendengaran dan tunarungu kesulitan menangkap informasi penting yang disampaikan melalui pengeras suara di tempat umum seperti stasiun atau taman bermain."
@@ -40,10 +40,10 @@ Proyek ini dikembangkan secara kolaboratif oleh tim 3 orang di bawah arahan ment
 - **Susunan Tim**: Miftahullah Surya Nugraha, Muhammad Askar Habibulloh, dan Rizki Surya Nugroho.
 - **Mentor Pembimbing**: Pratama Putra.
 - **Peran & Tanggung Jawab Utama Saya**:
-  1. **Inisiasi Ide & Perumusan Masalah**: Menggagas konsep solusi pengubah suara pengumuman publik menjadi teks layar visual untuk mengatasi hambatan aksesibilitas teman tunarungu.
-  2. **Koordinasi Tim & Manajemen Target**: Memfasilitasi pembagian beban kerja antar anggota tim, menyelaraskan milestone mingguan dari tahap bootcamp hingga penyelesaian prototipe akhir, serta mengomunikasikan progres berkala dengan mentor.
-  3. **Pengembangan Fitur & Logika Sistem**: Terlibat langsung dalam pengembangan fitur inti perangkat, penulisan script pemrosesan data, dan penggabungan pipeline Speech-to-Text ke dalam sistem mikrokontroler ESP32.
-  4. **Pengujian Sistem & Validasi Fungsional (Testing & QA)**: Merancang skenario pengujian audio, menguji akurasi transkripsi terhadap derau suara sekitar (*noise*), serta memastikan teks tampil stabil di layar display tanpa kendala latensi tinggi.
+  1. **Brainstorming Ide & Konseptualisasi**: Menginisiasi gagasan solusi pengubah suara pengumuman publik menjadi teks visual untuk mengatasi kesenjangan aksesibilitas teman tunarungu.
+  2. **Koordinasi Tim & Komunikasi Progres**: Membantu mengoordinasikan alur kerja tim 3 orang, memantau penyelesaian target dari tahap bootcamp hingga proyek akhir, serta menjembatani konsultasi berkala dengan mentor.
+  3. **Dokumentasi Teknis & Pelaporan**: Bertanggung jawab menyusun dokumentasi komprehensif terkait rancangan sistem, repositori kode sumber di GitHub, dan materi demonstrasi produk.
+  4. **Pengujian Fungsional & Pengembangan Fitur**: Melakukan pengujian sistem penangkapan audio secara berulang serta mendukung pengembangan logika fitur transkripsi suara-ke-teks.
 
 ## Hasil & Dampak
 - Berhasil melaju hingga tahap **Semi Finalist Samsung Innovation Campus Batch 5 (2024)**.
