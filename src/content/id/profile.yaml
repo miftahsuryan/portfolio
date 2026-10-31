@@ -12,8 +12,8 @@ location: null
 
 # Foto asli: taruh file di src/assets/profile/ lalu isi path-nya, misal
 # "src/assets/profile/foto.jpg". Biarkan null kalau belum ada.
-avatar: null
-avatarAlt: "Foto Miftahullah Surya Nugraha"
+avatar: "src/assets/profile/foto_profile_formal.jpg"
+avatarAlt: "Foto profil formal Miftahullah Surya Nugraha"
 
 # Maksimal 120 kata, sudut pandang orang pertama.
 about: >-
