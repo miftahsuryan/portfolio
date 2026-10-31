@@ -1,8 +1,6 @@
-# Portofolio Pribadi
+# Portofolio Pribadi — Miftahullah Surya Nugraha
 
-Situs portofolio statis (Astro + CSS biasa) untuk lamaran Magang Hub. Semua teks ada di `src/content/`, jadi Anda bisa mengubah isi tanpa menyentuh kode.
-
-> Situs ini tidak berafiliasi dengan program Magang Hub atau instansi pemerintah mana pun.
+Situs profil dan portofolio pribadi statis (dibangun dengan Astro dan CSS Modern). Dirancang dengan pendekatan editorial teknis, memisahkan konten (Markdown/YAML di `src/content/`) dari kode tampilan.
 
 ## Menjalankan
 

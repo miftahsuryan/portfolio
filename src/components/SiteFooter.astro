@@ -1,16 +1,16 @@
 ---
 import { getProfile } from '../lib/content';
 const p = getProfile();
+const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer no-print">
-  <div class="wrap">
+  <div class="wrap content">
     <p>
-      {p.name} · {p.location}
+      © {year} {p.name} · {p.location}
     </p>
-    <p>
-      Situs pribadi ini tidak berafiliasi dengan, dan bukan situs resmi, program Magang Hub atau instansi
-      pemerintah mana pun.
+    <p class="tech">
+      Dirancang mandiri · Dibangun dengan Astro & CSS Modern
     </p>
   </div>
 </footer>
@@ -22,6 +22,13 @@ const p = getProfile();
     color: var(--text-2);
     font-size: var(--step--1);
   }
-  p + p { margin-top: var(--space-1); }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+  }
+  .tech {
+    color: var(--text-2);
+  }
 </style>
-

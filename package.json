@@ -2,7 +2,7 @@
   "name": "portofolio",
   "version": "1.0.0",
   "private": true,
-  "description": "Portofolio pribadi lulusan S1 Informatika untuk Magang Hub",
+  "description": "Portofolio pribadi Miftahullah Surya Nugraha - Machine Learning Engineer & Data Analyst",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
