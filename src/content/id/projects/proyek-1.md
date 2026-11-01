@@ -1,51 +1,61 @@
 ---
-title: "Alat Komunikasi IoT Berbasis Machine Learning untuk Tunarungu"
+title: "Optimasi Portofolio Saham IDX30 Menggunakan Adaptive Genetic Algorithm (AGA) dan Walk-Forward Validation"
 order: 1
-status: "prototipe"
-role: "Feature Developer & Technical Documentation (Tim 3 Orang)"
-period: "2023 - 2024 · Samsung Innovation Campus Batch 5"
-summary: "Perangkat Speech-to-Text berbasis ESP32 dan AI untuk menampilkan teks pengumuman suara di ruang publik secara real-time bagi teman tunarungu."
-problem: "Penyandang disabilitas pendengaran dan tunarungu kesulitan menangkap informasi penting yang disampaikan melalui pengeras suara di tempat umum seperti stasiun atau taman bermain."
-approach: "Mengintegrasikan mikrokontroler ESP32 dengan penangkapan audio dan model Speech-to-Text berbasis machine learning untuk memproses pengumuman suara secara langsung dan menampilkannya ke layar."
-outcome: "Terpilih sebagai Semi Finalist Samsung Innovation Campus Batch 5 (2024), serta menghasilkan prototipe fungsional dan video demo produk."
+status: "selesai"
+role: "Lead Researcher & Machine Learning Engineer (Tugas Akhir / Skripsi)"
+period: "2024 - 2026"
+summary: "Sistem optimasi portofolio kuantitatif berbasis Adaptive Genetic Algorithm (AGA) pada saham IDX30 dengan pengujian Walk-Forward backtesting dan validasi statistik inferensial."
+problem: "Optimasi portofolio konvensional (Mean-Variance standar) rawan terjebak pada optimum lokal, mengalami konvergensi prematur pada bobot aset, dan sering gagal mengantisipasi pergeseran rezim pasar (regime shift) serta friksi biaya transaksi riil."
+approach: "Merancang algoritma genetika adaptif (AGA) yang menyesuaikan laju crossover dan mutasi secara dinamis berbasis varians fitness populasi, mengintegrasikan penalti diversifikasi HHI dan batas alokasi aset (maks. 20%), menguji performa melalui 4 fase Walk-Forward Optimization (WFO) out-of-sample dengan friksi transaksi riil (beli 0,15%, jual 0,25%), serta mendeploy web dashboard interaktif Streamlit & Plotly."
+outcome: "Mencapai Total Return 46,49% (vs benchmark IDX30 13,48%), Sharpe Ratio 2,1025 (vs 0,3767), Max Drawdown terkendali di -15,74%, dan keunggulan fitness konvergen terbukti signifikan secara statistik (p < 0,001) pada 80 eksperimen independen."
 stack:
   - "Python"
-  - "ESP32 (IoT)"
-  - "Speech-to-Text (AI)"
-  - "Machine Learning"
-  - "C/C++"
-repoUrl: "https://github.com/askarhabibulloh/SIC-5-Team-28"
-demoUrl: "https://youtu.be/E6jOqyUa1pk"
-coverImage: "src/assets/projects/SIC/hasil_alat.jpeg"
-coverAlt: "Prototipe perangkat keras Speech-to-Text berbasis ESP32 dengan modul audio dan layar display"
+  - "Adaptive Genetic Algorithm (AGA)"
+  - "Quantitative Finance"
+  - "Streamlit"
+  - "Plotly"
+  - "NumPy & Pandas"
+  - "SciPy (Statistical Testing)"
+  - "yfinance"
+repoUrl: "https://github.com/miftahsuryan/idx30-portfolio-optimization-aga"
+demoUrl: "https://portfolio-optimization-aga.streamlit.app"
+coverImage: null # Ganti dengan path screenshot jika ditaruh di src/assets/projects/
+coverAlt: "Dasbor interaktif optimasi portofolio saham IDX30 berbasis Streamlit dan Plotly"
 ---
 
 ## Konteks & Latar Belakang
-Program **Samsung Innovation Campus (SIC) Batch 5** diselenggarakan oleh **Samsung Indonesia** bekerja sama dengan **Skilvul** dengan fokus pada integrasi Artificial Intelligence (AI) dan Internet of Things (IoT). Melalui program ini, peserta melewati serangkaian tahapan intensif:
-1. **Dasar-Dasar AI & IoT**: Pembelajaran konsep fundamental sensor, mikrokontroler, machine learning, dan pemrograman Python.
-2. **Bootcamp AI & IoT**: Pelatihan teknis lanjutan, problem-solving, serta pemantapan algoritma dan struktur data.
-3. **Pengembangan Proyek Akhir (Capstone Project)**: Perancangan prototipe produk teknologi untuk memecahkan masalah sosial nyata (*Tech for Good*).
+Proyek ini merupakan penelitian tugas akhir (*Skripsi*) S1 Informatika yang berfokus pada ranah **Quantitative Finance** dan **Evolutionary Machine Learning**. Penelitian ini memecahkan tantangan alokasi aset dinamis pada 22 saham konsisten konstituen indeks **IDX30** (saham *blue-chip* terlikuid di Bursa Efek Indonesia) periode 2022–2026.
 
-## Masalah yang Diselesaikan
-Di area fasilitas publik seperti stasiun kereta api, terminal, bandara, maupun ruang rekreasi publik, pengumuman penting (seperti jadwal keberangkatan, keterlambatan, atau pengumuman darurat) sering kali disampaikan semata-mata lewat pengeras suara (speaker analog). Hal ini menciptakan kesenjangan akses informasi bagi penyandang disabilitas pendengaran (tunarungu). Tanpa adanya representasi visual real-time, mereka berisiko ketinggalan informasi krusial.
+## Permasalahan Kuantitatif
+Metode alokasi aset modern (*Markowitz Mean-Variance*) sering menghadapi kendala praktis di dunia nyata:
+1. **Konvergensi Prematur**: Standard Genetic Algorithm (SGA) dengan parameter statis cenderung mengalami stagnasi pada optimum lokal di tahap awal evolusi, atau sebaliknya merusak gen berbobot baik di tahap akhir.
+2. **Konsentrasi Risiko Ekstrem**: Fungsi objektif rasio Sharpe tanpa regulasi sering kali menempatkan 100% modal hanya pada 1–2 saham agresif.
+3. **Asumsi Pasar Tidak Realistis**: Pengujian *backtesting* konvensional sering mengabaikan pergeseran rezim pasar (*regime shift*), *weight drift*, dan friksi biaya transaksi riil (biaya broker, levy bursa, dan PPh final).
 
-## Pendekatan Teknis & Solusi
-Untuk mengatasi kendala tersebut, Tim 28 mengembangkan perangkat penerjemah suara-ke-teks otomatis (*Speech-to-Text*) terintegrasi:
-- **Komputasi IoT & Hardware**: Memanfaatkan mikrokontroler **ESP32** yang hemat daya, terhubung ke modul penerima audio/suara dan modul display (layar monitor/LED display).
-- **Pemrosesan Machine Learning & Audio**: Mengolah masukan sinyal audio dari speaker lingkungan, menyaring derau (*noise*), dan mengonversinya menjadi teks digital menggunakan model *Speech-to-Text*.
-- **Penyajian Real-Time**: Teks hasil transkripsi langsung ditransmisikan dan ditampilkan di layar antarmuka pengguna tanpa latensi tinggi, sehingga pengunjung tunarungu dapat membaca isi pengumuman seketika.
+## Inovasi Arsitektur Algoritma (AGA)
+Untuk mengatasi kelemahan tersebut, dirancang mesin optimasi kuantitatif *end-to-end* dengan inovasi utama:
+- **Operator Genetik Adaptif (Srinivas & Patnaik)**: Probabilitas *crossover* ($P_c$) dan mutasi ($P_m$) diskalakan secara otomatis per individu berdasarkan varians nilai fitness populasi ($k_1 \dots k_6$). Hal ini menjaga diversitas eksplorasi gen pada generasi awal dan mempercepat konvergensi presisi pada generasi akhir.
+- **Formulasi Multi-Objektif Teregulasi**: Memaksimalkan Sharpe Ratio terbobot sekaligus menambahkan penalti konsentrasi berbasis *Herfindahl-Hirschman Index* (HHI, $\lambda_{\text{div}} = 0,05$) guna menjamin diversifikasi portofolio.
+- **Mekanisme Perbaikan Alokasi (*Repair Mechanism*)**: Menerapkan batas keras alokasi per aset tunggal ($w_i \le 20\%$) melalui algoritma redistribusi proporsional berbasis kelebihan bobot (*excess redistribution*).
 
-## Kolaborasi Tim & Kontribusi Saya
-Proyek ini dikembangkan secara kolaboratif oleh tim 3 orang di bawah arahan mentor industri:
-- **Susunan Tim**: Miftahullah Surya Nugraha, Muhammad Askar Habibulloh, dan Rizki Surya Nugroho.
-- **Mentor Pembimbing**: Pratama Putra.
-- **Peran & Tanggung Jawab Utama Saya**:
-  1. **Brainstorming Ide & Konseptualisasi**: Menginisiasi gagasan solusi pengubah suara pengumuman publik menjadi teks visual untuk mengatasi kesenjangan aksesibilitas teman tunarungu.
-  2. **Koordinasi Tim & Komunikasi Progres**: Membantu mengoordinasikan alur kerja tim 3 orang, memantau penyelesaian target dari tahap bootcamp hingga proyek akhir, serta menjembatani konsultasi berkala dengan mentor.
-  3. **Dokumentasi Teknis & Pelaporan**: Bertanggung jawab menyusun dokumentasi komprehensif terkait rancangan sistem, repositori kode sumber di GitHub, dan materi demonstrasi produk.
-  4. **Pengujian Fungsional & Pengembangan Fitur**: Melakukan pengujian sistem penangkapan audio secara berulang serta mendukung pengembangan logika fitur transkripsi suara-ke-teks.
+## Metodologi Pengujian: Walk-Forward Optimization (WFO)
+Kinerja strategi diuji secara ketat menggunakan simulasi *out-of-sample Walk-Forward Optimization* (WFO) sepanjang 4 temporal *rolling windows*, memperhitungkan biaya transaksi riil (beli 0,15%, jual 0,25%) serta penyesuaian bobot (*rebalancing* berkala).
 
-## Hasil & Dampak
-- Berhasil melaju hingga tahap **Semi Finalist Samsung Innovation Campus Batch 5 (2024)**.
-- Prototipe berhasil dibangun dan didokumentasikan dalam format video demonstrasi produk fungsional serta repositori kode sumber.
-- Membuktikan penerapan nyata perpaduan IoT dan Machine Learning untuk tujuan aksesibilitas dan kesetaraan informasi (*Tech for Good*).
+### Ringkasan Performa Out-of-Sample (vs Benchmark)
+| Metrik Finansial | AGA (4x Rebalance) | Standard GA | Equal Weight (1/N) | IDX30 Index | Selisih AGA vs Benchmark |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Total Return (%)** | **46,49%** | 33,90% | 38,51% | 13,48% | **+33,01%** |
+| **Annualized Return (%)** | **50,59%** | 36,75% | 41,82% | 14,53% | **+36,06%** |
+| **Sharpe Ratio** | **2,1025** | 1,4467 | 1,5961 | 0,3767 | **+1,7258 (+458%)** |
+| **Max Drawdown (%)** | **-15,74%** | -17.35% | -18,78% | -17,14% | **+1,40% (Risiko Terkendali)** |
+| **Total Biaya Transaksi** | 0,43% | 0,50% | 0,15% | 0,38% | Biaya realistis |
+
+## Validasi Statistik Inferensial
+Keunggulan performa fungsi objektif AGA diuji secara ketat melalui **80 eksperimen independen** (10 *runs* $\times$ 4 fase $\times$ 2 algoritma):
+- Uji normalitas **Shapiro-Wilk** membuktikan sebaran data non-normal.
+- Uji non-parametrik **Wilcoxon Signed-Rank** dan **Paired t-test** dengan koreksi **Holm-Bonferroni** mengonfirmasi bahwa konvergensi fitness AGA lebih unggul secara signifikan ($p < 0,001$) dibanding Standard GA pada seluruh 4 fase pengujian.
+
+## Deployment & Web Dashboard Interaktif
+Sistem dideploy secara publik sebagai aplikasi web interaktif menggunakan **Streamlit** dan **Plotly**, menyediakan dua kapabilitas utama:
+1. **Showcase Visual Hasil Skripsi**: Visualisasi kurva pertumbuhan modal (*equity curve*), perbandingan *drawdown*, dan rincian alokasi bobot per fase WFO.
+2. **Simulator Optimasi Real-Time**: Memfasilitasi pengguna untuk menentukan modal investasi, batas bobot aset, dan target diversifikasi untuk menghitung alokasi portofolio saham IDX30 secara langsung.

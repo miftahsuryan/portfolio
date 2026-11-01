@@ -18,11 +18,12 @@ avatarAlt: "Foto profil formal Miftahullah Surya Nugraha"
 # Maksimal 120 kata, sudut pandang orang pertama.
 about: >-
   Saya lulusan S1 Informatika UIN Sunan Kalijaga Yogyakarta (2026) dengan fokus pada
-  machine learning terapan dan analisis data. Pada 2025 saya lulus penuh dari Coding Camp
-  powered by DBS Foundation dengan nilai A. Saya juga menyelesaikan kelas Machine Learning
-  Terapan dan Fundamental Deep Learning di Dicoding. Bersama tim, saya mencapai semi final
-  Samsung Innovation Campus Batch 5 dengan proyek alat komunikasi berbasis machine learning
-  untuk teman tunarungu. Di luar kelas, saya memimpin Divisi Basket UKM Olahraga kampus.
+  machine learning terapan, optimasi kuantitatif, dan analisis data. Pada proyek tugas akhir,
+  saya merancang mesin optimasi portofolio saham IDX30 berbasis Adaptive Genetic Algorithm (AGA)
+  dan Walk-Forward backtesting yang mengungguli indeks acuan pasar. Pada 2025 saya lulus penuh
+  dari Coding Camp DBS Foundation (Nilai A) dan menyelesaikan sertifikasi Machine Learning Terapan
+  di Dicoding. Bersama tim, saya juga mencapai semi final Samsung Innovation Campus Batch 5.
+  Di luar akademik, saya memimpin Divisi Basket UKM Olahraga kampus.
 
 education:
   institution: "UIN Sunan Kalijaga Yogyakarta"
@@ -30,7 +31,7 @@ education:
   period: "2022 - 2026"
   gpa: "3.77 / 4.00"
   showGpa: true # ubah ke false bila IPK tidak ingin ditampilkan
-  thesis: null # opsional: topik tugas akhir
+  thesis: "Optimasi Portofolio Saham IDX30 Menggunakan Adaptive Genetic Algorithm (AGA) dan Walk-Forward Validation"
 
 # verificationUrl: isi link kredensial (misal dari dicoding.com/certificates/...) bila ada.
 certifications:

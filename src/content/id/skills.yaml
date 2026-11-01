@@ -4,35 +4,46 @@
 # Tanpa persentase. Hanya tulis skill yang benar-benar bisa dibuktikan.
 
 groups:
-  - category: "Machine learning & AI"
+  - category: "Machine Learning & AI"
     items:
       - name: "Machine Learning"
-        projectSlugs: ["proyek-1"]
+        projectSlugs: ["proyek-1", "proyek-2"]
         evidence: ["Sertifikat Machine Learning Terapan, Dicoding"]
+      - name: "Adaptive Genetic Algorithm (AGA)"
+        projectSlugs: ["proyek-1"]
+        evidence: ["Skripsi Optimasi Portofolio Saham IDX30"]
       - name: "Deep Learning"
         evidence: ["Sertifikat Belajar Fundamental Deep Learning, Dicoding"]
       - name: "Speech-to-Text & NLP"
-        projectSlugs: ["proyek-1"]
+        projectSlugs: ["proyek-2"]
         evidence: ["Capstone Project Samsung Innovation Campus Batch 5"]
+
+  - category: "Data Science & Analisis Kuantitatif"
+    items:
+      - name: "Optimasi Portofolio (Quantitative Finance)"
+        projectSlugs: ["proyek-1"]
+        evidence: ["Walk-Forward Optimization Saham IDX30 (46,49% Total Return)"]
+      - name: "Pengujian Statistik Inferensial"
+        projectSlugs: ["proyek-1"]
+        evidence: ["Uji Shapiro-Wilk, Wilcoxon Signed-Rank, Paired t-test (p < 0,001)"]
+      - name: "Pemrosesan & Analisis Data (Pandas, NumPy)"
+        projectSlugs: ["proyek-1", "proyek-2"]
+        evidence: ["Sertifikat Belajar Fundamental Pemrosesan Data, Dicoding"]
+      - name: "Visualisasi Data & Dashboard (Streamlit, Plotly)"
+        projectSlugs: ["proyek-1"]
+        evidence: ["Web Dashboard Interaktif Streamlit Cloud"]
 
   - category: "Pemrograman & Rekayasa Perangkat Lunak"
     items:
       - name: "Python"
-        projectSlugs: ["proyek-1"]
-        evidence: ["Pelatihan dan Capstone Project Samsung Innovation Campus Batch 5"]
+        projectSlugs: ["proyek-1", "proyek-2"]
+        evidence: ["Pengembangan skripsi kuantitatif dan bootcamp SIC Batch 5"]
       - name: "Algoritma dan Struktur Data"
-        projectSlugs: ["proyek-1"]
-        evidence: ["Bootcamp AI & IoT Samsung Innovation Campus Batch 5"]
-      - name: "Pemrosesan Data"
-        projectSlugs: ["proyek-1"]
-        evidence: ["Sertifikat Belajar Fundamental Pemrosesan Data, Dicoding"]
+        projectSlugs: ["proyek-1", "proyek-2"]
+        evidence: ["Implementasi algoritma genetika adaptif dan sistem IoT"]
       - name: "Internet of Things (ESP32)"
-        projectSlugs: ["proyek-1"]
+        projectSlugs: ["proyek-2"]
         evidence: ["Perangkat IoT Samsung Innovation Campus Batch 5"]
       - name: "Git & GitHub (Version Control)"
-        projectSlugs: ["proyek-1"]
-        evidence: ["Kolaborasi tim dan repositori kode proyek SIC di GitHub"]
-
-# Skill lain dari CV. Aktifkan setelah ada proyek tambahan atau sertifikat pendukung:
-#   - SQL / manajemen basis data
-#   - Visualisasi data / analisis kuantitatif
+        projectSlugs: ["proyek-1", "proyek-2"]
+        evidence: ["Repositori kode sumber proyek IDX30 dan SIC di GitHub"]
