@@ -39,7 +39,7 @@ const metrics = [
     {/* Row 1: Main Story Card & Executive Portrait Snapshot */}
     <div class="bento-row main-row">
       {/* Bento 1: Primary Identity & Story */}
-      <article class="bento-card identity-card">
+      <article class="bento-card identity-card" data-reveal="up" data-spotlight>
         <div class="status-pill">
           <span class="pulse-dot" aria-hidden="true"></span>
           <span>{p.availability}</span>
@@ -88,7 +88,7 @@ const metrics = [
       </article>
 
       {/* Bento 2: Executive Portrait & Factsheet Card (Eliminating Dead Space) */}
-      <article class="bento-card photo-card">
+      <article class="bento-card photo-card" data-reveal="up" data-reveal-delay="1" data-spotlight>
         <div class="photo-wrap">
           <ImageSlot
             path={p.avatar}
@@ -114,7 +114,10 @@ const metrics = [
             <MapPin size={16} class="fact-icon" aria-hidden="true" />
             <div>
               <strong>D.I. Yogyakarta, Indonesia</strong>
-              <span>Zona Waktu Asia/Jakarta (WIB · UTC+7)</span>
+              <span class="live-clock-wrapper">
+                <span class="pulse-dot-sm" aria-hidden="true"></span>
+                <span data-live-clock aria-label="Waktu lokal Yogyakarta">--:--:--</span> WIB (UTC+7)
+              </span>
             </div>
           </div>
 
@@ -152,21 +155,41 @@ const metrics = [
       </article>
     </div>
 
-    {/* Row 2: 4 Impact Metrics Strip */}
+    {/* Row 2: 4 Impact Metrics Strip with Animated Counters */}
     <div class="metrics-grid" aria-label="Statistik Pencapaian Utama">
-      {metrics.map((m) => (
-        <div class="metric-card">
-          <p class="metric-value">{m.value}</p>
-          <p class="metric-label">{m.label}</p>
-          <p class="metric-sub">{m.sub}</p>
-        </div>
-      ))}
+      {metrics.map((m, i) => {
+        let countVal: string | undefined;
+        let suffix = '';
+        if (m.value.startsWith('3.77')) {
+          countVal = '3.77';
+          suffix = ' / 4.00';
+        } else if (m.value.startsWith('936')) {
+          countVal = '936';
+          suffix = ' Jam';
+        } else if (m.value.startsWith('22')) {
+          countVal = '22';
+          suffix = '+ Kredensial';
+        }
+        return (
+          <div class="metric-card" data-reveal="up" data-reveal-delay={String(i + 1)} data-spotlight>
+            <p class="metric-value">
+              {countVal ? (
+                <><span data-count-to={countVal}>{countVal}</span>{suffix}</>
+              ) : (
+                m.value
+              )}
+            </p>
+            <p class="metric-label">{m.label}</p>
+            <p class="metric-sub">{m.sub}</p>
+          </div>
+        );
+      })}
     </div>
 
     {/* Row 3: Education & Thesis (Col 1) and Leadership & Organizations (Col 2) */}
     <div class="bento-row dual-row">
       {/* Bento 3: Formal Education & Thesis */}
-      <article class="bento-card edu-card">
+      <article class="bento-card edu-card" data-reveal="up" data-spotlight>
         <div class="card-head">
           <GraduationCap size={22} class="card-icon" aria-hidden="true" />
           <div>
@@ -201,7 +224,7 @@ const metrics = [
       </article>
 
       {/* Bento 4: Leadership, Organizations & Athletics */}
-      <article class="bento-card leadership-card">
+      <article class="bento-card leadership-card" data-reveal="up" data-reveal-delay="1" data-spotlight>
         <div class="card-head">
           <Award size={22} class="card-icon trophy" aria-hidden="true" />
           <div>
@@ -479,6 +502,22 @@ const metrics = [
   .factsheet-item span {
     color: var(--text-2);
     font-size: 0.72rem;
+  }
+  .live-clock-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-2);
+    font-size: 0.72rem;
+  }
+  .pulse-dot-sm {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+    animation: pulse 2s infinite;
+    display: inline-block;
   }
 
   .social-connect {

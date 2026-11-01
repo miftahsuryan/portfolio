@@ -9,7 +9,7 @@ const p = getProfile();
 
 <section class="section" id="pencapaian" aria-labelledby="pencapaian-title">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" data-reveal="up">
       <span class="section-kicker">
         <Award size={12} aria-hidden="true" />
         <span>Rekam Jejak Industri</span>
@@ -22,8 +22,8 @@ const p = getProfile();
 
     <div class="programs-grid">
       {/* Card 1: DBS Foundation Coding Camp */}
-      {p.training.map((t) => (
-        <article class="program-card">
+      {p.training.map((t, i) => (
+        <article class="program-card" data-reveal="up" data-reveal-delay={String(i + 1)} data-spotlight>
           {t.image && (
             <div class="program-thumb">
               <ImageSlot
@@ -77,7 +77,7 @@ const p = getProfile();
 
       {/* Card 2: Samsung Innovation Campus Batch 5 */}
       {p.achievements.filter(a => a.stages).map((a) => (
-        <article class="program-card">
+        <article class="program-card" data-reveal="up" data-reveal-delay="2" data-spotlight>
           {a.image && (
             <div class="program-thumb">
               <ImageSlot

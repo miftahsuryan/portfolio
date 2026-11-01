@@ -53,8 +53,16 @@ for (const scheme of ['light', 'dark']) {
         if (r.url().startsWith(base)) note(`[${tag}] request gagal: ${r.url()}`);
       });
       const resp = await page.goto(base + route, { waitUntil: 'load', timeout: 30000 });
-      await page.waitForTimeout(1000);
+      await page.waitForTimeout(300);
       if (!resp?.ok()) note(`[${tag}] status ${resp?.status()}`);
+
+      // Scroll bertahap agar IntersectionObserver dan animasi reveal aktif
+      const scrollHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+      for (let y = 0; y < scrollHeight; y += 500) {
+        await page.evaluate((top) => window.scrollTo(0, top), y);
+        await page.waitForTimeout(40);
+      }
+      await page.waitForTimeout(150);
 
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       if (overflow > 0) note(`[${tag}] overflow horizontal ${overflow}px`);

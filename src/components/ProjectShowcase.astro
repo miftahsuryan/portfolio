@@ -16,7 +16,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 <section class="section" id="proyek" aria-labelledby="proyek-title">
   <div class="wrap projects-container" data-projects-showcase>
-    <div class="section-head">
+    <div class="section-head" data-reveal="up">
       <div class="head-info">
         <span class="section-kicker">
           <Sparkles size={12} aria-hidden="true" />
@@ -44,7 +44,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </div>
 
     {/* Project Navigation Switcher Tabs */}
-    <nav class="project-tabs" role="tablist" aria-label="Pilih Proyek">
+    <nav class="project-tabs" role="tablist" aria-label="Pilih Proyek" data-reveal="up" data-reveal-delay="1">
       {projects.map(({ proj }, i) => {
         const d = proj.data;
         const shortTitle = d.title.split(':')[0].replace('Menggunakan Adaptive Genetic Algorithm (AGA) dan Walk-Forward Validation', '(AGA)');
@@ -66,7 +66,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </nav>
 
     {/* Horizontal Scroll / Swipe Track */}
-    <div class="projects-slider">
+    <div class="projects-slider" data-reveal="up" data-reveal-delay="2">
       <ol class="projects-track" data-projects-track tabindex="0" role="region" aria-label="Koleksi proyek unggulan horizontal">
         {projects.map(({ proj, Content }, i) => {
           const d = proj.data;

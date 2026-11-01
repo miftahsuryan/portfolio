@@ -7,7 +7,7 @@ const c = getProfile().contact;
 
 <section class="section" id="kontak" aria-labelledby="kontak-title">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" data-reveal="up">
       <span class="section-kicker">
         <Mail size={12} aria-hidden="true" />
         <span>Mulai Kolaborasi</span>
@@ -17,7 +17,7 @@ const c = getProfile().contact;
         Terbuka untuk peluang kerja penuh waktu (*full-time*), magang teknis, konsultasi analisis data, maupun kolaborasi proyek AI & Machine Learning.
       </p>
     </div>
-    <ul class="contact-card-list">
+    <ul class="contact-card-list" data-reveal="up" data-reveal-delay="1">
       <li>
         <span class="k">Email</span>
         <a href={`mailto:${c.email}`}>{c.email}</a>

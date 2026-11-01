@@ -28,7 +28,7 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
 <div class="skills-cert-section" id="skill" data-cert-showcase>
   {/* Sub-section: Keahlian Teknis Berdasarkan Domain */}
   <div class="skills-block">
-    <div class="block-head">
+    <div class="block-head" data-reveal="up">
       <span class="section-kicker">
         <Cpu size={12} aria-hidden="true" />
         <span>Kompetensi Teruji</span>
@@ -40,12 +40,12 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
     </div>
 
     <div class="domains-grid">
-      {groups.map((g) => {
+      {groups.map((g, i) => {
         const config = domainConfig[g.category] ?? { icon: Award, filterCat: 'Semua', label: g.category };
         const IconComponent = config.icon;
         const certCount = certs.filter(c => c.category === config.filterCat).length;
         return (
-          <article class="domain-card">
+          <article class="domain-card" data-reveal="up" data-reveal-delay={String(i + 1)} data-spotlight>
             <div class="domain-head">
               <div class="domain-icon-wrap">
                 <IconComponent size={20} class="domain-icon" aria-hidden="true" />
@@ -95,7 +95,7 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
 
   {/* Sub-section: Galeri Sertifikasi Kompetensi & Program (Carousel) */}
   <div class="cert-block" id="sertifikat">
-    <div class="cert-head">
+    <div class="cert-head" data-reveal="up">
       <div>
         <span class="section-kicker">
           <ShieldCheck size={12} aria-hidden="true" />
@@ -128,7 +128,7 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
       </div>
     </div>
 
-    <div class="filter-bar" role="tablist" aria-label="Filter kategori sertifikat">
+    <div class="filter-bar" role="tablist" aria-label="Filter kategori sertifikat" data-reveal="up" data-reveal-delay="1">
       {categories.map((cat, i) => (
         <button
           type="button"
@@ -142,9 +142,9 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
       ))}
     </div>
 
-    <div class="cert-track" data-cert-track tabindex="0" role="region" aria-label="Daftar sertifikat kompetensi">
+    <div class="cert-track" data-cert-track tabindex="0" role="region" aria-label="Daftar sertifikat kompetensi" data-reveal="up" data-reveal-delay="2">
       {certs.map((c) => (
-        <article class="cert-card" data-category={c.category ?? 'Lainnya'}>
+        <article class="cert-card" data-category={c.category ?? 'Lainnya'} data-spotlight>
           <div class="cert-thumb">
             <ImageSlot
               path={c.image ?? null}
