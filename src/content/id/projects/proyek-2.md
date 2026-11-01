@@ -18,6 +18,16 @@ repoUrl: "https://github.com/askarhabibulloh/SIC-5-Team-28"
 demoUrl: "https://youtu.be/E6jOqyUa1pk"
 coverImage: "src/assets/projects/SIC/hasil_alat.jpeg"
 coverAlt: "Prototipe perangkat keras Speech-to-Text berbasis ESP32 dengan modul audio dan layar display"
+gallery:
+  - image: "src/assets/projects/SIC/hasil_alat.jpeg"
+    alt: "Prototipe perangkat keras Speech-to-Text berbasis ESP32 dengan modul audio dan layar display"
+    caption: "Prototipe Fisik: Perangkat keras IoT ESP32 terhubung dengan modul penerima suara dan display teks"
+  - image: "src/assets/projects/SIC/rancangan.jpeg"
+    alt: "Diagram skematik arsitektur alur kerja IoT ESP32 dan model Speech-to-Text"
+    caption: "Arsitektur Sistem: Alur pemrosesan dari audio masukan pengumuman publik hingga konversi teks di layar"
+  - image: "src/assets/projects/SIC/anggota_kelompok.jpeg"
+    alt: "Foto bersama anggota tim pengembang proyek Samsung Innovation Campus Batch 5"
+    caption: "Kolaborasi Tim: Anggota Tim 28 bersama mentor industri Samsung Innovation Campus Batch 5"
 ---
 
 ## Konteks & Latar Belakang

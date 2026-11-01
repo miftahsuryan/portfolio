@@ -80,6 +80,12 @@ for (const loc of fs.readdirSync(CONTENT)) {
         errors.push(`${rel(file)}  status harus: selesai | prototipe | sedang-dikerjakan`);
       checkAsset(file, 'coverImage', fm.coverImage);
       if (fm.coverImage && !fm.coverAlt) errors.push(`${rel(file)}  coverImage butuh coverAlt`);
+      if (Array.isArray(fm.gallery)) {
+        fm.gallery.forEach((g, idx) => {
+          checkAsset(file, `gallery[${idx}].image`, g.image);
+          if (g.image && !g.alt) errors.push(`${rel(file)}  gallery[${idx}] butuh alt`);
+        });
+      }
     }
   }
 

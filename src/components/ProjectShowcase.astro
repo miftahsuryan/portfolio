@@ -1,6 +1,6 @@
 ---
 import { ArrowUpRight } from '@lucide/astro';
-import ImageSlot from './ImageSlot.astro';
+import ProjectGallery from './ProjectGallery.astro';
 import { getProjects, statusLabel, isLink } from '../lib/content';
 
 const projects = await getProjects();
@@ -28,13 +28,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
               </div>
             </header>
             <p class="summary">{d.summary}</p>
-            <ImageSlot
-              path={d.coverImage}
-              alt={d.coverAlt}
-              label={`screenshot atau diagram di src/assets/projects/ (${proj.id})`}
-              ratio="16 / 9"
-              widths={[480, 800, 1200]}
-              sizes="(min-width: 60rem) 56rem, 100vw"
+            <ProjectGallery
+              coverImage={d.coverImage}
+              coverAlt={d.coverAlt}
+              gallery={d.gallery}
+              projectId={proj.id}
             />
             <dl>
               <div><dt>Masalah</dt><dd>{d.problem}</dd></div>
@@ -58,8 +56,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </section>
 
 <style>
-  .list { display: grid; gap: var(--space-7); }
-  .project { display: grid; gap: var(--space-4); scroll-margin-top: 1rem; }
+  .list { display: grid; gap: var(--space-7); min-width: 0; }
+  .project { display: grid; gap: var(--space-4); scroll-margin-top: 1rem; min-width: 0; }
   header { display: flex; gap: var(--space-4); align-items: baseline; }
   .num {
     font-family: var(--font-heading);

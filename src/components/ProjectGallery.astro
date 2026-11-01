@@ -1,0 +1,171 @@
+---
+import { ChevronLeft, ChevronRight } from '@lucide/astro';
+import ImageSlot from './ImageSlot.astro';
+
+interface Props {
+  coverImage: string | null;
+  coverAlt: string;
+  gallery?: { image: string; alt: string; caption?: string }[];
+  projectId: string;
+}
+
+const { coverImage, coverAlt, gallery = [], projectId } = Astro.props;
+const items = gallery.length > 0 ? gallery : coverImage ? [{ image: coverImage, alt: coverAlt }] : [];
+const hasMultiple = items.length > 1;
+---
+
+{items.length === 0 ? (
+  <ImageSlot
+    path={null}
+    alt={coverAlt}
+    label={`screenshot atau diagram di src/assets/projects/ (${projectId})`}
+    ratio="16 / 9"
+    widths={[480, 800, 1200]}
+    sizes="(min-width: 60rem) 56rem, 100vw"
+  />
+) : !hasMultiple ? (
+  <figure class="single">
+    <ImageSlot
+      path={items[0].image}
+      alt={items[0].alt}
+      label={`screenshot proyek ${projectId}`}
+      ratio="16 / 9"
+      widths={[480, 800, 1200]}
+      sizes="(min-width: 60rem) 56rem, 100vw"
+    />
+    {items[0].caption && <figcaption class="caption">{items[0].caption}</figcaption>}
+  </figure>
+) : (
+  <div class="gallery" data-gallery>
+    <div class="gallery-bar">
+      <p class="hint">
+        <span class="dot" aria-hidden="true"></span>
+        Geser ke kanan untuk melihat {items.length} gambar & diagram
+      </p>
+      <div class="nav-btns" aria-label="Navigasi geser gambar">
+        <button type="button" class="nav-btn" data-prev aria-label="Lihat gambar sebelumnya">
+          <ChevronLeft size={16} aria-hidden="true" />
+        </button>
+        <button type="button" class="nav-btn" data-next aria-label="Lihat gambar berikutnya">
+          <ChevronRight size={16} aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+    <div class="track" data-track tabindex="0" role="region" aria-label="Daftar gambar proyek">
+      {items.map((item, index) => (
+        <figure class="slide">
+          <ImageSlot
+            path={item.image}
+            alt={item.alt}
+            label={`Gambar ${index + 1}`}
+            ratio="16 / 9"
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 60rem) 56rem, 100vw"
+          />
+          {item.caption && (
+            <figcaption class="caption">
+              <span class="num">{index + 1}/{items.length}</span> {item.caption}
+            </figcaption>
+          )}
+        </figure>
+      ))}
+    </div>
+  </div>
+)}
+
+<style>
+  .single { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; max-width: 100%; }
+  .gallery { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; max-width: 100%; }
+  .gallery-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+  .hint {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--step--1);
+    color: var(--text-2);
+    font-weight: 500;
+  }
+  .dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .nav-btns { display: inline-flex; gap: var(--space-1); flex-shrink: 0; }
+  .nav-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    color: var(--text);
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .nav-btn:hover {
+    border-color: var(--text);
+    background: var(--bg);
+  }
+  .track {
+    display: flex;
+    gap: var(--space-3);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0.25rem;
+    padding-bottom: var(--space-2);
+    scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    max-width: 100%;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .caption {
+    font-size: var(--step--1);
+    color: var(--text-2);
+    line-height: 1.45;
+  }
+  .caption .num {
+    font-weight: 700;
+    color: var(--text);
+    margin-inline-end: var(--space-1);
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-gallery]').forEach((gal) => {
+    const track = gal.querySelector<HTMLElement>('[data-track]');
+    const prev = gal.querySelector<HTMLButtonElement>('[data-prev]');
+    const next = gal.querySelector<HTMLButtonElement>('[data-next]');
+    if (!track || !prev || !next) return;
+
+    prev.addEventListener('click', () => {
+      const slide = track.querySelector<HTMLElement>('.slide');
+      const step = (slide?.clientWidth ?? 400) + 16;
+      track.scrollBy({ left: -step, behavior: 'smooth' });
+    });
+    next.addEventListener('click', () => {
+      const slide = track.querySelector<HTMLElement>('.slide');
+      const step = (slide?.clientWidth ?? 400) + 16;
+      track.scrollBy({ left: step, behavior: 'smooth' });
+    });
+  });
+</script>

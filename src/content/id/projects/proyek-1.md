@@ -19,8 +19,21 @@ stack:
   - "yfinance"
 repoUrl: "https://github.com/miftahsuryan/idx30-portfolio-optimization-aga"
 demoUrl: "https://portfolio-optimization-aga.streamlit.app"
-coverImage: null # Ganti dengan path screenshot jika ditaruh di src/assets/projects/
+coverImage: "src/assets/projects/AGA/streamlit_dashboard_preview.png"
 coverAlt: "Dasbor interaktif optimasi portofolio saham IDX30 berbasis Streamlit dan Plotly"
+gallery:
+  - image: "src/assets/projects/AGA/streamlit_dashboard_preview.png"
+    alt: "Antarmuka web dashboard interaktif Streamlit untuk simulasi alokasi portofolio saham IDX30"
+    caption: "Dashboard Interaktif Streamlit: Simulasi optimasi portofolio real-time & visualisasi bobot aset"
+  - image: "src/assets/projects/AGA/wfo_cumulative_equity_drawdown.png"
+    alt: "Grafik perbandingan kurva pertumbuhan modal (equity curve) dan drawdown out-of-sample strategi AGA terhadap benchmark"
+    caption: "Kinerja Out-of-Sample: Return kumulatif 46,49% mengungguli Standard GA, Equal Weight, dan Indeks IDX30"
+  - image: "src/assets/projects/AGA/weights_allocation_aga_4phases.png"
+    alt: "Diagram alokasi bobot portofolio saham IDX30 sepanjang 4 fase rolling Walk-Forward"
+    caption: "Dinamika Alokasi Bobot: Pembatasan konsentrasi aset maksimum 20% melalui mekanisme perbaikan proporsional"
+  - image: "src/assets/projects/AGA/convergence_sga_vs_aga.png"
+    alt: "Grafik konvergensi nilai fitness fungsi objektif membandingkan Adaptive GA dengan Standard GA"
+    caption: "Validasi Algoritma: Operator adaptif (AGA) mempertahankan diversitas gen dan mencegah konvergensi prematur"
 ---
 
 ## Konteks & Latar Belakang
