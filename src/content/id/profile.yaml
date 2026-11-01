@@ -17,13 +17,7 @@ avatarAlt: "Foto profil formal Miftahullah Surya Nugraha"
 
 # Maksimal 120 kata, sudut pandang orang pertama.
 about: >-
-  Saya lulusan S1 Informatika UIN Sunan Kalijaga Yogyakarta (2026) dengan fokus pada
-  machine learning terapan, optimasi kuantitatif, dan analisis data. Pada proyek tugas akhir,
-  saya merancang mesin optimasi portofolio saham IDX30 berbasis Adaptive Genetic Algorithm (AGA)
-  dan Walk-Forward backtesting yang mengungguli indeks acuan pasar. Pada 2025 saya lulus penuh
-  dari Coding Camp DBS Foundation (Nilai A) dan menyelesaikan sertifikasi Machine Learning Terapan
-  di Dicoding. Bersama tim, saya juga mencapai semi final Samsung Innovation Campus Batch 5.
-  Di luar akademik, saya memimpin Divisi Basket UKM Olahraga kampus.
+  Lulusan S1 Informatika yang berfokus pada machine learning terapan, analisis data kuantitatif, dan pipeline data dengan Python. Berpengalaman merancang sistem optimasi portofolio berbasis algoritma genetika adaptif, arsitektur sistem rekomendasi hybrid, serta perangkat embedded AI untuk komputasi IoT.
 
 education:
   institution: "UIN Sunan Kalijaga Yogyakarta"

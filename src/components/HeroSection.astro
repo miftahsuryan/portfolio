@@ -31,10 +31,10 @@ const coreCompetencies = [
 ];
 
 const metrics = [
-  { value: '3.77 / 4.00', label: 'IPK S1 Informatika', sub: 'Predikat Pujian / Cumlaude' },
-  { value: '936 Jam', label: 'Coding Camp DBS Foundation', sub: 'Students Full Graduate (Nilai A)' },
-  { value: 'Semi Finalist', label: 'Samsung Innovation Campus', sub: 'Tingkat Nasional (Batch 5)' },
-  { value: '22+ Kredensial', label: 'Sertifikasi Terverifikasi', sub: '1.400+ Jam Pelatihan Resmi' },
+  { value: '3.77 / 4.00', label: 'IPK S1 Informatika · Cumlaude' },
+  { value: '936 Jam', label: 'Coding Camp DBS Foundation (Nilai A)' },
+  { value: 'Semi Finalist', label: 'Samsung Innovation Campus (Batch 5)' },
+  { value: '22+ Kredensial', label: '1.400+ Jam Pelatihan Terverifikasi' },
 ];
 
 const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
@@ -63,10 +63,6 @@ const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
         </div>
 
         <div class="competencies-block" aria-label="Pilar Kompetensi Inti">
-          <span class="block-kicker">
-            <Layers size={13} stroke-width={2} aria-hidden="true" />
-            <span>Pilar Kompetensi Utama</span>
-          </span>
           <div class="focus-pills">
             {coreCompetencies.map((comp) => (
               <span class="focus-pill">
@@ -113,7 +109,7 @@ const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
               <GraduationCap size={15} stroke-width={2} aria-hidden="true" />
             </div>
             <div>
-              <strong>S1 Informatika (IPK 3.77 · Cumlaude)</strong>
+              <strong>S1 Informatika · IPK 3.77 (Cumlaude)</strong>
               <span>UIN Sunan Kalijaga Yogyakarta</span>
             </div>
           </div>
@@ -126,7 +122,7 @@ const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
               <strong>D.I. Yogyakarta, Indonesia</strong>
               <span class="live-clock-wrapper">
                 <span class="pulse-dot-sm" aria-hidden="true"></span>
-                <span data-live-clock aria-label="Waktu lokal Yogyakarta">--:--:--</span> WIB (UTC+7)
+                <span data-live-clock aria-label="Waktu lokal Yogyakarta">--:--:--</span> WIB
               </span>
             </div>
           </div>
@@ -136,18 +132,8 @@ const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
               <Languages size={15} stroke-width={2} aria-hidden="true" />
             </div>
             <div>
-              <strong>Bahasa Indonesia & Inggris</strong>
-              <span>TOEC Skor 443 · TBI Business English 86%</span>
-            </div>
-          </div>
-
-          <div class="factsheet-item">
-            <div class="fact-icon-box">
-              <Users size={15} stroke-width={2} aria-hidden="true" />
-            </div>
-            <div>
-              <strong>Bendahara Umum PK IMM & Ex-Ketua Basket</strong>
-              <span>Kepemimpinan Organisasi & Tim Mahasiswa</span>
+              <strong>English & Bahasa Indonesia</strong>
+              <span>TOEC 443 · TBI Business English 86%</span>
             </div>
           </div>
         </div>
@@ -198,7 +184,6 @@ const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
               )}
             </p>
             <p class="metric-label">{m.label}</p>
-            <p class="metric-sub">{m.sub}</p>
           </div>
         );
       })}
@@ -211,14 +196,13 @@ const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
         <div class="card-head">
           <GraduationCap size={22} class="card-icon" aria-hidden="true" />
           <div>
-            <h3>Pendidikan Formal & Riset Skripsi</h3>
-            <p class="card-sub">{e.institution}</p>
+            <h3>Pendidikan & Riset Skripsi</h3>
           </div>
         </div>
         <div class="edu-body">
           <div class="degree-row">
             <span class="degree-name">{e.degree}</span>
-            <span class="period-badge">Periode {e.period}</span>
+            <span class="period-badge">{e.period}</span>
             {e.showGpa && e.gpa && <span class="gpa-pill">IPK {e.gpa} (Cumlaude)</span>}
           </div>
           {e.thesis && (
@@ -235,7 +219,7 @@ const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
             <ShieldCheck size={15} class="cert-check-icon" aria-hidden="true" />
             <div>
               <strong>Sertifikasi TIK PTIPD UIN Sunan Kalijaga</strong>
-              <span>Nilai 83,75 (Predikat Memuaskan · Word 95/A, Internet 85/B)</span>
+              <span>Word (95/A) · Excel (75/B) · PPT (80/B) · Internet (85/B)</span>
             </div>
           </div>
         </div>
@@ -246,8 +230,7 @@ const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
         <div class="card-head">
           <Award size={22} class="card-icon trophy" aria-hidden="true" />
           <div>
-            <h3>Kepemimpinan & Organisasi</h3>
-            <p class="card-sub">Dedikasi Mahasiswa, Finansial & Prestasi Olahraga</p>
+            <h3>Organisasi & Prestasi Atletik</h3>
           </div>
         </div>
         <div class="leadership-body">
@@ -259,7 +242,7 @@ const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
               </div>
               <div class="org-info">
                 <strong>Bendahara Umum (2024 - 2025)</strong>
-                <span class="org-sub">Pengelolaan anggaran kas & akuntabilitas perbendaharaan komisariat (SK: 232/A-23//XII/2025). Sebelumnya Sekretaris Medkom (2023 - 2024).</span>
+                <span class="org-sub">Pengelolaan kas, perancangan RAB, dan akuntabilitas anggaran komisariat.</span>
               </div>
             </div>
 
@@ -269,8 +252,8 @@ const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
                 <span>UKM Olahraga</span>
               </div>
               <div class="org-info">
-                <strong>Ketua Divisi Basket & Kapten Tim (2024 - 2025)</strong>
-                <span class="org-sub">Mengoordinasikan pembinaan atlet kampus dan taktik pertandingan.</span>
+                <strong>Ketua Divisi Basket & Kapten (2024 - 2025)</strong>
+                <span class="org-sub">Koordinasi tim atlet kampus, program latihan, dan taktik kejuaraan.</span>
               </div>
             </div>
           </div>

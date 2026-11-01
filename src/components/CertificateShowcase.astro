@@ -30,13 +30,9 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   {/* Sub-section: Keahlian Teknis Berdasarkan Domain */}
   <div class="skills-block">
     <div class="block-head" data-reveal="up">
-      <span class="section-kicker">
-        <Cpu size={12} aria-hidden="true" />
-        <span>Kompetensi Teruji</span>
-      </span>
       <h3 id="skill-title">Keahlian Teknis Berdasarkan Domain</h3>
       <p class="block-lead">
-        Kompetensi praktis yang teruji pada 3 proyek portofolio (ditandai dengan badge nomor proyek) dan diperkuat oleh {certs.length} sertifikasi terverifikasi.
+        Kompetensi praktis yang teruji pada proyek dan didukung oleh {certs.length} sertifikasi terverifikasi.
       </p>
     </div>
 
@@ -99,26 +95,18 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   <div class="cert-block" id="sertifikat">
     <div class="cert-head" data-reveal="up">
       <div>
-        <span class="section-kicker">
-          <ShieldCheck size={12} aria-hidden="true" />
-          <span>Kredensial Terverifikasi</span>
-        </span>
         <h3 id="sertifikat-title">Sertifikasi & Kredensial Resmi</h3>
         <p class="cert-lead">
-          <strong>{certs.length} kredensial & sertifikasi resmi terverifikasi</strong> dengan total <strong>1.400+ jam pembelajaran terstruktur</strong> (Dicoding Indonesia, Google Developers, AWS, Samsung Electronics Indonesia, DBS Foundation, TBI, dan UIN Sunan Kalijaga).
+          <strong>{certs.length} kredensial terverifikasi</strong> dengan total <strong>1.400+ jam pelatihan resmi</strong> (Dicoding, Google Developers, AWS, Samsung, DBS, TBI, UIN).
         </p>
       </div>
 
       <div class="head-actions">
-        <div class="drive-dropdown" aria-label="Tautan folder Google Drive sertifikat">
-          {driveFolders.map((f) => (
-            <a href={f.url} target="_blank" rel="noopener" class="drive-btn">
-              <Folder size={13} aria-hidden="true" />
-              <span>{f.name}</span>
-              <ExternalLink size={12} aria-hidden="true" />
-            </a>
-          ))}
-        </div>
+        <a href={driveFolders[0].url} target="_blank" rel="noopener" class="drive-btn primary-drive-btn">
+          <Folder size={14} aria-hidden="true" />
+          <span>Arsip Google Drive</span>
+          <ExternalLink size={12} aria-hidden="true" />
+        </a>
         <div class="nav-btns" aria-label="Navigasi geser sertifikat">
           <button type="button" class="nav-btn" data-cert-prev aria-label="Sertifikat sebelumnya">
             <ChevronLeft size={16} aria-hidden="true" />
@@ -161,10 +149,9 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
             <div class="cert-badges">
               {c.hours && <span class="badge badge-accent">{c.hours}</span>}
               {c.category && <span class="badge">{c.category}</span>}
-              <span class="badge badge-year">{c.year}</span>
             </div>
             <h4>{c.name}</h4>
-            <p class="issuer">{c.issuer}</p>
+            <p class="issuer">{c.issuer} · {c.year}</p>
             {c.summary && <p class="summary">{c.summary}</p>}
             <div class="cert-links">
               {isLink(c.verificationUrl) && (

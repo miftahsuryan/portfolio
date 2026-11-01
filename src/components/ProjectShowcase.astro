@@ -19,13 +19,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <div class="wrap projects-container" data-projects-showcase>
     <div class="section-head" data-reveal="up">
       <div class="head-info">
-        <span class="section-kicker">
-          <FolderGit2 size={13} stroke-width={2} aria-hidden="true" />
-          <span>Portofolio Pilihan</span>
-        </span>
         <h2 id="proyek-title">Proyek Unggulan</h2>
         <p class="section-lead">
-          3 studi kasus implementasi end-to-end: optimasi kuantitatif portofolio, sistem rekomendasi hybrid & AI generatif, serta perangkat IoT untuk tunarungu. Geser ke samping atau pilih tab untuk beralih proyek.
+          Studi kasus end-to-end: machine learning terapan, optimasi kuantitatif, dan rekayasa IoT.
         </p>
       </div>
 
@@ -86,8 +82,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
                     </div>
                   </div>
                 </header>
-
-                <p class="summary">{d.summary}</p>
 
                 <div class="gallery-wrapper">
                   <ProjectGallery

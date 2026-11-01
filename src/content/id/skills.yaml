@@ -6,12 +6,12 @@
 groups:
   - category: "Machine Learning & AI"
     items:
-      - name: "Machine Learning (Supervised & Unsupervised)"
+      - name: "Supervised & Unsupervised ML"
         projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
         evidence:
           - "Sertifikat Machine Learning Terapan (80 Jam, Dicoding)"
           - "Sertifikat Belajar Machine Learning untuk Pemula (75 Jam, Dicoding)"
-      - name: "Deep Learning (TensorFlow, Keras, PyTorch)"
+      - name: "Deep Learning (TF & PyTorch)"
         projectSlugs: ["proyek-2"]
         evidence:
           - "Sertifikat Belajar Pengembangan Machine Learning (90 Jam, Dicoding)"
@@ -20,12 +20,12 @@ groups:
         projectSlugs: ["proyek-1"]
         evidence:
           - "Skripsi S1 Optimasi Portofolio Saham IDX30 (46,49% Total Return)"
-      - name: "Sistem Rekomendasi (Hybrid CBF & CF)"
+      - name: "Hybrid Recommender System"
         projectSlugs: ["proyek-2"]
         evidence:
           - "Proyek Akhir Machine Learning Terapan (Dicoding)"
           - "Capstone WisataPas Coding Camp DBS Foundation 2025"
-      - name: "NLP, Generative AI & Speech-to-Text"
+      - name: "NLP & Speech-to-Text"
         projectSlugs: ["proyek-2", "proyek-3"]
         evidence:
           - "Fine-Tuned T5 Hugging Face Transformers"
@@ -38,28 +38,28 @@ groups:
 
   - category: "Data Science & Analisis Kuantitatif"
     items:
-      - name: "Optimasi Portofolio (Quantitative Finance)"
+      - name: "Quantitative Portfolio Optimization"
         projectSlugs: ["proyek-1"]
         evidence:
           - "Walk-Forward Optimization Saham IDX30 (2,1025 Sharpe Ratio)"
           - "Sertifikat Financial Literacy 101 (DBS Foundation & Dicoding)"
-      - name: "Data Engineering & Pipeline ETL"
+      - name: "Data Engineering & ETL"
         projectSlugs: ["proyek-2"]
         evidence:
           - "Sertifikat Belajar Fundamental Pemrosesan Data (60 Jam, Dicoding)"
-      - name: "Exploratory Data Analysis (EDA) & Data Wrangling"
+      - name: "EDA & Data Wrangling"
         projectSlugs: ["proyek-1", "proyek-2"]
         evidence:
           - "Sertifikat Belajar Analisis Data dengan Python (22 Jam, Dicoding)"
-      - name: "Pengujian Statistik Inferensial"
+      - name: "Inferential Statistics"
         projectSlugs: ["proyek-1"]
         evidence:
           - "Uji Shapiro-Wilk, Wilcoxon Signed-Rank, Paired t-test (p < 0,001)"
-      - name: "Structured Query Language (SQL) & Relational DB"
+      - name: "SQL & Relational DB"
         projectSlugs: []
         evidence:
           - "Sertifikat Belajar Dasar SQL (Dicoding)"
-      - name: "Visualisasi Data & Dashboard (Streamlit, Plotly)"
+      - name: "Streamlit & Plotly Visualization"
         projectSlugs: ["proyek-1", "proyek-2"]
         evidence:
           - "Sertifikat Belajar Dasar Visualisasi Data (Google Developers & Dicoding)"
@@ -67,30 +67,30 @@ groups:
 
   - category: "Pemrograman & Rekayasa Perangkat Lunak"
     items:
-      - name: "Python (OOP, Data Structures & Unit Testing)"
+      - name: "Python (OOP & Testing)"
         projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
         evidence:
           - "Sertifikat Memulai Pemrograman dengan Python (35 Jam, Dicoding)"
           - "Pengembangan skripsi kuantitatif, capstone DBS, dan SIC Batch 5"
-      - name: "AI-Assisted Engineering & Spec-Driven Development"
+      - name: "Spec-Driven AI Engineering"
         projectSlugs: []
         evidence:
           - "Sertifikat Spec-Driven Development dengan Kiro (AWS & Dicoding)"
-      - name: "Git & GitHub (Version Control & Kolaborasi Tim)"
+      - name: "Git & GitHub Workflow"
         projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
         evidence:
           - "Sertifikat Belajar Dasar Git dengan GitHub (Dicoding)"
           - "Repositori kode sumber di GitHub"
-      - name: "Algoritma, Logika & Computational Thinking"
+      - name: "Algorithms & Data Structures"
         projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
         evidence:
           - "Sertifikat Pengenalan ke Logika Pemrograman (Dicoding)"
           - "Implementasi algoritma genetika adaptif dan sistem IoT"
-      - name: "Dasar Pengembangan Web (JavaScript ES6, HTML5, CSS3)"
+      - name: "Web Development (JS/HTML/CSS)"
         projectSlugs: []
         evidence:
           - "Sertifikat Pengembang Software (KBJI 2512.03, Skor 100/100, Dicoding)"
-      - name: "Internet of Things (ESP32 & Embedded Systems)"
+      - name: "IoT & Embedded ESP32"
         projectSlugs: ["proyek-3"]
         evidence:
           - "Perangkat IoT Semi Finalist Samsung Innovation Campus Batch 5"

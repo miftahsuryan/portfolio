@@ -10,13 +10,9 @@ const p = getProfile();
 <section class="section" id="pencapaian" aria-labelledby="pencapaian-title">
   <div class="wrap">
     <div class="section-head" data-reveal="up">
-      <span class="section-kicker">
-        <Award size={12} aria-hidden="true" />
-        <span>Rekam Jejak Industri</span>
-      </span>
-      <h2 id="pencapaian-title">Program Pelatihan & Prestasi Nasional</h2>
+      <h2 id="pencapaian-title">Pelatihan Industri & Prestasi</h2>
       <p class="section-lead">
-        Bukti kredensial resmi hasil dari seleksi nasional dan program intensif berstandar industri.
+        Program intensif berstandar industri dan kompetisi teknologi tingkat nasional.
       </p>
     </div>
 
@@ -44,7 +40,6 @@ const p = getProfile();
             </div>
             <h3 class="program-title">{t.name}</h3>
             <p class="program-issuer">{t.issuer} · {t.period}</p>
-            {t.note && <p class="program-note">{t.note}</p>}
             
             {t.highlights && (
               <ul class="program-highlights">
@@ -102,7 +97,6 @@ const p = getProfile();
 
             {a.stages && (
               <div class="stages-box">
-                <p class="stages-heading">Tahapan Program yang Ditempuh:</p>
                 <ol class="stages-list">
                   {a.stages.map((st) => (
                     <li class="stage-item">
