@@ -19,12 +19,14 @@ const projects = defineCollection({
     stack: z.array(z.string()),
     repoUrl: z.string().nullable(),
     demoUrl: z.string().nullable(),
+    videoUrl: z.string().nullable().optional().default(null),
     coverImage: z.string().nullable(),
     coverAlt: z.string(),
     gallery: z
       .array(
         z.object({
-          image: z.string(),
+          image: z.string().optional(),
+          videoEmbedUrl: z.string().optional(),
           alt: z.string(),
           caption: z.string().optional(),
         })

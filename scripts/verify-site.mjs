@@ -45,8 +45,11 @@ for (const scheme of ['light', 'dark']) {
       const tag = `${route === '/' ? 'home' : 'cv'}-${width}-${scheme}`;
       page.on('console', (m) => m.type() === 'error' && note(`[${tag}] console error: ${m.text()}`));
       page.on('pageerror', (e) => note(`[${tag}] page error: ${e.message}`));
-      page.on('requestfailed', (r) => note(`[${tag}] request gagal: ${r.url()}`));
-      const resp = await page.goto(base + route, { waitUntil: 'networkidle' });
+      page.on('requestfailed', (r) => {
+        if (r.url().startsWith(base)) note(`[${tag}] request gagal: ${r.url()}`);
+      });
+      const resp = await page.goto(base + route, { waitUntil: 'load', timeout: 30000 });
+      await page.waitForTimeout(1000);
       if (!resp?.ok()) note(`[${tag}] status ${resp?.status()}`);
 
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);

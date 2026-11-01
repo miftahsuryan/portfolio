@@ -54,6 +54,8 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
               {isLink(d.repoUrl) && <a href={d.repoUrl}>Repositori</a>}
               {isLink(d.repoUrl) && isLink(d.demoUrl) && ' · '}
               {isLink(d.demoUrl) && <a href={d.demoUrl}>Demo</a>}
+              {(isLink(d.repoUrl) || isLink(d.demoUrl)) && isLink(d.videoUrl) && ' · '}
+              {isLink(d.videoUrl) && <a href={d.videoUrl}>Video Demo</a>}
             </p>
           </article>
         );

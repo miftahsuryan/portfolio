@@ -1,9 +1,16 @@
 ---
-import { ArrowUpRight } from '@lucide/astro';
+import { ArrowUpRight, ChevronDown } from '@lucide/astro';
+import { render } from 'astro:content';
 import ProjectGallery from './ProjectGallery.astro';
 import { getProjects, statusLabel, isLink } from '../lib/content';
 
-const projects = await getProjects();
+const rawProjects = await getProjects();
+const projects = await Promise.all(
+  rawProjects.map(async (proj) => {
+    const { Content } = await render(proj);
+    return { proj, Content };
+  })
+);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
@@ -13,7 +20,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <h2 id="proyek-title">Proyek</h2>
     </div>
     <ol class="list">
-      {projects.map((proj, i) => {
+      {projects.map(({ proj, Content }, i) => {
         const d = proj.data;
         return (
           <li class="project" id={proj.id}>
@@ -42,12 +49,26 @@ const pad = (n: number) => String(n).padStart(2, '0');
             <p class="stack"><span class="label">Stack</span> {d.stack.join(' · ')}</p>
             <p class="links">
               {isLink(d.repoUrl)
-                ? <a href={d.repoUrl} rel="noopener">Repositori<ArrowUpRight size={16} aria-hidden="true" /></a>
+                ? <a href={d.repoUrl} target="_blank" rel="noopener">Repositori<ArrowUpRight size={16} aria-hidden="true" /></a>
                 : <span class="muted">Repositori: {d.repoUrl ?? 'privat'}</span>}
               {isLink(d.demoUrl)
-                ? <a href={d.demoUrl} rel="noopener">Demo<ArrowUpRight size={16} aria-hidden="true" /></a>
+                ? <a href={d.demoUrl} target="_blank" rel="noopener">Demo<ArrowUpRight size={16} aria-hidden="true" /></a>
                 : <span class="muted">Demo: belum tersedia publik</span>}
+              {isLink(d.videoUrl) && (
+                <a href={d.videoUrl} target="_blank" rel="noopener">Video Demo<ArrowUpRight size={16} aria-hidden="true" /></a>
+              )}
             </p>
+            {proj.body && proj.body.trim().length > 0 && (
+              <details class="case-study">
+                <summary>
+                  <span>Baca Dokumentasi Teknis & Studi Kasus Lengkap</span>
+                  <ChevronDown size={18} class="chevron" aria-hidden="true" />
+                </summary>
+                <div class="prose">
+                  <Content />
+                </div>
+              </details>
+            )}
           </li>
         );
       })}
@@ -90,6 +111,85 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); font-weight: 600; }
   .links a { display: inline-flex; align-items: center; gap: var(--space-1); padding-block: var(--space-2); }
   .muted { color: var(--text-2); font-weight: 400; font-size: var(--step--1); padding-block: var(--space-2); }
+
+  .case-study {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    overflow: hidden;
+    margin-top: var(--space-2);
+  }
+  .case-study summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.15s;
+  }
+  .case-study summary:hover {
+    background: var(--bg);
+  }
+  .case-study summary :global(.chevron) {
+    transition: transform 0.2s ease;
+    color: var(--text-2);
+  }
+  .case-study[open] summary :global(.chevron) {
+    transform: rotate(180deg);
+  }
+  .case-study .prose {
+    padding: var(--space-4);
+    border-top: 1px solid var(--line);
+    font-size: var(--step--1);
+    line-height: 1.65;
+  }
+  .case-study .prose :global(h2) {
+    font-size: var(--step-0);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-2);
+    font-family: var(--font-heading);
+    color: var(--text);
+  }
+  .case-study .prose :global(h3) {
+    font-size: var(--step--1);
+    font-weight: 700;
+    margin-top: var(--space-3);
+    margin-bottom: var(--space-2);
+    color: var(--text);
+  }
+  .case-study .prose :global(p) {
+    margin-bottom: var(--space-3);
+  }
+  .case-study .prose :global(ul),
+  .case-study .prose :global(ol) {
+    margin-bottom: var(--space-3);
+    padding-left: 1.5rem;
+  }
+  .case-study .prose :global(li) {
+    margin-bottom: var(--space-1);
+  }
+  .case-study .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--space-4);
+    font-size: var(--step--2);
+    display: block;
+    overflow-x: auto;
+  }
+  .case-study .prose :global(th),
+  .case-study .prose :global(td) {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    text-align: left;
+  }
+  .case-study .prose :global(th) {
+    background: var(--bg);
+    font-weight: 700;
+  }
 
   @media (min-width: 48rem) {
     dl { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }

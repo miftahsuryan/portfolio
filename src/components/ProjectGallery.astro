@@ -1,11 +1,16 @@
 ---
-import { ChevronLeft, ChevronRight } from '@lucide/astro';
+import { ChevronLeft, ChevronRight, Play } from '@lucide/astro';
 import ImageSlot from './ImageSlot.astro';
 
 interface Props {
   coverImage: string | null;
   coverAlt: string;
-  gallery?: { image: string; alt: string; caption?: string }[];
+  gallery?: {
+    image?: string;
+    videoEmbedUrl?: string;
+    alt: string;
+    caption?: string;
+  }[];
   projectId: string;
 }
 
@@ -25,14 +30,26 @@ const hasMultiple = items.length > 1;
   />
 ) : !hasMultiple ? (
   <figure class="single">
-    <ImageSlot
-      path={items[0].image}
-      alt={items[0].alt}
-      label={`screenshot proyek ${projectId}`}
-      ratio="16 / 9"
-      widths={[480, 800, 1200]}
-      sizes="(min-width: 60rem) 56rem, 100vw"
-    />
+    {items[0].videoEmbedUrl ? (
+      <div class="video-container">
+        <iframe
+          src={items[0].videoEmbedUrl}
+          title={items[0].alt}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+      </div>
+    ) : (
+      <ImageSlot
+        path={items[0].image ?? null}
+        alt={items[0].alt}
+        label={`screenshot proyek ${projectId}`}
+        ratio="16 / 9"
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 60rem) 56rem, 100vw"
+      />
+    )}
     {items[0].caption && <figcaption class="caption">{items[0].caption}</figcaption>}
   </figure>
 ) : (
@@ -40,7 +57,7 @@ const hasMultiple = items.length > 1;
     <div class="gallery-bar">
       <p class="hint">
         <span class="dot" aria-hidden="true"></span>
-        Geser ke kanan untuk melihat {items.length} gambar & diagram
+        Geser ke kanan untuk melihat {items.length} visual, diagram & demo video
       </p>
       <div class="nav-btns" aria-label="Navigasi geser gambar">
         <button type="button" class="nav-btn" data-prev aria-label="Lihat gambar sebelumnya">
@@ -51,17 +68,29 @@ const hasMultiple = items.length > 1;
         </button>
       </div>
     </div>
-    <div class="track" data-track tabindex="0" role="region" aria-label="Daftar gambar proyek">
+    <div class="track" data-track tabindex="0" role="region" aria-label="Daftar gambar dan video proyek">
       {items.map((item, index) => (
         <figure class="slide">
-          <ImageSlot
-            path={item.image}
-            alt={item.alt}
-            label={`Gambar ${index + 1}`}
-            ratio="16 / 9"
-            widths={[480, 800, 1200]}
-            sizes="(min-width: 60rem) 56rem, 100vw"
-          />
+          {item.videoEmbedUrl ? (
+            <div class="video-container">
+              <iframe
+                src={item.videoEmbedUrl}
+                title={item.alt}
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+          ) : (
+            <ImageSlot
+              path={item.image ?? null}
+              alt={item.alt}
+              label={`Gambar ${index + 1}`}
+              ratio="16 / 9"
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 60rem) 56rem, 100vw"
+            />
+          )}
           {item.caption && (
             <figcaption class="caption">
               <span class="num">{index + 1}/{items.length}</span> {item.caption}
@@ -137,6 +166,20 @@ const hasMultiple = items.length > 1;
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
+  }
+  .video-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #000;
+  }
+  .video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
   }
   .caption {
     font-size: var(--step--1);
