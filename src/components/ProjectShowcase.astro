@@ -1,7 +1,8 @@
 ---
-import { ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, Sparkles } from '@lucide/astro';
+import { ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, FolderGit2 } from '@lucide/astro';
 import { render } from 'astro:content';
 import ProjectGallery from './ProjectGallery.astro';
+import TechIcon from './TechIcon.astro';
 import { getProjects, statusLabel, isLink } from '../lib/content';
 
 const rawProjects = await getProjects();
@@ -19,7 +20,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <div class="section-head" data-reveal="up">
       <div class="head-info">
         <span class="section-kicker">
-          <Sparkles size={12} aria-hidden="true" />
+          <FolderGit2 size={13} stroke-width={2} aria-hidden="true" />
           <span>Portofolio Pilihan</span>
         </span>
         <h2 id="proyek-title">Proyek Unggulan</h2>
@@ -116,7 +117,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
                   <span class="stack-label">Stack</span>
                   <div class="stack-tags">
                     {d.stack.map((item) => (
-                      <span class="stack-tag">{item}</span>
+                      <span class="stack-tag">
+                        <TechIcon name={item} size={13} />
+                        <span>{item}</span>
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -453,13 +457,21 @@ const pad = (n: number) => String(n).padStart(2, '0');
     gap: 0.35rem;
   }
   .stack-tag {
-    padding: 0.15rem 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.55rem;
     border-radius: var(--radius);
     border: 1px solid var(--line);
     background: var(--bg);
     font-size: var(--step--2);
     font-weight: 500;
     color: var(--text-2);
+    transition: all 0.15s ease;
+  }
+  .stack-tag:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+    color: var(--text);
   }
 
   .links-row {

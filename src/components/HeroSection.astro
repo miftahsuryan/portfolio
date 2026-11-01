@@ -4,14 +4,18 @@ import {
   Mail,
   GraduationCap,
   Trophy,
+  Medal,
   ArrowRight,
   ArrowUpRight,
-  Sparkles,
   MapPin,
   Languages,
   Users,
   Award,
   ShieldCheck,
+  Clock,
+  Layers,
+  Landmark,
+  Activity,
 } from '@lucide/astro';
 import ImageSlot from './ImageSlot.astro';
 import { getProfile, isLink } from '../lib/content';
@@ -32,6 +36,8 @@ const metrics = [
   { value: 'Semi Finalist', label: 'Samsung Innovation Campus', sub: 'Tingkat Nasional (Batch 5)' },
   { value: '22+ Kredensial', label: 'Sertifikasi Terverifikasi', sub: '1.400+ Jam Pelatihan Resmi' },
 ];
+
+const metricIcons = [GraduationCap, Clock, Trophy, ShieldCheck];
 ---
 
 <section class="hero-bento" id="tentang" aria-labelledby="hero-title">
@@ -58,7 +64,7 @@ const metrics = [
 
         <div class="competencies-block" aria-label="Pilar Kompetensi Inti">
           <span class="block-kicker">
-            <Sparkles size={12} aria-hidden="true" />
+            <Layers size={13} stroke-width={2} aria-hidden="true" />
             <span>Pilar Kompetensi Utama</span>
           </span>
           <div class="focus-pills">
@@ -103,7 +109,9 @@ const metrics = [
 
         <div class="factsheet-list" aria-label="Snapshot Fakta Profil">
           <div class="factsheet-item">
-            <GraduationCap size={16} class="fact-icon" aria-hidden="true" />
+            <div class="fact-icon-box">
+              <GraduationCap size={15} stroke-width={2} aria-hidden="true" />
+            </div>
             <div>
               <strong>S1 Informatika (IPK 3.77 · Cumlaude)</strong>
               <span>UIN Sunan Kalijaga Yogyakarta</span>
@@ -111,7 +119,9 @@ const metrics = [
           </div>
 
           <div class="factsheet-item">
-            <MapPin size={16} class="fact-icon" aria-hidden="true" />
+            <div class="fact-icon-box">
+              <MapPin size={15} stroke-width={2} aria-hidden="true" />
+            </div>
             <div>
               <strong>D.I. Yogyakarta, Indonesia</strong>
               <span class="live-clock-wrapper">
@@ -122,7 +132,9 @@ const metrics = [
           </div>
 
           <div class="factsheet-item">
-            <Languages size={16} class="fact-icon" aria-hidden="true" />
+            <div class="fact-icon-box">
+              <Languages size={15} stroke-width={2} aria-hidden="true" />
+            </div>
             <div>
               <strong>Bahasa Indonesia & Inggris</strong>
               <span>TOEC Skor 443 · TBI Business English 86%</span>
@@ -130,7 +142,9 @@ const metrics = [
           </div>
 
           <div class="factsheet-item">
-            <Users size={16} class="fact-icon" aria-hidden="true" />
+            <div class="fact-icon-box">
+              <Users size={15} stroke-width={2} aria-hidden="true" />
+            </div>
             <div>
               <strong>Bendahara Umum PK IMM & Ex-Ketua Basket</strong>
               <span>Kepemimpinan Organisasi & Tim Mahasiswa</span>
@@ -158,6 +172,7 @@ const metrics = [
     {/* Row 2: 4 Impact Metrics Strip with Animated Counters */}
     <div class="metrics-grid" aria-label="Statistik Pencapaian Utama">
       {metrics.map((m, i) => {
+        const MetricIcon = metricIcons[i] ?? Award;
         let countVal: string | undefined;
         let suffix = '';
         if (m.value.startsWith('3.77')) {
@@ -172,6 +187,9 @@ const metrics = [
         }
         return (
           <div class="metric-card" data-reveal="up" data-reveal-delay={String(i + 1)} data-spotlight>
+            <div class="metric-header-row">
+              <MetricIcon size={16} stroke-width={1.8} class="metric-corner-icon" aria-hidden="true" />
+            </div>
             <p class="metric-value">
               {countVal ? (
                 <><span data-count-to={countVal}>{countVal}</span>{suffix}</>
@@ -235,7 +253,10 @@ const metrics = [
         <div class="leadership-body">
           <div class="org-track">
             <div class="org-item">
-              <div class="org-badge">🏛️ IMM Saintek</div>
+              <div class="org-badge org-badge-imm">
+                <Landmark size={14} stroke-width={2} aria-hidden="true" />
+                <span>IMM Saintek</span>
+              </div>
               <div class="org-info">
                 <strong>Bendahara Umum (2024 - 2025)</strong>
                 <span class="org-sub">Pengelolaan anggaran kas & akuntabilitas perbendaharaan komisariat (SK: 232/A-23//XII/2025). Sebelumnya Sekretaris Medkom (2023 - 2024).</span>
@@ -243,7 +264,10 @@ const metrics = [
             </div>
 
             <div class="org-item">
-              <div class="org-badge">🏀 UKM Olahraga</div>
+              <div class="org-badge org-badge-sports">
+                <Activity size={14} stroke-width={2} aria-hidden="true" />
+                <span>UKM Olahraga</span>
+              </div>
               <div class="org-info">
                 <strong>Ketua Divisi Basket & Kapten Tim (2024 - 2025)</strong>
                 <span class="org-sub">Mengoordinasikan pembinaan atlet kampus dan taktik pertandingan.</span>
@@ -253,21 +277,30 @@ const metrics = [
 
           <ul class="achievements-list">
             <li class="achievement-item gold">
-              <span class="medal-tag">🥇 Juara 1</span>
+              <span class="medal-tag medal-gold">
+                <Trophy size={13} stroke-width={2} aria-hidden="true" />
+                <span>Juara 1 · Emas</span>
+              </span>
               <div>
                 <strong>Pekan Olahraga Kampus UIN Sunan Kalijaga (2025)</strong>
                 <span class="item-detail">Kapten & Pemain Inti Tim Basket Putra</span>
               </div>
             </li>
             <li class="achievement-item bronze">
-              <span class="medal-tag">🥉 Juara 3</span>
+              <span class="medal-tag medal-bronze">
+                <Medal size={13} stroke-width={2} aria-hidden="true" />
+                <span>Juara 3 · Perunggu</span>
+              </span>
               <div>
                 <strong>Lomba Basket 3x3 FeArstyc UNY se-DIY (2024)</strong>
                 <span class="item-detail">Turnamen Regional Mahasiswa FEB UNY</span>
               </div>
             </li>
             <li class="achievement-item navy">
-              <span class="medal-tag">🤝 Panitia</span>
+              <span class="medal-tag medal-slate">
+                <Users size={13} stroke-width={2} aria-hidden="true" />
+                <span>Panitia Cabor</span>
+              </span>
               <div>
                 <strong>Kalijaga Talent Competition (KTC 2024)</strong>
                 <span class="item-detail">Panitia Cabang Olahraga Rektorat UIN Sunan Kalijaga</span>
@@ -480,7 +513,7 @@ const metrics = [
   }
   .factsheet-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--space-2);
     padding: 0.35rem 0.55rem;
     border-radius: var(--radius);
@@ -489,10 +522,17 @@ const metrics = [
     font-size: var(--step--2);
     line-height: 1.35;
   }
-  .fact-icon {
+  .fact-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--accent) 10%, var(--bg-2));
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
     color: var(--accent);
     flex-shrink: 0;
-    margin-top: 0.15rem;
   }
   .factsheet-item strong {
     display: block;
@@ -569,6 +609,16 @@ const metrics = [
     gap: 0.25rem;
     box-shadow: var(--card-shadow);
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .metric-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.15rem;
+  }
+  .metric-corner-icon {
+    color: var(--accent);
+    opacity: 0.85;
   }
   .metric-card:hover {
     border-color: var(--text-2);
@@ -741,10 +791,20 @@ const metrics = [
     gap: 0.2rem;
   }
   .org-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     font-size: var(--step--2);
     font-weight: 700;
     color: var(--accent);
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .org-badge-imm {
+    color: var(--accent);
+  }
+  .org-badge-sports {
+    color: #f59e0b;
   }
   .org-info strong {
     font-size: var(--step--1);
@@ -768,7 +828,7 @@ const metrics = [
   .achievement-item {
     display: flex;
     gap: var(--space-2);
-    align-items: flex-start;
+    align-items: center;
     padding: 0.35rem 0.55rem;
     border: 1px solid var(--line);
     border-radius: var(--radius);
@@ -776,19 +836,41 @@ const metrics = [
     font-size: var(--step--1);
   }
   .achievement-item.gold {
-    border-left: 3px solid #d97706;
+    border-left: 3px solid #f59e0b;
   }
   .achievement-item.bronze {
-    border-left: 3px solid #b45309;
+    border-left: 3px solid #d97706;
   }
   .achievement-item.navy {
     border-left: 3px solid var(--accent);
   }
   .medal-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
     font-weight: 700;
-    font-size: var(--step--2);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
     white-space: nowrap;
-    color: var(--text);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .medal-gold {
+    background: color-mix(in srgb, #f59e0b 14%, transparent);
+    border: 1px solid color-mix(in srgb, #f59e0b 35%, transparent);
+    color: #fbbf24;
+  }
+  .medal-bronze {
+    background: color-mix(in srgb, #d97706 14%, transparent);
+    border: 1px solid color-mix(in srgb, #d97706 35%, transparent);
+    color: #f59e0b;
+  }
+  .medal-slate {
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    color: var(--accent);
   }
   .achievement-item strong {
     font-size: var(--step--2);

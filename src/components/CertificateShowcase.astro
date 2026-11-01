@@ -1,6 +1,7 @@
 ---
 import { ArrowUpRight, ChevronLeft, ChevronRight, Award, ExternalLink, Folder, Cpu, Database, Code, ShieldCheck } from '@lucide/astro';
 import ImageSlot from './ImageSlot.astro';
+import TechIcon from './TechIcon.astro';
 import { getProfile, getSkillGroups, getProjects, isLink } from '../lib/content';
 
 const p = getProfile();
@@ -59,6 +60,7 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
             <ul class="skills-chips">
               {g.items.map((it) => (
                 <li class="skill-chip">
+                  <TechIcon name={it.name} size={13} />
                   <span class="skill-name">{it.name}</span>
                   {it.projectSlugs.length > 0 && (
                     <span class="chip-projects" aria-label={`Dipakai di proyek`}>
