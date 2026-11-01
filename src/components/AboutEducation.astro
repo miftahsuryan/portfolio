@@ -1,368 +1,183 @@
 ---
-import { Trophy, ExternalLink, CircleCheck, GraduationCap } from '@lucide/astro';
+import { ExternalLink, CircleCheck, Award } from '@lucide/astro';
 import CertificateShowcase from './CertificateShowcase.astro';
 import ImageSlot from './ImageSlot.astro';
 import { getProfile, isLink } from '../lib/content';
 
 const p = getProfile();
-const e = p.education;
 ---
 
-<section class="section" id="tentang" aria-labelledby="tentang-title">
+<section class="section" id="pencapaian" aria-labelledby="pencapaian-title">
   <div class="wrap">
-    <div class="grid">
-      <div class="bio-col">
-        <div class="section-head">
-          <h2 id="tentang-title">Tentang saya</h2>
-        </div>
-        <p class="about-p">{p.about}</p>
-
-        <div class="edu-card">
-          <div class="card-header">
-            <GraduationCap size={22} class="header-icon" aria-hidden="true" />
-            <div>
-              <h3>Pendidikan Formal</h3>
-              <p class="strong">{e.institution}</p>
-            </div>
-          </div>
-          <div class="edu-details">
-            <p class="edu-degree">{e.degree} · <span class="muted">{e.period}</span></p>
-            {e.showGpa && e.gpa && (
-              <p class="gpa-badge">
-                <span class="badge badge-accent">IPK {e.gpa}</span>
-                <span class="badge-sub">Predikat Pujian / Cumlaude</span>
-              </p>
-            )}
-            {e.thesis && (
-              <p class="thesis">
-                <span class="thesis-label">Tugas Akhir:</span>
-                <span class="thesis-title">{e.thesis}</span>
-              </p>
-            )}
-          </div>
-        </div>
+    <div class="section-head">
+      <div class="title-row">
+        <Award size={24} class="section-icon" aria-hidden="true" />
+        <h2 id="pencapaian-title">Program Pelatihan & Prestasi Nasional</h2>
       </div>
-
-      <div class="side-col">
-        <div class="leadership-card">
-          <div class="card-header">
-            <Trophy size={22} class="header-icon trophy" aria-hidden="true" />
-            <div>
-              <h3>Kepemimpinan & Organisasi</h3>
-              <p class="strong">Divisi Basket UKM Olahraga UIN Sunan Kalijaga</p>
-            </div>
-          </div>
-          <p class="role-meta">Ketua Divisi Basket & Pemain Inti · 2024 - 2025</p>
-          <p class="card-desc">
-            Memimpin divisi basket kampus, mengoordinasikan jadwal latihan terstruktur, membina regenerasi atlet mahasiswa, dan memimpin strategi kompetisi antar-fakultas serta turnamen regional se-DIY.
-          </p>
-          <ul class="trophy-list">
-            <li class="trophy-badge gold">
-              <span class="trophy-medal">🥇 Juara 1</span>
-              <div>
-                <strong>Pekan Olahraga Kampus UIN Sunan Kalijaga (2025)</strong>
-                <span class="trophy-desc">Ketua Divisi & Kapten Tim Basket Putra</span>
-              </div>
-            </li>
-            <li class="trophy-badge bronze">
-              <span class="trophy-medal">🥉 Juara 3</span>
-              <div>
-                <strong>Lomba Basket 3x3 FeArstyc (2024)</strong>
-                <span class="trophy-desc">Kejuaraan Bola Basket 3x3 Antarmahasiswa se-Daerah Istimewa Yogyakarta</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <p class="section-lead">
+        Bukti kredensial resmi hasil dari seleksi nasional dan program intensif berstandar industri.
+      </p>
     </div>
 
-    {/* Section: Pelatihan Intensif & Prestasi Terpilih */}
-    <div class="featured-programs">
-      <div class="programs-head">
-        <h3>Pelatihan Intensif & Prestasi Nasional</h3>
-        <p class="programs-lead">
-          Bukti sertifikasi resmi hasil dari seleksi nasional dan pelatihan intensif berstandar industri.
-        </p>
-      </div>
-
-      <div class="programs-grid">
-        {/* Card 1: DBS Foundation Coding Camp */}
-        {p.training.map((t) => (
-          <article class="program-card">
-            {t.image && (
-              <div class="program-thumb">
-                <ImageSlot
-                  path={t.image}
-                  alt={`Sertifikat ${t.name}`}
-                  label={t.name}
-                  ratio="1.414 / 1"
-                  widths={[360, 600]}
-                  sizes="(min-width: 48rem) 28rem, 90vw"
-                />
-              </div>
+    <div class="programs-grid">
+      {/* Card 1: DBS Foundation Coding Camp */}
+      {p.training.map((t) => (
+        <article class="program-card">
+          {t.image && (
+            <div class="program-thumb">
+              <ImageSlot
+                path={t.image}
+                alt={`Sertifikat ${t.name}`}
+                label={t.name}
+                ratio="1.414 / 1"
+                widths={[360, 600]}
+                sizes="(min-width: 48rem) 28rem, 90vw"
+              />
+            </div>
+          )}
+          <div class="program-body">
+            <div class="badge-row">
+              {t.grade && <span class="badge badge-accent">{t.grade}</span>}
+              {t.hours && <span class="badge">{t.hours}</span>}
+              {t.specialization && <span class="badge badge-outline">{t.specialization}</span>}
+            </div>
+            <h3 class="program-title">{t.name}</h3>
+            <p class="program-issuer">{t.issuer} · {t.period}</p>
+            {t.note && <p class="program-note">{t.note}</p>}
+            
+            {t.highlights && (
+              <ul class="program-highlights">
+                {t.highlights.map((h) => (
+                  <li>
+                    <CircleCheck size={14} class="check-icon" aria-hidden="true" />
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
             )}
-            <div class="program-body">
-              <div class="badge-row">
-                {t.grade && <span class="badge badge-accent">{t.grade}</span>}
-                {t.hours && <span class="badge">{t.hours}</span>}
-                {t.specialization && <span class="badge badge-outline">{t.specialization}</span>}
-              </div>
-              <h4 class="program-title">{t.name}</h4>
-              <p class="program-issuer">{t.issuer} · {t.period}</p>
-              {t.note && <p class="program-note">{t.note}</p>}
-              
-              {t.highlights && (
-                <ul class="program-highlights">
-                  {t.highlights.map((h) => (
-                    <li>
-                      <CircleCheck size={14} class="check-icon" aria-hidden="true" />
-                      <span>{h}</span>
+
+            <div class="card-links">
+              {isLink(t.driveUrl) && (
+                <a href={t.driveUrl} target="_blank" rel="noopener" class="card-link primary">
+                  <span>Sertifikat Kelulusan (PDF)</span>
+                  <ExternalLink size={13} aria-hidden="true" />
+                </a>
+              )}
+              {isLink(t.folderUrl) && (
+                <a href={t.folderUrl} target="_blank" rel="noopener" class="card-link">
+                  <span>Folder Drive DBS</span>
+                  <ExternalLink size={13} aria-hidden="true" />
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+
+      {/* Card 2: Samsung Innovation Campus Batch 5 */}
+      {p.achievements.filter(a => a.stages).map((a) => (
+        <article class="program-card">
+          {a.image && (
+            <div class="program-thumb">
+              <ImageSlot
+                path={a.image}
+                alt={`Sertifikat ${a.title}`}
+                label={a.title}
+                ratio="1.414 / 1"
+                widths={[360, 600]}
+                sizes="(min-width: 48rem) 28rem, 90vw"
+              />
+            </div>
+          )}
+          <div class="program-body">
+            <div class="badge-row">
+              <span class="badge badge-accent">Semi Finalist Nasional</span>
+              <span class="badge">{a.year}</span>
+              <span class="badge badge-outline">IoT & AI Track</span>
+            </div>
+            <h3 class="program-title">{a.title}</h3>
+            {a.issuer && <p class="program-issuer">{a.issuer}</p>}
+            {a.note && <p class="program-note">{a.note}</p>}
+
+            {a.stages && (
+              <div class="stages-box">
+                <p class="stages-heading">Tahapan Program yang Ditempuh:</p>
+                <ol class="stages-list">
+                  {a.stages.map((st) => (
+                    <li class="stage-item">
+                      <span class="stage-dot" aria-hidden="true"></span>
+                      <div class="stage-info">
+                        <span class="stage-name">{st.name}</span>
+                        <span class="stage-period">{st.period}</span>
+                      </div>
                     </li>
                   ))}
-                </ul>
-              )}
-
-              <div class="card-links">
-                {isLink(t.driveUrl) && (
-                  <a href={t.driveUrl} target="_blank" rel="noopener" class="card-link primary">
-                    <span>Sertifikat Kelulusan (PDF)</span>
-                    <ExternalLink size={13} aria-hidden="true" />
-                  </a>
-                )}
-                {isLink(t.folderUrl) && (
-                  <a href={t.folderUrl} target="_blank" rel="noopener" class="card-link">
-                    <span>Folder Drive DBS</span>
-                    <ExternalLink size={13} aria-hidden="true" />
-                  </a>
-                )}
-              </div>
-            </div>
-          </article>
-        ))}
-
-        {/* Card 2: Samsung Innovation Campus Batch 5 */}
-        {p.achievements.filter(a => a.stages).map((a) => (
-          <article class="program-card">
-            {a.image && (
-              <div class="program-thumb">
-                <ImageSlot
-                  path={a.image}
-                  alt={`Sertifikat ${a.title}`}
-                  label={a.title}
-                  ratio="1.414 / 1"
-                  widths={[360, 600]}
-                  sizes="(min-width: 48rem) 28rem, 90vw"
-                />
+                </ol>
               </div>
             )}
-            <div class="program-body">
-              <div class="badge-row">
-                <span class="badge badge-accent">Semi Finalist Nasional</span>
-                <span class="badge">{a.year}</span>
-                <span class="badge badge-outline">IoT & AI Track</span>
-              </div>
-              <h4 class="program-title">{a.title}</h4>
-              {a.issuer && <p class="program-issuer">{a.issuer}</p>}
-              {a.note && <p class="program-note">{a.note}</p>}
 
-              {a.stages && (
-                <div class="stages-box">
-                  <p class="stages-heading">Tahapan Program yang Ditempuh:</p>
-                  <ol class="stages-list">
-                    {a.stages.map((st) => (
-                      <li class="stage-item">
-                        <span class="stage-dot" aria-hidden="true"></span>
-                        <div class="stage-info">
-                          <span class="stage-name">{st.name}</span>
-                          <span class="stage-period">{st.period}</span>
-                        </div>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
+            <div class="card-links">
+              {isLink(a.driveUrl) && (
+                <a href={a.driveUrl} target="_blank" rel="noopener" class="card-link primary">
+                  <span>Sertifikat Semi Finalis (PDF)</span>
+                  <ExternalLink size={13} aria-hidden="true" />
+                </a>
               )}
-
-              <div class="card-links">
-                {isLink(a.driveUrl) && (
-                  <a href={a.driveUrl} target="_blank" rel="noopener" class="card-link primary">
-                    <span>Sertifikat Semi Finalis (PDF)</span>
-                    <ExternalLink size={13} aria-hidden="true" />
-                  </a>
-                )}
-                {isLink(a.folderUrl) && (
-                  <a href={a.folderUrl} target="_blank" rel="noopener" class="card-link">
-                    <span>Folder Drive SIC</span>
-                    <ExternalLink size={13} aria-hidden="true" />
-                  </a>
-                )}
-              </div>
+              {isLink(a.folderUrl) && (
+                <a href={a.folderUrl} target="_blank" rel="noopener" class="card-link">
+                  <span>Folder Drive SIC</span>
+                  <ExternalLink size={13} aria-hidden="true" />
+                </a>
+              )}
             </div>
-          </article>
-        ))}
-      </div>
+          </div>
+        </article>
+      ))}
     </div>
 
+    {/* Unified Skill Domain Cards & Verified Certificate Carousel */}
     <CertificateShowcase />
   </div>
 </section>
 
 <style>
-  .grid {
-    display: grid;
-    gap: var(--space-6);
-    min-width: 0;
-  }
-  .bio-col, .side-col {
+  .section-head {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
-    min-width: 0;
+    gap: var(--space-1);
+    margin-bottom: var(--space-5);
   }
-  .about-p {
-    line-height: 1.7;
-    color: var(--text);
-  }
-
-  .edu-card, .leadership-card {
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--bg-2);
-    padding: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    min-width: 0;
-  }
-
-  .card-header {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-3);
-  }
-  .card-header h3 {
-    margin: 0;
-    font-size: var(--step-0);
-    font-family: var(--font-heading);
-  }
-  .header-icon {
-    color: var(--accent);
-    flex-shrink: 0;
-    margin-top: 0.15rem;
-  }
-  .header-icon.trophy {
-    color: #d97706;
-  }
-
-  .strong { font-weight: 600; color: var(--text); }
-  .muted { color: var(--text-2); font-size: var(--step--1); }
-  .role-meta {
-    font-size: var(--step--1);
-    color: var(--accent);
-    font-weight: 600;
-  }
-  .card-desc {
-    font-size: var(--step--1);
-    color: var(--text-2);
-    line-height: 1.55;
-  }
-
-  .edu-details {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    font-size: var(--step--1);
-  }
-  .gpa-badge {
+  .title-row {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    flex-wrap: wrap;
   }
-  .badge-sub {
-    font-size: var(--step--2);
-    color: var(--text-2);
-    font-weight: 500;
-  }
-  .thesis {
-    margin-top: var(--space-1);
-    padding: var(--space-2);
-    background: var(--bg);
-    border-radius: var(--radius);
-    border-left: 3px solid var(--accent);
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-  }
-  .thesis-label {
-    font-size: var(--step--2);
-    font-weight: 600;
+  .section-icon {
     color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    flex-shrink: 0;
   }
-  .thesis-title {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  .trophy-list {
-    display: grid;
-    gap: var(--space-2);
-  }
-  .trophy-badge {
-    display: flex;
-    gap: var(--space-3);
-    align-items: flex-start;
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--bg);
-    font-size: var(--step--1);
-  }
-  .trophy-badge.gold {
-    border-left: 3px solid #d97706;
-  }
-  .trophy-badge.bronze {
-    border-left: 3px solid #b45309;
-  }
-  .trophy-medal {
-    font-weight: 700;
-    font-size: var(--step--1);
-    white-space: nowrap;
-    color: var(--text);
-  }
-  .trophy-desc {
-    display: block;
-    font-size: var(--step--2);
-    color: var(--text-2);
-    margin-top: 0.1rem;
-  }
-
-  /* Featured Programs */
-  .featured-programs {
-    margin-top: var(--space-6);
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    min-width: 0;
-  }
-  .programs-head h3 {
+  .section-head h2 {
     margin: 0;
-    font-size: var(--step-1);
-    font-family: var(--font-heading);
+    font-size: var(--step-2);
   }
-  .programs-lead {
+  .section-lead {
     color: var(--text-2);
     font-size: var(--step--1);
-    margin-top: var(--space-1);
+    margin: 0;
+    max-width: var(--measure);
+    line-height: 1.55;
   }
+
   .programs-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-5);
     min-width: 0;
+  }
+  @media (min-width: 48rem) {
+    .programs-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .program-card {
@@ -438,6 +253,8 @@ const e = p.education;
     gap: var(--space-1);
     margin-top: var(--space-1);
     font-size: var(--step--1);
+    padding: 0;
+    list-style: none;
   }
   .program-highlights li {
     display: flex;
@@ -470,6 +287,8 @@ const e = p.education;
   .stages-list {
     display: grid;
     gap: var(--space-2);
+    padding: 0;
+    list-style: none;
   }
   .stage-item {
     display: flex;
@@ -528,15 +347,5 @@ const e = p.education;
   .card-link.primary {
     color: var(--accent);
     border-color: var(--accent);
-  }
-
-  @media (min-width: 48rem) {
-    .grid {
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-      gap: var(--space-7);
-    }
-    .programs-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
 </style>
