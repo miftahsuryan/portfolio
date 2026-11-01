@@ -6,48 +6,91 @@
 groups:
   - category: "Machine Learning & AI"
     items:
-      - name: "Machine Learning"
+      - name: "Machine Learning (Supervised & Unsupervised)"
         projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
-        evidence: ["Sertifikat Machine Learning Terapan, Dicoding"]
+        evidence:
+          - "Sertifikat Machine Learning Terapan (80 Jam, Dicoding)"
+          - "Sertifikat Belajar Machine Learning untuk Pemula (75 Jam, Dicoding)"
       - name: "Deep Learning (TensorFlow, Keras, PyTorch)"
         projectSlugs: ["proyek-2"]
-        evidence: ["Model RecommenderNet & Fine-Tuning T5 WisataPas", "Sertifikat Fundamental Deep Learning, Dicoding"]
+        evidence:
+          - "Sertifikat Belajar Pengembangan Machine Learning (90 Jam, Dicoding)"
+          - "Model RecommenderNet & Fine-Tuning T5 pada WisataPas"
       - name: "Adaptive Genetic Algorithm (AGA)"
         projectSlugs: ["proyek-1"]
-        evidence: ["Skripsi Optimasi Portofolio Saham IDX30"]
+        evidence:
+          - "Skripsi S1 Optimasi Portofolio Saham IDX30 (46,49% Total Return)"
       - name: "Sistem Rekomendasi (Hybrid CBF & CF)"
         projectSlugs: ["proyek-2"]
-        evidence: ["Capstone WisataPas Coding Camp DBS Foundation 2025"]
-      - name: "Speech-to-Text & NLP"
+        evidence:
+          - "Proyek Akhir Machine Learning Terapan (Dicoding)"
+          - "Capstone WisataPas Coding Camp DBS Foundation 2025"
+      - name: "NLP, Generative AI & Speech-to-Text"
         projectSlugs: ["proyek-2", "proyek-3"]
-        evidence: ["Capstone Project Samsung Innovation Campus Batch 5", "Fine-Tuned T5 Hugging Face Transformers"]
+        evidence:
+          - "Fine-Tuned T5 Hugging Face Transformers"
+          - "Capstone IoT Speech-to-Text Samsung Innovation Campus Batch 5"
+      - name: "Computer Vision & Time Series"
+        projectSlugs: ["proyek-2"]
+        evidence:
+          - "Sertifikat Belajar Pengembangan Machine Learning (Dicoding)"
+          - "Sertifikat Belajar Dasar AI (Google Cloud & Dicoding)"
 
   - category: "Data Science & Analisis Kuantitatif"
     items:
       - name: "Optimasi Portofolio (Quantitative Finance)"
         projectSlugs: ["proyek-1"]
-        evidence: ["Walk-Forward Optimization Saham IDX30 (46,49% Total Return)"]
+        evidence:
+          - "Walk-Forward Optimization Saham IDX30 (2,1025 Sharpe Ratio)"
+          - "Sertifikat Financial Literacy 101 (DBS Foundation & Dicoding)"
+      - name: "Data Engineering & Pipeline ETL"
+        projectSlugs: ["proyek-2"]
+        evidence:
+          - "Sertifikat Belajar Fundamental Pemrosesan Data (60 Jam, Dicoding)"
+      - name: "Exploratory Data Analysis (EDA) & Data Wrangling"
+        projectSlugs: ["proyek-1", "proyek-2"]
+        evidence:
+          - "Sertifikat Belajar Analisis Data dengan Python (22 Jam, Dicoding)"
       - name: "Pengujian Statistik Inferensial"
         projectSlugs: ["proyek-1"]
-        evidence: ["Uji Shapiro-Wilk, Wilcoxon Signed-Rank, Paired t-test (p < 0,001)"]
-      - name: "Pemrosesan & Analisis Data (Pandas, NumPy)"
-        projectSlugs: ["proyek-1", "proyek-2"]
-        evidence: ["Sertifikat Belajar Fundamental Pemrosesan Data, Dicoding"]
+        evidence:
+          - "Uji Shapiro-Wilk, Wilcoxon Signed-Rank, Paired t-test (p < 0,001)"
+      - name: "Structured Query Language (SQL) & Relational DB"
+        projectSlugs: []
+        evidence:
+          - "Sertifikat Belajar Dasar SQL (Dicoding)"
       - name: "Visualisasi Data & Dashboard (Streamlit, Plotly)"
         projectSlugs: ["proyek-1", "proyek-2"]
-        evidence: ["Web Dashboard Interaktif Streamlit Cloud"]
+        evidence:
+          - "Sertifikat Belajar Dasar Visualisasi Data (Google Developers & Dicoding)"
+          - "Web Dashboard Interaktif Streamlit Cloud"
 
   - category: "Pemrograman & Rekayasa Perangkat Lunak"
     items:
-      - name: "Python"
+      - name: "Python (OOP, Data Structures & Unit Testing)"
         projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
-        evidence: ["Pengembangan skripsi kuantitatif, capstone DBS Foundation, dan bootcamp SIC Batch 5"]
-      - name: "Algoritma dan Struktur Data"
+        evidence:
+          - "Sertifikat Memulai Pemrograman dengan Python (35 Jam, Dicoding)"
+          - "Pengembangan skripsi kuantitatif, capstone DBS, dan SIC Batch 5"
+      - name: "AI-Assisted Engineering & Spec-Driven Development"
+        projectSlugs: []
+        evidence:
+          - "Sertifikat Spec-Driven Development dengan Kiro (AWS & Dicoding)"
+      - name: "Git & GitHub (Version Control & Kolaborasi Tim)"
         projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
-        evidence: ["Implementasi algoritma genetika adaptif, matriks kemiripan kosinus, dan sistem IoT"]
-      - name: "Internet of Things (ESP32)"
+        evidence:
+          - "Sertifikat Belajar Dasar Git dengan GitHub (Dicoding)"
+          - "Repositori kode sumber di GitHub"
+      - name: "Algoritma, Logika & Computational Thinking"
+        projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
+        evidence:
+          - "Sertifikat Pengenalan ke Logika Pemrograman (Dicoding)"
+          - "Implementasi algoritma genetika adaptif dan sistem IoT"
+      - name: "Dasar Pengembangan Web (JavaScript ES6, HTML5, CSS3)"
+        projectSlugs: []
+        evidence:
+          - "Sertifikat Pengembang Software (KBJI 2512.03, Skor 100/100, Dicoding)"
+      - name: "Internet of Things (ESP32 & Embedded Systems)"
         projectSlugs: ["proyek-3"]
-        evidence: ["Perangkat IoT Samsung Innovation Campus Batch 5"]
-      - name: "Git & GitHub (Version Control)"
-        projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
-        evidence: ["Repositori kode sumber proyek IDX30, WisataPas, dan SIC di GitHub"]
+        evidence:
+          - "Perangkat IoT Semi Finalist Samsung Innovation Campus Batch 5"

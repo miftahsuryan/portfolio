@@ -21,7 +21,18 @@ export interface Profile {
     showGpa: boolean;
     thesis: string | null;
   };
-  certifications: { name: string; issuer: string; year: string; verificationUrl: string | null }[];
+  certifications: {
+    name: string;
+    issuer: string;
+    year: string;
+    verificationUrl: string | null;
+    credentialId?: string;
+    driveUrl?: string;
+    image?: string;
+    hours?: string;
+    category?: string;
+    summary?: string;
+  }[];
   training: { name: string; issuer: string; period: string; note: string | null }[];
   achievements: { title: string; year: string; note: string | null }[];
   organizations: { role: string; org: string; period: string | null }[];

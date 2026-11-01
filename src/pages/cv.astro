@@ -89,8 +89,9 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
           ))}
           {p.certifications.map((c) => (
             <li>
-              {c.name}, {c.issuer}, {c.year}
-              {isLink(c.verificationUrl) && <> · <a href={c.verificationUrl}>Verifikasi</a></>}
+              <strong>{c.name}</strong>, {c.issuer}, {c.year}{c.hours && ` (${c.hours})`}
+              {c.credentialId && <span class="meta"> · ID: {c.credentialId}</span>}
+              {isLink(c.verificationUrl) && <> · <a href={c.verificationUrl} target="_blank">Verifikasi</a></>}
             </li>
           ))}
         </ul>

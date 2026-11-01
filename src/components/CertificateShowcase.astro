@@ -1,0 +1,351 @@
+---
+import { ArrowUpRight, ChevronLeft, ChevronRight, Award, ExternalLink } from '@lucide/astro';
+import ImageSlot from './ImageSlot.astro';
+import { getProfile, isLink } from '../lib/content';
+
+const p = getProfile();
+const certs = p.certifications;
+const driveFolderUrl = 'https://drive.google.com/drive/folders/1tO0_8rv0ZAS_MK8CZgv24ONS3bGckz1F?usp=share_link';
+
+const categories = ['Semua', 'ML & AI', 'Data Science', 'Software Engineering'];
+---
+
+<div class="cert-showcase" id="sertifikat" data-cert-showcase>
+  <div class="cert-head">
+    <div>
+      <div class="title-row">
+        <Award size={22} class="cert-icon" aria-hidden="true" />
+        <h3>Sertifikasi Kompetensi Terverifikasi</h3>
+      </div>
+      <p class="cert-lead">
+        14 sertifikasi resmi dengan total <strong>444+ jam pembelajaran</strong> dan proyek akhir teruji (Dicoding, Google Developers, AWS, dan DBS Foundation).
+      </p>
+    </div>
+    <div class="head-actions">
+      <a href={driveFolderUrl} target="_blank" rel="noopener" class="drive-btn">
+        <span>Buka Folder Drive</span>
+        <ExternalLink size={14} aria-hidden="true" />
+      </a>
+      <div class="nav-btns" aria-label="Navigasi geser sertifikat">
+        <button type="button" class="nav-btn" data-cert-prev aria-label="Sertifikat sebelumnya">
+          <ChevronLeft size={16} aria-hidden="true" />
+        </button>
+        <button type="button" class="nav-btn" data-cert-next aria-label="Sertifikat berikutnya">
+          <ChevronRight size={16} aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar" role="tablist" aria-label="Filter kategori sertifikat">
+    {categories.map((cat, i) => (
+      <button
+        type="button"
+        class={`filter-tab ${i === 0 ? 'active' : ''}`}
+        data-filter={cat}
+        role="tab"
+        aria-selected={i === 0 ? 'true' : 'false'}
+      >
+        {cat} {cat === 'Semua' ? `(${certs.length})` : `(${certs.filter(c => c.category === cat).length})`}
+      </button>
+    ))}
+  </div>
+
+  <div class="cert-track" data-cert-track tabindex="0" role="region" aria-label="Daftar sertifikat kompetensi">
+    {certs.map((c) => (
+      <article class="cert-card" data-category={c.category ?? 'Lainnya'}>
+        <div class="cert-thumb">
+          <ImageSlot
+            path={c.image ?? null}
+            alt={`Sertifikat ${c.name} - ${c.issuer}`}
+            label={c.name}
+            ratio="1.414 / 1"
+            widths={[320, 600, 900]}
+            sizes="(min-width: 48rem) 24rem, 85vw"
+          />
+        </div>
+        <div class="cert-body">
+          <div class="cert-badges">
+            {c.hours && <span class="badge badge-accent">{c.hours}</span>}
+            {c.category && <span class="badge">{c.category}</span>}
+            <span class="badge badge-year">{c.year}</span>
+          </div>
+          <h4>{c.name}</h4>
+          <p class="issuer">{c.issuer}</p>
+          {c.summary && <p class="summary">{c.summary}</p>}
+          <div class="cert-links">
+            {isLink(c.verificationUrl) && (
+              <a href={c.verificationUrl} target="_blank" rel="noopener" class="cert-link primary">
+                <span>Verifikasi</span>
+                <ArrowUpRight size={14} aria-hidden="true" />
+              </a>
+            )}
+            {isLink(c.driveUrl) && (
+              <a href={c.driveUrl} target="_blank" rel="noopener" class="cert-link">
+                <span>Lihat PDF</span>
+                <ExternalLink size={14} aria-hidden="true" />
+              </a>
+            )}
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</div>
+
+<style>
+  .cert-showcase {
+    display: grid;
+    gap: var(--space-4);
+    border-top: 1px solid var(--line);
+    padding-top: var(--space-6);
+    margin-top: var(--space-6);
+    min-width: 0;
+  }
+  .cert-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .cert-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .cert-head h3 {
+    margin: 0;
+    font-size: var(--step-1);
+    font-family: var(--font-heading);
+  }
+  .cert-lead {
+    color: var(--text-2);
+    font-size: var(--step--1);
+    margin-top: var(--space-1);
+    max-width: var(--measure);
+  }
+  .head-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .drive-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    color: var(--text);
+    font-size: var(--step--1);
+    font-weight: 500;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .drive-btn:hover {
+    border-color: var(--text);
+    background: var(--bg);
+  }
+  .nav-btns { display: inline-flex; gap: var(--space-1); }
+  .nav-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    color: var(--text);
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .nav-btn:hover {
+    border-color: var(--text);
+    background: var(--bg);
+  }
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .filter-tab {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg-2);
+    color: var(--text-2);
+    font-size: var(--step--1);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .filter-tab:hover {
+    color: var(--text);
+    border-color: var(--text);
+  }
+  .filter-tab.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  .cert-track {
+    display: flex;
+    gap: var(--space-4);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0.25rem;
+    padding-bottom: var(--space-3);
+    scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cert-card {
+    flex: 0 0 min(85vw, 24rem);
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    overflow: hidden;
+    min-width: 0;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .cert-card:hover {
+    border-color: var(--text-2);
+  }
+  .cert-card.is-hidden {
+    display: none;
+  }
+  .cert-thumb {
+    width: 100%;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .cert-body {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex-grow: 1;
+  }
+  .cert-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    font-size: var(--step--2);
+  }
+  .badge {
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--text-2);
+    font-weight: 600;
+  }
+  .badge-accent {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .badge-year {
+    color: var(--text-2);
+  }
+  .cert-body h4 {
+    margin: 0;
+    font-size: var(--step-0);
+    line-height: 1.35;
+    color: var(--text);
+  }
+  .issuer {
+    margin: 0;
+    font-size: var(--step--1);
+    color: var(--text-2);
+  }
+  .summary {
+    margin: 0;
+    font-size: var(--step--1);
+    color: var(--text-2);
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+  .cert-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--line);
+    margin-top: auto;
+  }
+  .cert-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--text-2);
+  }
+  .cert-link:hover {
+    color: var(--text);
+  }
+  .cert-link.primary {
+    color: var(--accent);
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-cert-showcase]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-cert-track]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-cert-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-cert-next]');
+    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const cards = root.querySelectorAll<HTMLElement>('.cert-card');
+
+    if (track && prev && next) {
+      prev.addEventListener('click', () => {
+        const card = track.querySelector<HTMLElement>('.cert-card:not(.is-hidden)');
+        const step = (card?.clientWidth ?? 320) + 16;
+        track.scrollBy({ left: -step, behavior: 'smooth' });
+      });
+      next.addEventListener('click', () => {
+        const card = track.querySelector<HTMLElement>('.cert-card:not(.is-hidden)');
+        const step = (card?.clientWidth ?? 320) + 16;
+        track.scrollBy({ left: step, behavior: 'smooth' });
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+
+        const filter = tab.getAttribute('data-filter') ?? 'Semua';
+        cards.forEach((card) => {
+          const cat = card.getAttribute('data-category') ?? '';
+          if (filter === 'Semua' || cat === filter) {
+            card.classList.remove('is-hidden');
+          } else {
+            card.classList.add('is-hidden');
+          }
+        });
+        if (track) {
+          track.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+      });
+    });
+  });
+</script>
+
