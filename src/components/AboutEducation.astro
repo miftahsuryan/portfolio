@@ -1,6 +1,8 @@
 ---
+import { Trophy, ExternalLink, CircleCheck, GraduationCap } from '@lucide/astro';
 import CertificateShowcase from './CertificateShowcase.astro';
-import { getProfile } from '../lib/content';
+import ImageSlot from './ImageSlot.astro';
+import { getProfile, isLink } from '../lib/content';
 
 const p = getProfile();
 const e = p.education;
@@ -9,55 +11,194 @@ const e = p.education;
 <section class="section" id="tentang" aria-labelledby="tentang-title">
   <div class="wrap">
     <div class="grid">
-      <div>
+      <div class="bio-col">
         <div class="section-head">
           <h2 id="tentang-title">Tentang saya</h2>
         </div>
-        <p>{p.about}</p>
-      </div>
-      <div class="side">
-        <div class="block">
-          <h3>Pendidikan</h3>
-          <p class="strong">{e.institution}</p>
-          <p>{e.degree} · {e.period}</p>
-          {e.showGpa && e.gpa && <p>IPK {e.gpa}</p>}
-          {e.thesis && <p class="muted">Tugas akhir: {e.thesis}</p>}
+        <p class="about-p">{p.about}</p>
+
+        <div class="edu-card">
+          <div class="card-header">
+            <GraduationCap size={22} class="header-icon" aria-hidden="true" />
+            <div>
+              <h3>Pendidikan Formal</h3>
+              <p class="strong">{e.institution}</p>
+            </div>
+          </div>
+          <div class="edu-details">
+            <p class="edu-degree">{e.degree} · <span class="muted">{e.period}</span></p>
+            {e.showGpa && e.gpa && (
+              <p class="gpa-badge">
+                <span class="badge badge-accent">IPK {e.gpa}</span>
+                <span class="badge-sub">Predikat Pujian / Cumlaude</span>
+              </p>
+            )}
+            {e.thesis && (
+              <p class="thesis">
+                <span class="thesis-label">Tugas Akhir:</span>
+                <span class="thesis-title">{e.thesis}</span>
+              </p>
+            )}
+          </div>
         </div>
+      </div>
 
-        {p.training.length > 0 && (
-          <div class="block">
-            <h3>Pelatihan intensif</h3>
-            <ul>
-              {p.training.map((t) => (
-                <li>
-                  <span class="strong">{t.name}</span>
-                  <span class="muted">{t.issuer} · {t.period}</span>
-                  {t.note && <span class="muted">{t.note}</span>}
-                </li>
-              ))}
-            </ul>
+      <div class="side-col">
+        <div class="leadership-card">
+          <div class="card-header">
+            <Trophy size={22} class="header-icon trophy" aria-hidden="true" />
+            <div>
+              <h3>Kepemimpinan & Organisasi</h3>
+              <p class="strong">Divisi Basket UKM Olahraga UIN Sunan Kalijaga</p>
+            </div>
           </div>
-        )}
+          <p class="role-meta">Ketua Divisi Basket & Pemain Inti · 2024 - 2025</p>
+          <p class="card-desc">
+            Memimpin divisi basket kampus, mengoordinasikan jadwal latihan terstruktur, membina regenerasi atlet mahasiswa, dan memimpin strategi kompetisi antar-fakultas serta turnamen regional se-DIY.
+          </p>
+          <ul class="trophy-list">
+            <li class="trophy-badge gold">
+              <span class="trophy-medal">🥇 Juara 1</span>
+              <div>
+                <strong>Pekan Olahraga Kampus UIN Sunan Kalijaga (2025)</strong>
+                <span class="trophy-desc">Ketua Divisi & Kapten Tim Basket Putra</span>
+              </div>
+            </li>
+            <li class="trophy-badge bronze">
+              <span class="trophy-medal">🥉 Juara 3</span>
+              <div>
+                <strong>Lomba Basket 3x3 FeArstyc (2024)</strong>
+                <span class="trophy-desc">Kejuaraan Bola Basket 3x3 Antarmahasiswa se-Daerah Istimewa Yogyakarta</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-        {(p.organizations.length > 0 || p.achievements.length > 0) && (
-          <div class="block">
-            <h3>Organisasi dan pencapaian</h3>
-            <ul>
-              {p.organizations.map((o) => (
-                <li>
-                  <span class="strong">{o.role}</span>
-                  <span class="muted">{o.org}{o.period && ` · ${o.period}`}</span>
-                </li>
-              ))}
-              {p.achievements.map((a) => (
-                <li>
-                  <span class="strong">{a.title}</span>
-                  <span class="muted">{a.year}{a.note && ` · ${a.note}`}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+    {/* Section: Pelatihan Intensif & Prestasi Terpilih */}
+    <div class="featured-programs">
+      <div class="programs-head">
+        <h3>Pelatihan Intensif & Prestasi Nasional</h3>
+        <p class="programs-lead">
+          Bukti sertifikasi resmi hasil dari seleksi nasional dan pelatihan intensif berstandar industri.
+        </p>
+      </div>
+
+      <div class="programs-grid">
+        {/* Card 1: DBS Foundation Coding Camp */}
+        {p.training.map((t) => (
+          <article class="program-card">
+            {t.image && (
+              <div class="program-thumb">
+                <ImageSlot
+                  path={t.image}
+                  alt={`Sertifikat ${t.name}`}
+                  label={t.name}
+                  ratio="1.414 / 1"
+                  widths={[360, 600]}
+                  sizes="(min-width: 48rem) 28rem, 90vw"
+                />
+              </div>
+            )}
+            <div class="program-body">
+              <div class="badge-row">
+                {t.grade && <span class="badge badge-accent">{t.grade}</span>}
+                {t.hours && <span class="badge">{t.hours}</span>}
+                {t.specialization && <span class="badge badge-outline">{t.specialization}</span>}
+              </div>
+              <h4 class="program-title">{t.name}</h4>
+              <p class="program-issuer">{t.issuer} · {t.period}</p>
+              {t.note && <p class="program-note">{t.note}</p>}
+              
+              {t.highlights && (
+                <ul class="program-highlights">
+                  {t.highlights.map((h) => (
+                    <li>
+                      <CircleCheck size={14} class="check-icon" aria-hidden="true" />
+                      <span>{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <div class="card-links">
+                {isLink(t.driveUrl) && (
+                  <a href={t.driveUrl} target="_blank" rel="noopener" class="card-link primary">
+                    <span>Sertifikat Kelulusan (PDF)</span>
+                    <ExternalLink size={13} aria-hidden="true" />
+                  </a>
+                )}
+                {isLink(t.folderUrl) && (
+                  <a href={t.folderUrl} target="_blank" rel="noopener" class="card-link">
+                    <span>Folder Drive DBS</span>
+                    <ExternalLink size={13} aria-hidden="true" />
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+
+        {/* Card 2: Samsung Innovation Campus Batch 5 */}
+        {p.achievements.filter(a => a.stages).map((a) => (
+          <article class="program-card">
+            {a.image && (
+              <div class="program-thumb">
+                <ImageSlot
+                  path={a.image}
+                  alt={`Sertifikat ${a.title}`}
+                  label={a.title}
+                  ratio="1.414 / 1"
+                  widths={[360, 600]}
+                  sizes="(min-width: 48rem) 28rem, 90vw"
+                />
+              </div>
+            )}
+            <div class="program-body">
+              <div class="badge-row">
+                <span class="badge badge-accent">Semi Finalist Nasional</span>
+                <span class="badge">{a.year}</span>
+                <span class="badge badge-outline">IoT & AI Track</span>
+              </div>
+              <h4 class="program-title">{a.title}</h4>
+              {a.issuer && <p class="program-issuer">{a.issuer}</p>}
+              {a.note && <p class="program-note">{a.note}</p>}
+
+              {a.stages && (
+                <div class="stages-box">
+                  <p class="stages-heading">Tahapan Program yang Ditempuh:</p>
+                  <ol class="stages-list">
+                    {a.stages.map((st) => (
+                      <li class="stage-item">
+                        <span class="stage-dot" aria-hidden="true"></span>
+                        <div class="stage-info">
+                          <span class="stage-name">{st.name}</span>
+                          <span class="stage-period">{st.period}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+              <div class="card-links">
+                {isLink(a.driveUrl) && (
+                  <a href={a.driveUrl} target="_blank" rel="noopener" class="card-link primary">
+                    <span>Sertifikat Semi Finalis (PDF)</span>
+                    <ExternalLink size={13} aria-hidden="true" />
+                  </a>
+                )}
+                {isLink(a.folderUrl) && (
+                  <a href={a.folderUrl} target="_blank" rel="noopener" class="card-link">
+                    <span>Folder Drive SIC</span>
+                    <ExternalLink size={13} aria-hidden="true" />
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
     </div>
 
@@ -66,13 +207,336 @@ const e = p.education;
 </section>
 
 <style>
-  .grid { display: grid; gap: var(--space-6); min-width: 0; }
-  .side { display: grid; gap: var(--space-5); min-width: 0; }
-  .block h3 { margin-bottom: var(--space-3); }
-  .strong { font-weight: 600; }
+  .grid {
+    display: grid;
+    gap: var(--space-6);
+    min-width: 0;
+  }
+  .bio-col, .side-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    min-width: 0;
+  }
+  .about-p {
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .edu-card, .leadership-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .card-header h3 {
+    margin: 0;
+    font-size: var(--step-0);
+    font-family: var(--font-heading);
+  }
+  .header-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .header-icon.trophy {
+    color: #d97706;
+  }
+
+  .strong { font-weight: 600; color: var(--text); }
   .muted { color: var(--text-2); font-size: var(--step--1); }
-  li { display: grid; gap: var(--space-1); padding-block: var(--space-2); border-bottom: 1px solid var(--line); }
+  .role-meta {
+    font-size: var(--step--1);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .card-desc {
+    font-size: var(--step--1);
+    color: var(--text-2);
+    line-height: 1.55;
+  }
+
+  .edu-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--step--1);
+  }
+  .gpa-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .badge-sub {
+    font-size: var(--step--2);
+    color: var(--text-2);
+    font-weight: 500;
+  }
+  .thesis {
+    margin-top: var(--space-1);
+    padding: var(--space-2);
+    background: var(--bg);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .thesis-label {
+    font-size: var(--step--2);
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .thesis-title {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .trophy-list {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .trophy-badge {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg);
+    font-size: var(--step--1);
+  }
+  .trophy-badge.gold {
+    border-left: 3px solid #d97706;
+  }
+  .trophy-badge.bronze {
+    border-left: 3px solid #b45309;
+  }
+  .trophy-medal {
+    font-weight: 700;
+    font-size: var(--step--1);
+    white-space: nowrap;
+    color: var(--text);
+  }
+  .trophy-desc {
+    display: block;
+    font-size: var(--step--2);
+    color: var(--text-2);
+    margin-top: 0.1rem;
+  }
+
+  /* Featured Programs */
+  .featured-programs {
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+  .programs-head h3 {
+    margin: 0;
+    font-size: var(--step-1);
+    font-family: var(--font-heading);
+  }
+  .programs-lead {
+    color: var(--text-2);
+    font-size: var(--step--1);
+    margin-top: var(--space-1);
+  }
+  .programs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    min-width: 0;
+  }
+
+  .program-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    overflow: hidden;
+    min-width: 0;
+    transition: border-color 0.2s ease;
+  }
+  .program-card:hover {
+    border-color: var(--text-2);
+  }
+  .program-thumb {
+    width: 100%;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .program-body {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex-grow: 1;
+    min-width: 0;
+  }
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+  .badge {
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--text-2);
+    font-size: var(--step--2);
+    font-weight: 600;
+  }
+  .badge-accent {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .badge-outline {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .program-title {
+    margin: 0;
+    font-size: var(--step-0);
+    line-height: 1.35;
+    color: var(--text);
+  }
+  .program-issuer {
+    margin: 0;
+    font-size: var(--step--1);
+    color: var(--text-2);
+    font-weight: 500;
+  }
+  .program-note {
+    margin: 0;
+    font-size: var(--step--1);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .program-highlights {
+    display: grid;
+    gap: var(--space-1);
+    margin-top: var(--space-1);
+    font-size: var(--step--1);
+  }
+  .program-highlights li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    color: var(--text-2);
+    line-height: 1.45;
+  }
+  .check-icon {
+    color: #16a34a;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .stages-box {
+    background: var(--bg);
+    padding: var(--space-3);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    margin-top: var(--space-1);
+  }
+  .stages-heading {
+    font-size: var(--step--2);
+    font-weight: 600;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: var(--space-2);
+  }
+  .stages-list {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .stage-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-size: var(--step--1);
+  }
+  .stage-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+  .stage-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .stage-name {
+    font-weight: 600;
+    color: var(--text);
+  }
+  .stage-period {
+    font-size: var(--step--2);
+    color: var(--text-2);
+  }
+
+  .card-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line);
+  }
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--text-2);
+    text-decoration: none;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--bg);
+    transition: all 0.15s ease;
+  }
+  .card-link:hover {
+    color: var(--text);
+    border-color: var(--text);
+  }
+  .card-link.primary {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
   @media (min-width: 48rem) {
-    .grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: var(--space-7); }
+    .grid {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: var(--space-7);
+    }
+    .programs-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 </style>

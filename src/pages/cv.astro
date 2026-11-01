@@ -85,6 +85,7 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
           {p.training.map((t) => (
             <li>
               <strong>{t.name}</strong>, {t.issuer}, {t.period}{t.note && ` · ${t.note}`}
+              {isLink(t.driveUrl) && <> · <a href={t.driveUrl} target="_blank">Sertifikat PDF</a></>}
             </li>
           ))}
           {p.certifications.map((c) => (
@@ -92,6 +93,7 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
               <strong>{c.name}</strong>, {c.issuer}, {c.year}{c.hours && ` (${c.hours})`}
               {c.credentialId && <span class="meta"> · ID: {c.credentialId}</span>}
               {isLink(c.verificationUrl) && <> · <a href={c.verificationUrl} target="_blank">Verifikasi</a></>}
+              {!isLink(c.verificationUrl) && isLink(c.driveUrl) && <> · <a href={c.driveUrl} target="_blank">Sertifikat PDF</a></>}
             </li>
           ))}
         </ul>
@@ -106,7 +108,10 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
             <li><strong>{o.role}</strong>, {o.org}{o.period && ` · ${o.period}`}</li>
           ))}
           {p.achievements.map((a) => (
-            <li><strong>{a.title}</strong> ({a.year}){a.note && `. ${a.note}`}</li>
+            <li>
+              <strong>{a.title}</strong> ({a.year}){a.note && `. ${a.note}`}
+              {isLink(a.driveUrl) && <> · <a href={a.driveUrl} target="_blank">Sertifikat PDF</a></>}
+            </li>
           ))}
         </ul>
       </section>

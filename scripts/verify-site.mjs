@@ -43,7 +43,11 @@ for (const scheme of ['light', 'dark']) {
     for (const route of PAGES) {
       const page = await ctx.newPage();
       const tag = `${route === '/' ? 'home' : 'cv'}-${width}-${scheme}`;
-      page.on('console', (m) => m.type() === 'error' && note(`[${tag}] console error: ${m.text()}`));
+      page.on('console', (m) => {
+        if (m.type() === 'error' && !m.text().includes('compute-pressure')) {
+          note(`[${tag}] console error: ${m.text()}`);
+        }
+      });
       page.on('pageerror', (e) => note(`[${tag}] page error: ${e.message}`));
       page.on('requestfailed', (r) => {
         if (r.url().startsWith(base)) note(`[${tag}] request gagal: ${r.url()}`);

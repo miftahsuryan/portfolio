@@ -1,13 +1,18 @@
 ---
-import { ArrowUpRight, ChevronLeft, ChevronRight, Award, ExternalLink } from '@lucide/astro';
+import { ArrowUpRight, ChevronLeft, ChevronRight, Award, ExternalLink, Folder } from '@lucide/astro';
 import ImageSlot from './ImageSlot.astro';
 import { getProfile, isLink } from '../lib/content';
 
 const p = getProfile();
 const certs = p.certifications;
-const driveFolderUrl = 'https://drive.google.com/drive/folders/1tO0_8rv0ZAS_MK8CZgv24ONS3bGckz1F?usp=share_link';
 
-const categories = ['Semua', 'ML & AI', 'Data Science', 'Software Engineering'];
+const driveFolders = [
+  { name: 'Drive 14 Sertifikat Dicoding', url: 'https://drive.google.com/drive/folders/1tO0_8rv0ZAS_MK8CZgv24ONS3bGckz1F?usp=share_link' },
+  { name: 'Drive Coding Camp DBS', url: 'https://drive.google.com/drive/folders/11wTJi1BWYtmW_i7XFiSAfTkhv_jk-NK3?usp=share_link' },
+  { name: 'Drive Samsung Innovation Campus', url: 'https://drive.google.com/drive/folders/1jOtxipwoEbbdnGidgdYIua-ccc5ZfUhm?usp=share_link' },
+];
+
+const categories = ['Semua', 'Program & Bootcamp', 'ML & AI', 'Data Science', 'Software Engineering'];
 ---
 
 <div class="cert-showcase" id="sertifikat" data-cert-showcase>
@@ -15,17 +20,22 @@ const categories = ['Semua', 'ML & AI', 'Data Science', 'Software Engineering'];
     <div>
       <div class="title-row">
         <Award size={22} class="cert-icon" aria-hidden="true" />
-        <h3>Sertifikasi Kompetensi Terverifikasi</h3>
+        <h3>Sertifikasi Kompetensi & Program Terverifikasi</h3>
       </div>
       <p class="cert-lead">
-        14 sertifikasi resmi dengan total <strong>444+ jam pembelajaran</strong> dan proyek akhir teruji (Dicoding, Google Developers, AWS, dan DBS Foundation).
+        <strong>19 kredensial & sertifikasi resmi terverifikasi</strong> dengan total <strong>1.380+ jam pembelajaran terstruktur</strong> (Dicoding Indonesia, Google Developers, AWS, Samsung Electronics Indonesia, dan DBS Foundation).
       </p>
     </div>
     <div class="head-actions">
-      <a href={driveFolderUrl} target="_blank" rel="noopener" class="drive-btn">
-        <span>Buka Folder Drive</span>
-        <ExternalLink size={14} aria-hidden="true" />
-      </a>
+      <div class="drive-dropdown" aria-label="Tautan folder Google Drive sertifikat">
+        {driveFolders.map((f) => (
+          <a href={f.url} target="_blank" rel="noopener" class="drive-btn">
+            <Folder size={13} aria-hidden="true" />
+            <span>{f.name}</span>
+            <ExternalLink size={12} aria-hidden="true" />
+          </a>
+        ))}
+      </div>
       <div class="nav-btns" aria-label="Navigasi geser sertifikat">
         <button type="button" class="nav-btn" data-cert-prev aria-label="Sertifikat sebelumnya">
           <ChevronLeft size={16} aria-hidden="true" />
@@ -135,22 +145,29 @@ const categories = ['Semua', 'ML & AI', 'Data Science', 'Software Engineering'];
     gap: var(--space-2);
     flex-wrap: wrap;
   }
+  .drive-dropdown {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
   .drive-btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-1);
-    padding: var(--space-1) var(--space-3);
+    gap: 0.35rem;
+    padding: var(--space-1) var(--space-2);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--bg-2);
-    color: var(--text);
-    font-size: var(--step--1);
+    color: var(--text-2);
+    font-size: var(--step--2);
     font-weight: 500;
-    transition: background-color 0.15s, border-color 0.15s;
+    text-decoration: none;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
   }
   .drive-btn:hover {
     border-color: var(--text);
     background: var(--bg);
+    color: var(--text);
   }
   .nav-btns { display: inline-flex; gap: var(--space-1); }
   .nav-btn {
@@ -228,8 +245,25 @@ const categories = ['Semua', 'ML & AI', 'Data Science', 'Software Engineering'];
   }
   .cert-thumb {
     width: 100%;
+    aspect-ratio: 1.414 / 1;
     background: var(--bg);
     border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .cert-thumb :global(.slot) {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+  .cert-thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .cert-body {
     padding: var(--space-4);
@@ -293,6 +327,7 @@ const categories = ['Semua', 'ML & AI', 'Data Science', 'Software Engineering'];
     font-size: var(--step--1);
     font-weight: 600;
     color: var(--text-2);
+    text-decoration: none;
   }
   .cert-link:hover {
     color: var(--text);
@@ -348,4 +383,3 @@ const categories = ['Semua', 'ML & AI', 'Data Science', 'Software Engineering'];
     });
   });
 </script>
-

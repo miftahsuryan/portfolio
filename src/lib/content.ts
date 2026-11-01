@@ -33,8 +33,39 @@ export interface Profile {
     category?: string;
     summary?: string;
   }[];
-  training: { name: string; issuer: string; period: string; note: string | null }[];
-  achievements: { title: string; year: string; note: string | null }[];
+  training: {
+    name: string;
+    issuer: string;
+    period: string;
+    note: string | null;
+    hours?: string;
+    grade?: string;
+    credentialId?: string;
+    verificationUrl?: string;
+    driveUrl?: string;
+    folderUrl?: string;
+    image?: string;
+    specialization?: string;
+    highlights?: string[];
+  }[];
+  achievements: {
+    title: string;
+    year: string;
+    note: string | null;
+    issuer?: string;
+    credentialId?: string;
+    driveUrl?: string;
+    folderUrl?: string;
+    image?: string;
+    stages?: {
+      name: string;
+      period: string;
+      credentialId?: string;
+      driveUrl?: string;
+      image?: string;
+      summary?: string;
+    }[];
+  }[];
   organizations: { role: string; org: string; period: string | null }[];
   contact: { email: string; linkedin: string; github: string };
 }
