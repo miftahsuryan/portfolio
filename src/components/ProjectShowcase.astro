@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight } from '@lucide/astro';
+import { ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, Sparkles } from '@lucide/astro';
 import { render } from 'astro:content';
 import ProjectGallery from './ProjectGallery.astro';
 import { getProjects, statusLabel, isLink } from '../lib/content';
@@ -18,6 +18,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <div class="wrap projects-container" data-projects-showcase>
     <div class="section-head">
       <div class="head-info">
+        <span class="section-kicker">
+          <Sparkles size={12} aria-hidden="true" />
+          <span>Portofolio Pilihan</span>
+        </span>
         <h2 id="proyek-title">Proyek Unggulan</h2>
         <p class="section-lead">
           3 studi kasus implementasi end-to-end: optimasi kuantitatif portofolio, sistem rekomendasi hybrid & AI generatif, serta perangkat IoT untuk tunarungu. Geser ke samping atau pilih tab untuk beralih proyek.

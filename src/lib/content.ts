@@ -66,7 +66,14 @@ export interface Profile {
       summary?: string;
     }[];
   }[];
-  organizations: { role: string; org: string; period: string | null }[];
+  organizations: {
+    role: string;
+    org: string;
+    period: string | null;
+    note?: string;
+    driveUrl?: string;
+    credentialId?: string;
+  }[];
   contact: { email: string; linkedin: string; github: string };
 }
 

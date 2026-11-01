@@ -105,7 +105,11 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
         <h2 id="cv-org">Organisasi dan pencapaian</h2>
         <ul>
           {p.organizations.map((o) => (
-            <li><strong>{o.role}</strong>, {o.org}{o.period && ` · ${o.period}`}</li>
+            <li>
+              <strong>{o.role}</strong>, {o.org}{o.period && ` · ${o.period}`}
+              {o.note && <span class="meta"> — {o.note}</span>}
+              {isLink(o.driveUrl) && <> · <a href={o.driveUrl} target="_blank">Sertifikat / Bukti</a></>}
+            </li>
           ))}
           {p.achievements.map((a) => (
             <li>

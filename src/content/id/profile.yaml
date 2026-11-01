@@ -35,6 +35,39 @@ education:
 
 # verificationUrl: link verifikasi resmi kredensial dicoding.com/certificates/...
 certifications:
+  - name: "English for Business Communication"
+    issuer: "The British Institute (TBI) & DBS Foundation"
+    year: "2025"
+    hours: "3 Jam (86%)"
+    category: "Bahasa & Komputasi"
+    credentialId: "TBI-DAGO/CORP/12998/2025"
+    verificationUrl: null
+    driveUrl: "https://drive.google.com/file/d/11NZdRrOuP0ILkJvVgaxWFmZc45rmZkzD/view"
+    image: "src/assets/certificates/cert-tbi-english.png"
+    summary: "Pelatihan komunikasi bisnis berbahasa Inggris: presentasi profesional, korespondensi formal, dan diskusi teknis (Nilai Akhir 86%)."
+
+  - name: "Test of English Competence (TOEC)"
+    issuer: "Pusat Pengembangan Bahasa UIN Sunan Kalijaga"
+    year: "2026"
+    hours: "Skor 443"
+    category: "Bahasa & Komputasi"
+    credentialId: "UIN.02/L4/PM.03.2/2.20613.13.577/2026"
+    verificationUrl: null
+    driveUrl: "https://drive.google.com/file/d/14nYODm8Zhi25nx-7h0o7Dx6GRucTN75P/view"
+    image: "src/assets/certificates/cert-toec-uin.png"
+    summary: "Uji kompetensi bahasa Inggris terstandarisasi: Listening Comprehension (54), Structure & Written Expression (36), Reading Comprehension (43) - Skor Konversi Total 443."
+
+  - name: "Sertifikasi Teknologi Informasi & Komunikasi (TIK)"
+    issuer: "PTIPD UIN Sunan Kalijaga Yogyakarta"
+    year: "2022"
+    hours: "Skor 83.75"
+    category: "Bahasa & Komputasi"
+    credentialId: "UIN-02/L3/PP.00.9/1.20613.28.1/2022"
+    verificationUrl: null
+    driveUrl: "https://drive.google.com/file/d/1HTJ8QWJC-kIG2lj_1rsKX8KhouZPEFLi/view"
+    image: "src/assets/certificates/cert-ptipd-microsoft.png"
+    summary: "Ujian sertifikasi komputasi & aplikasi perkantoran: Microsoft Word (95/A), Microsoft Excel (75/B), Microsoft PowerPoint (80/B), Internet (85/B) - Total 83.75 (Predikat Memuaskan)."
+
   - name: "Belajar Pengembangan Machine Learning"
     issuer: "Dicoding Indonesia"
     year: "2025"
@@ -294,16 +327,38 @@ achievements:
     year: "2025"
     note: "Sebagai Ketua Divisi Basket dan kapten/pemain inti, mengoordinasikan taktik tim, jadwal latihan intensif, serta manajemen kompetisi antar-fakultas hingga merebut medali emas."
 
-  - title: "Juara 3 Lomba Basket 3x3 FeArstyc"
+  - title: "Juara 3 Lomba Basket 3x3 FeArstyc UNY"
     year: "2024"
-    note: "Kompetisi antarmahasiswa se-DIY, mewakili tim kampus dalam turnamen basket 3-on-3 tingkat regional."
+    credentialId: "040/FEARSTYC/BEM/KM/FEB/UNY/V/2024"
+    driveUrl: "https://drive.google.com/file/d/1tVJ_aMVvDjnJMwGgztfYix84y0TqKXR9/view"
+    note: "Kompetisi antarmahasiswa se-DIY yang diselenggarakan oleh BEM FEB Universitas Negeri Yogyakarta (UNY), mewakili tim kampus dalam turnamen basket 3-on-3 tingkat regional."
 
 organizations:
-  - role: "Ketua Divisi Basket"
+  - role: "Bendahara Umum"
+    org: "PK IMM Fakultas Sains dan Teknologi UIN Sunan Kalijaga"
+    period: "2024 - 2025"
+    credentialId: "232/A-23//XII/2025"
+    driveUrl: "https://drive.google.com/file/d/1o5jioj7CK4B-O_1Ax3-1huihb6Eou5Ss/view"
+    note: "Menjabat Bendahara Umum pimpinan komisariat fakultas: mengelola perbendaharaan organisasi, perancangan rencana anggaran belanja, dan akuntabilitas pelaporan kas kepengurusan."
+
+  - role: "Sekretaris Bidang Media & Komunikasi"
+    org: "PK IMM Fakultas Sains dan Teknologi UIN Sunan Kalijaga"
+    period: "2023 - 2024"
+    credentialId: "279/A-23/XII/2024"
+    driveUrl: "https://drive.google.com/file/d/1uugu_FAdPVTsNMY3BIttX3iN74r2ywgg/view"
+    note: "Mengoordinasikan publikasi media informasi, perancangan konten visual publikasi, serta strategi komunikasi digital kepengurusan komisariat."
+
+  - role: "Ketua Divisi Basket & Kapten Tim"
     org: "UKM Olahraga UIN Sunan Kalijaga"
     period: "2024 - 2025"
-  # Pengurus organisasi kemahasiswaan tingkat fakultas: tambahkan nama organisasi,
-  # jabatan, dan periode bila ingin ditampilkan.
+    note: "Memimpin pembinaan atlet mahasiswa, program latihan intensif, manajemen delegasi turnamen antarkampus, dan memimpin tim meraih Medali Emas Pekan Olahraga Kampus."
+
+  - role: "Panitia Cabang Lomba Olahraga"
+    org: "Kalijaga Talent Competition (KTC) UIN Sunan Kalijaga"
+    period: "2024"
+    credentialId: "B-5871/Un.02//KM.06/11/2024"
+    driveUrl: "https://drive.google.com/file/d/1UjRMJBbNq9sR3r3O-iB9b7oCr-myL_CX/view"
+    note: "Kepanitiaan resmi kompetisi minat bakat universitas yang diselenggarakan Rektorat UIN Sunan Kalijaga (11-21 November 2024)."
 
 contact:
   email: "miftahullahsuryan@gmail.com"

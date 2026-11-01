@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight, ChevronLeft, ChevronRight, Award, ExternalLink, Folder, Cpu, Database, Code } from '@lucide/astro';
+import { ArrowUpRight, ChevronLeft, ChevronRight, Award, ExternalLink, Folder, Cpu, Database, Code, ShieldCheck } from '@lucide/astro';
 import ImageSlot from './ImageSlot.astro';
 import { getProfile, getSkillGroups, getProjects, isLink } from '../lib/content';
 
@@ -10,12 +10,13 @@ const projects = await getProjects();
 const projectIndex = new Map(projects.map((proj, i) => [proj.id, { n: String(i + 1).padStart(2, '0'), title: proj.data.title }]));
 
 const driveFolders = [
+  { name: 'Drive Arsip Sertifikat Lengkap', url: 'https://drive.google.com/drive/folders/1V5bDhtNTBCkgzyaPHYDgr3YvoQRDiW9e?usp=share_link' },
   { name: 'Drive 14 Sertifikat Dicoding', url: 'https://drive.google.com/drive/folders/1tO0_8rv0ZAS_MK8CZgv24ONS3bGckz1F?usp=share_link' },
   { name: 'Drive Coding Camp DBS', url: 'https://drive.google.com/drive/folders/11wTJi1BWYtmW_i7XFiSAfTkhv_jk-NK3?usp=share_link' },
   { name: 'Drive Samsung Innovation Campus', url: 'https://drive.google.com/drive/folders/1jOtxipwoEbbdnGidgdYIua-ccc5ZfUhm?usp=share_link' },
 ];
 
-const categories = ['Semua', 'Program & Bootcamp', 'ML & AI', 'Data Science', 'Software Engineering'];
+const categories = ['Semua', 'Program & Bootcamp', 'ML & AI', 'Data Science', 'Software Engineering', 'Bahasa & Komputasi'];
 
 const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label: string }> = {
   'Machine Learning & AI': { icon: Cpu, filterCat: 'ML & AI', label: 'ML & AI' },
@@ -28,12 +29,13 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   {/* Sub-section: Keahlian Teknis Berdasarkan Domain */}
   <div class="skills-block">
     <div class="block-head">
-      <div class="title-row">
-        <Award size={22} class="header-icon" aria-hidden="true" />
-        <h3 id="skill-title">Keahlian Teknis Berdasarkan Domain</h3>
-      </div>
+      <span class="section-kicker">
+        <Cpu size={12} aria-hidden="true" />
+        <span>Kompetensi Teruji</span>
+      </span>
+      <h3 id="skill-title">Keahlian Teknis Berdasarkan Domain</h3>
       <p class="block-lead">
-        Kompetensi praktis yang teruji pada 3 proyek portofolio (ditandai dengan badge nomor proyek) dan diperkuat oleh 19 sertifikasi terverifikasi.
+        Kompetensi praktis yang teruji pada 3 proyek portofolio (ditandai dengan badge nomor proyek) dan diperkuat oleh {certs.length} sertifikasi terverifikasi.
       </p>
     </div>
 
@@ -95,12 +97,13 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   <div class="cert-block" id="sertifikat">
     <div class="cert-head">
       <div>
-        <div class="title-row">
-          <Award size={22} class="header-icon" aria-hidden="true" />
-          <h3 id="sertifikat-title">Sertifikasi & Kredensial Resmi Terverifikasi</h3>
-        </div>
+        <span class="section-kicker">
+          <ShieldCheck size={12} aria-hidden="true" />
+          <span>Kredensial Terverifikasi</span>
+        </span>
+        <h3 id="sertifikat-title">Sertifikasi & Kredensial Resmi</h3>
         <p class="cert-lead">
-          <strong>19 kredensial & sertifikasi resmi terverifikasi</strong> dengan total <strong>1.380+ jam pembelajaran terstruktur</strong> (Dicoding Indonesia, Google Developers, AWS, Samsung Electronics Indonesia, dan DBS Foundation).
+          <strong>{certs.length} kredensial & sertifikasi resmi terverifikasi</strong> dengan total <strong>1.400+ jam pembelajaran terstruktur</strong> (Dicoding Indonesia, Google Developers, AWS, Samsung Electronics Indonesia, DBS Foundation, TBI, dan UIN Sunan Kalijaga).
         </p>
       </div>
 

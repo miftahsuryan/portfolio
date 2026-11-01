@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight, Copy } from '@lucide/astro';
+import { ArrowUpRight, Copy, Mail } from '@lucide/astro';
 import { getProfile, isLink } from '../lib/content';
 
 const c = getProfile().contact;
@@ -8,9 +8,16 @@ const c = getProfile().contact;
 <section class="section" id="kontak" aria-labelledby="kontak-title">
   <div class="wrap">
     <div class="section-head">
-      <h2 id="kontak-title">Kontak</h2>
+      <span class="section-kicker">
+        <Mail size={12} aria-hidden="true" />
+        <span>Mulai Kolaborasi</span>
+      </span>
+      <h2 id="kontak-title">Hubungi Saya</h2>
+      <p class="section-lead">
+        Terbuka untuk peluang kerja penuh waktu (*full-time*), magang teknis, konsultasi analisis data, maupun kolaborasi proyek AI & Machine Learning.
+      </p>
     </div>
-    <ul>
+    <ul class="contact-card-list">
       <li>
         <span class="k">Email</span>
         <a href={`mailto:${c.email}`}>{c.email}</a>

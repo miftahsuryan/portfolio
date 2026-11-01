@@ -12,12 +12,13 @@
   --line-light: #e4dfd7;
   --accent-light: #1f5e4b;
 
-  --paper-dark: #161513;
-  --paper-2-dark: #1f1e1b;
-  --ink-dark: #edeae4;
-  --ink-2-dark: #a8a298;
-  --line-dark: #2e2c27;
-  --accent-dark: #52b798;
+  --paper-dark: #141416;
+  --paper-2-dark: #1c1c20;
+  --ink-dark: #f4f4f6;
+  --ink-2-dark: #a1a1aa;
+  --line-dark: #2a2a30;
+  --accent-dark: #38bdf8;
+  --on-accent-dark: #0f172a;
 
   /* Tier 2: semantik. Default terang; gelap lewat media query (fallback). */
   --bg: var(--paper-light);
@@ -27,6 +28,7 @@
   --line: var(--line-light);
   --accent: var(--accent-light);
   --on-accent: var(--paper-light);
+  --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
 
   @media (prefers-color-scheme: dark) {
     --bg: var(--paper-dark);
@@ -35,7 +37,8 @@
     --text-2: var(--ink-2-dark);
     --line: var(--line-dark);
     --accent: var(--accent-dark);
-    --on-accent: var(--paper-dark);
+    --on-accent: var(--on-accent-dark);
+    --card-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.4);
   }
 
   /* light-dark() mengikuti color-scheme, sehingga toggle manual bekerja. */
@@ -46,7 +49,8 @@
     --text-2: light-dark(var(--ink-2-light), var(--ink-2-dark));
     --line: light-dark(var(--line-light), var(--line-dark));
     --accent: light-dark(var(--accent-light), var(--accent-dark));
-    --on-accent: light-dark(var(--paper-light), var(--paper-dark));
+    --on-accent: light-dark(var(--paper-light), var(--on-accent-dark));
+    --card-shadow: light-dark(0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 6px 24px -2px rgba(0, 0, 0, 0.4));
   }
 
   /* Tipografi: maksimal dua keluarga. */
@@ -71,7 +75,8 @@
   --measure: 66ch;
   --page-width: 60rem;
   --gutter: clamp(1.25rem, 5vw, 2.5rem);
-  --radius: 4px;
+  --radius: 6px;
+  --radius-card: 12px;
 }
 
 /* Override manual dari tombol tema (meta color-scheme). */
