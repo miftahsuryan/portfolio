@@ -2,8 +2,8 @@
 title: "Optimasi Portofolio Saham IDX30 Menggunakan Adaptive Genetic Algorithm (AGA) dan Walk-Forward Validation"
 order: 1
 status: "selesai"
-role: "Lead Researcher & Machine Learning Engineer (Tugas Akhir / Skripsi)"
-period: "2024 - 2026"
+role: "Machine Learning Engineer (Proyek Skripsi)"
+period: "2025 - 2026"
 summary: "Sistem optimasi portofolio kuantitatif berbasis Adaptive Genetic Algorithm (AGA) pada saham IDX30 dengan pengujian Walk-Forward backtesting dan validasi statistik inferensial."
 problem: "Optimasi portofolio konvensional (Mean-Variance standar) rawan terjebak pada optimum lokal, mengalami konvergensi prematur pada bobot aset, dan sering gagal mengantisipasi pergeseran rezim pasar (regime shift) serta friksi biaya transaksi riil."
 approach: "Merancang algoritma genetika adaptif (AGA) yang menyesuaikan laju crossover dan mutasi secara dinamis berbasis varians fitness populasi, mengintegrasikan penalti diversifikasi HHI dan batas alokasi aset (maks. 20%), menguji performa melalui 4 fase Walk-Forward Optimization (WFO) out-of-sample dengan friksi transaksi riil (beli 0,15%, jual 0,25%), serta mendeploy web dashboard interaktif Streamlit & Plotly."
