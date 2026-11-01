@@ -1,10 +1,13 @@
 ---
-import { ArrowUpRight, ChevronLeft, ChevronRight, Award, ExternalLink, Folder } from '@lucide/astro';
+import { ArrowUpRight, ChevronLeft, ChevronRight, Award, ExternalLink, Folder, Cpu, Database, Code } from '@lucide/astro';
 import ImageSlot from './ImageSlot.astro';
-import { getProfile, isLink } from '../lib/content';
+import { getProfile, getSkillGroups, getProjects, isLink } from '../lib/content';
 
 const p = getProfile();
 const certs = p.certifications;
+const groups = getSkillGroups();
+const projects = await getProjects();
+const projectIndex = new Map(projects.map((proj, i) => [proj.id, { n: String(i + 1).padStart(2, '0'), title: proj.data.title }]));
 
 const driveFolders = [
   { name: 'Drive 14 Sertifikat Dicoding', url: 'https://drive.google.com/drive/folders/1tO0_8rv0ZAS_MK8CZgv24ONS3bGckz1F?usp=share_link' },
@@ -13,103 +16,359 @@ const driveFolders = [
 ];
 
 const categories = ['Semua', 'Program & Bootcamp', 'ML & AI', 'Data Science', 'Software Engineering'];
+
+const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label: string }> = {
+  'Machine Learning & AI': { icon: Cpu, filterCat: 'ML & AI', label: 'ML & AI' },
+  'Data Science & Analisis Kuantitatif': { icon: Database, filterCat: 'Data Science', label: 'Data Science' },
+  'Pemrograman & Rekayasa Perangkat Lunak': { icon: Code, filterCat: 'Software Engineering', label: 'Software Eng.' },
+};
 ---
 
-<div class="cert-showcase" id="sertifikat" data-cert-showcase>
-  <div class="cert-head">
-    <div>
+<div class="skills-cert-section" id="skill" data-cert-showcase>
+  {/* Sub-section: Keahlian Teknis Berdasarkan Domain */}
+  <div class="skills-block">
+    <div class="block-head">
       <div class="title-row">
-        <Award size={22} class="cert-icon" aria-hidden="true" />
-        <h3>Sertifikasi Kompetensi & Program Terverifikasi</h3>
+        <Award size={22} class="header-icon" aria-hidden="true" />
+        <h3 id="skill-title">Keahlian Teknis Berdasarkan Domain</h3>
       </div>
-      <p class="cert-lead">
-        <strong>19 kredensial & sertifikasi resmi terverifikasi</strong> dengan total <strong>1.380+ jam pembelajaran terstruktur</strong> (Dicoding Indonesia, Google Developers, AWS, Samsung Electronics Indonesia, dan DBS Foundation).
+      <p class="block-lead">
+        Kompetensi praktis yang teruji pada 3 proyek portofolio (ditandai dengan badge nomor proyek) dan diperkuat oleh 19 sertifikasi terverifikasi.
       </p>
     </div>
-    <div class="head-actions">
-      <div class="drive-dropdown" aria-label="Tautan folder Google Drive sertifikat">
-        {driveFolders.map((f) => (
-          <a href={f.url} target="_blank" rel="noopener" class="drive-btn">
-            <Folder size={13} aria-hidden="true" />
-            <span>{f.name}</span>
-            <ExternalLink size={12} aria-hidden="true" />
-          </a>
-        ))}
-      </div>
-      <div class="nav-btns" aria-label="Navigasi geser sertifikat">
-        <button type="button" class="nav-btn" data-cert-prev aria-label="Sertifikat sebelumnya">
-          <ChevronLeft size={16} aria-hidden="true" />
-        </button>
-        <button type="button" class="nav-btn" data-cert-next aria-label="Sertifikat berikutnya">
-          <ChevronRight size={16} aria-hidden="true" />
-        </button>
-      </div>
+
+    <div class="domains-grid">
+      {groups.map((g) => {
+        const config = domainConfig[g.category] ?? { icon: Award, filterCat: 'Semua', label: g.category };
+        const IconComponent = config.icon;
+        const certCount = certs.filter(c => c.category === config.filterCat).length;
+        return (
+          <article class="domain-card">
+            <div class="domain-head">
+              <div class="domain-icon-wrap">
+                <IconComponent size={20} class="domain-icon" aria-hidden="true" />
+              </div>
+              <div>
+                <h4>{g.category}</h4>
+                <p class="domain-stats">{g.items.length} Keahlian · {certCount} Sertifikasi</p>
+              </div>
+            </div>
+
+            <ul class="skills-chips">
+              {g.items.map((it) => (
+                <li class="skill-chip">
+                  <span class="skill-name">{it.name}</span>
+                  {it.projectSlugs.length > 0 && (
+                    <span class="chip-projects" aria-label={`Dipakai di proyek`}>
+                      {it.projectSlugs.map((slug) => {
+                        const pr = projectIndex.get(slug);
+                        return pr ? (
+                          <a href={`#${slug}`} class="proj-badge" title={`Lompat ke Proyek ${pr.n}: ${pr.title}`}>
+                            {pr.n}
+                          </a>
+                        ) : null;
+                      })}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            <div class="domain-foot">
+              <button
+                type="button"
+                class="domain-filter-btn"
+                data-trigger-filter={config.filterCat}
+                aria-label={`Tampilkan sertifikat kategori ${config.label}`}
+              >
+                <span>Lihat Sertifikat {config.label} ({certCount})</span>
+                <ChevronRight size={14} aria-hidden="true" />
+              </button>
+            </div>
+          </article>
+        );
+      })}
     </div>
   </div>
 
-  <div class="filter-bar" role="tablist" aria-label="Filter kategori sertifikat">
-    {categories.map((cat, i) => (
-      <button
-        type="button"
-        class={`filter-tab ${i === 0 ? 'active' : ''}`}
-        data-filter={cat}
-        role="tab"
-        aria-selected={i === 0 ? 'true' : 'false'}
-      >
-        {cat} {cat === 'Semua' ? `(${certs.length})` : `(${certs.filter(c => c.category === cat).length})`}
-      </button>
-    ))}
-  </div>
+  {/* Sub-section: Galeri Sertifikasi Kompetensi & Program (Carousel) */}
+  <div class="cert-block" id="sertifikat">
+    <div class="cert-head">
+      <div>
+        <div class="title-row">
+          <Award size={22} class="header-icon" aria-hidden="true" />
+          <h3 id="sertifikat-title">Sertifikasi & Kredensial Resmi Terverifikasi</h3>
+        </div>
+        <p class="cert-lead">
+          <strong>19 kredensial & sertifikasi resmi terverifikasi</strong> dengan total <strong>1.380+ jam pembelajaran terstruktur</strong> (Dicoding Indonesia, Google Developers, AWS, Samsung Electronics Indonesia, dan DBS Foundation).
+        </p>
+      </div>
 
-  <div class="cert-track" data-cert-track tabindex="0" role="region" aria-label="Daftar sertifikat kompetensi">
-    {certs.map((c) => (
-      <article class="cert-card" data-category={c.category ?? 'Lainnya'}>
-        <div class="cert-thumb">
-          <ImageSlot
-            path={c.image ?? null}
-            alt={`Sertifikat ${c.name} - ${c.issuer}`}
-            label={c.name}
-            ratio="1.414 / 1"
-            widths={[320, 600, 900]}
-            sizes="(min-width: 48rem) 24rem, 85vw"
-          />
+      <div class="head-actions">
+        <div class="drive-dropdown" aria-label="Tautan folder Google Drive sertifikat">
+          {driveFolders.map((f) => (
+            <a href={f.url} target="_blank" rel="noopener" class="drive-btn">
+              <Folder size={13} aria-hidden="true" />
+              <span>{f.name}</span>
+              <ExternalLink size={12} aria-hidden="true" />
+            </a>
+          ))}
         </div>
-        <div class="cert-body">
-          <div class="cert-badges">
-            {c.hours && <span class="badge badge-accent">{c.hours}</span>}
-            {c.category && <span class="badge">{c.category}</span>}
-            <span class="badge badge-year">{c.year}</span>
-          </div>
-          <h4>{c.name}</h4>
-          <p class="issuer">{c.issuer}</p>
-          {c.summary && <p class="summary">{c.summary}</p>}
-          <div class="cert-links">
-            {isLink(c.verificationUrl) && (
-              <a href={c.verificationUrl} target="_blank" rel="noopener" class="cert-link primary">
-                <span>Verifikasi</span>
-                <ArrowUpRight size={14} aria-hidden="true" />
-              </a>
-            )}
-            {isLink(c.driveUrl) && (
-              <a href={c.driveUrl} target="_blank" rel="noopener" class="cert-link">
-                <span>Lihat PDF</span>
-                <ExternalLink size={14} aria-hidden="true" />
-              </a>
-            )}
-          </div>
+        <div class="nav-btns" aria-label="Navigasi geser sertifikat">
+          <button type="button" class="nav-btn" data-cert-prev aria-label="Sertifikat sebelumnya">
+            <ChevronLeft size={16} aria-hidden="true" />
+          </button>
+          <button type="button" class="nav-btn" data-cert-next aria-label="Sertifikat berikutnya">
+            <ChevronRight size={16} aria-hidden="true" />
+          </button>
         </div>
-      </article>
-    ))}
+      </div>
+    </div>
+
+    <div class="filter-bar" role="tablist" aria-label="Filter kategori sertifikat">
+      {categories.map((cat, i) => (
+        <button
+          type="button"
+          class={`filter-tab ${i === 0 ? 'active' : ''}`}
+          data-filter={cat}
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {cat} {cat === 'Semua' ? `(${certs.length})` : `(${certs.filter(c => c.category === cat).length})`}
+        </button>
+      ))}
+    </div>
+
+    <div class="cert-track" data-cert-track tabindex="0" role="region" aria-label="Daftar sertifikat kompetensi">
+      {certs.map((c) => (
+        <article class="cert-card" data-category={c.category ?? 'Lainnya'}>
+          <div class="cert-thumb">
+            <ImageSlot
+              path={c.image ?? null}
+              alt={`Sertifikat ${c.name} - ${c.issuer}`}
+              label={c.name}
+              ratio="1.414 / 1"
+              widths={[320, 600, 900]}
+              sizes="(min-width: 48rem) 24rem, 85vw"
+            />
+          </div>
+          <div class="cert-body">
+            <div class="cert-badges">
+              {c.hours && <span class="badge badge-accent">{c.hours}</span>}
+              {c.category && <span class="badge">{c.category}</span>}
+              <span class="badge badge-year">{c.year}</span>
+            </div>
+            <h4>{c.name}</h4>
+            <p class="issuer">{c.issuer}</p>
+            {c.summary && <p class="summary">{c.summary}</p>}
+            <div class="cert-links">
+              {isLink(c.verificationUrl) && (
+                <a href={c.verificationUrl} target="_blank" rel="noopener" class="cert-link primary">
+                  <span>Verifikasi</span>
+                  <ArrowUpRight size={14} aria-hidden="true" />
+                </a>
+              )}
+              {isLink(c.driveUrl) && (
+                <a href={c.driveUrl} target="_blank" rel="noopener" class="cert-link">
+                  <span>Lihat PDF</span>
+                  <ExternalLink size={14} aria-hidden="true" />
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
   </div>
 </div>
 
 <style>
-  .cert-showcase {
-    display: grid;
-    gap: var(--space-4);
+  .skills-cert-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
     border-top: 1px solid var(--line);
     padding-top: var(--space-6);
     margin-top: var(--space-6);
+    min-width: 0;
+  }
+
+  /* Skills Block */
+  .skills-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+  .block-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .header-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .block-head h3, .cert-head h3 {
+    margin: 0;
+    font-size: var(--step-1);
+    font-family: var(--font-heading);
+  }
+  .block-lead, .cert-lead {
+    color: var(--text-2);
+    font-size: var(--step--1);
+    margin: 0;
+    max-width: var(--measure);
+    line-height: 1.55;
+  }
+
+  .domains-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+  @media (min-width: 54rem) {
+    .domains-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+  }
+
+  .domain-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-width: 0;
+    transition: border-color 0.2s ease;
+  }
+  .domain-card:hover {
+    border-color: var(--text-2);
+  }
+
+  .domain-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .domain-icon-wrap {
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: var(--radius);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  .domain-card h4 {
+    margin: 0;
+    font-size: var(--step-0);
+    font-family: var(--font-heading);
+    color: var(--text);
+    line-height: 1.25;
+  }
+  .domain-stats {
+    margin: 0;
+    font-size: var(--step--2);
+    color: var(--text-2);
+    font-weight: 500;
+  }
+
+  .skills-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    flex-grow: 1;
+    align-content: flex-start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .skill-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--radius);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    font-size: var(--step--2);
+    color: var(--text);
+    line-height: 1.25;
+    font-weight: 500;
+  }
+  .skill-name {
+    word-break: break-word;
+  }
+  .chip-projects {
+    display: inline-flex;
+    gap: 0.2rem;
+    margin-inline-start: 0.1rem;
+  }
+  .proj-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.15rem;
+    height: 1.15rem;
+    padding-inline: 0.2rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-decoration: none;
+    line-height: 1;
+    transition: opacity 0.15s ease;
+  }
+  .proj-badge:hover {
+    opacity: 0.8;
+  }
+
+  .domain-foot {
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--line);
+    margin-top: auto;
+  }
+  .domain-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.35rem 0.6rem;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text-2);
+    font-size: var(--step--2);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .domain-filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--bg);
+  }
+
+  /* Cert Block */
+  .cert-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px dashed var(--line);
     min-width: 0;
   }
   .cert-head {
@@ -118,26 +377,6 @@ const categories = ['Semua', 'Program & Bootcamp', 'ML & AI', 'Data Science', 'S
     justify-content: space-between;
     align-items: flex-start;
     gap: var(--space-3);
-  }
-  .title-row {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-  }
-  .cert-icon {
-    color: var(--accent);
-    flex-shrink: 0;
-  }
-  .cert-head h3 {
-    margin: 0;
-    font-size: var(--step-1);
-    font-family: var(--font-heading);
-  }
-  .cert-lead {
-    color: var(--text-2);
-    font-size: var(--step--1);
-    margin-top: var(--space-1);
-    max-width: var(--measure);
   }
   .head-actions {
     display: flex;
@@ -344,6 +583,28 @@ const categories = ['Semua', 'Program & Bootcamp', 'ML & AI', 'Data Science', 'S
     const next = root.querySelector<HTMLButtonElement>('[data-cert-next]');
     const tabs = root.querySelectorAll<HTMLButtonElement>('[data-filter]');
     const cards = root.querySelectorAll<HTMLElement>('.cert-card');
+    const domainTriggers = root.querySelectorAll<HTMLButtonElement>('[data-trigger-filter]');
+
+    function applyFilter(category: string) {
+      tabs.forEach((t) => {
+        const isMatch = (t.getAttribute('data-filter') ?? '') === category;
+        t.classList.toggle('active', isMatch);
+        t.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+      });
+
+      cards.forEach((card) => {
+        const cat = card.getAttribute('data-category') ?? '';
+        if (category === 'Semua' || cat === category) {
+          card.classList.remove('is-hidden');
+        } else {
+          card.classList.add('is-hidden');
+        }
+      });
+
+      if (track) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      }
+    }
 
     if (track && prev && next) {
       prev.addEventListener('click', () => {
@@ -360,24 +621,18 @@ const categories = ['Semua', 'Program & Bootcamp', 'ML & AI', 'Data Science', 'S
 
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
-        tabs.forEach((t) => {
-          t.classList.remove('active');
-          t.setAttribute('aria-selected', 'false');
-        });
-        tab.classList.add('active');
-        tab.setAttribute('aria-selected', 'true');
-
         const filter = tab.getAttribute('data-filter') ?? 'Semua';
-        cards.forEach((card) => {
-          const cat = card.getAttribute('data-category') ?? '';
-          if (filter === 'Semua' || cat === filter) {
-            card.classList.remove('is-hidden');
-          } else {
-            card.classList.add('is-hidden');
-          }
-        });
-        if (track) {
-          track.scrollTo({ left: 0, behavior: 'smooth' });
+        applyFilter(filter);
+      });
+    });
+
+    domainTriggers.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetCategory = btn.getAttribute('data-trigger-filter') ?? 'Semua';
+        applyFilter(targetCategory);
+        const certBlock = root.querySelector('#sertifikat');
+        if (certBlock) {
+          certBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
     });
