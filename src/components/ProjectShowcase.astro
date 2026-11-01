@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight, ChevronDown } from '@lucide/astro';
+import { ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight } from '@lucide/astro';
 import { render } from 'astro:content';
 import ProjectGallery from './ProjectGallery.astro';
 import { getProjects, statusLabel, isLink } from '../lib/content';
@@ -15,79 +15,355 @@ const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
 <section class="section" id="proyek" aria-labelledby="proyek-title">
-  <div class="wrap">
+  <div class="wrap projects-container" data-projects-showcase>
     <div class="section-head">
-      <h2 id="proyek-title">Proyek</h2>
+      <div class="head-info">
+        <h2 id="proyek-title">Proyek Unggulan</h2>
+        <p class="section-lead">
+          3 studi kasus implementasi end-to-end: optimasi kuantitatif portofolio, sistem rekomendasi hybrid & AI generatif, serta perangkat IoT untuk tunarungu. Geser ke samping atau pilih tab untuk beralih proyek.
+        </p>
+      </div>
+
+      <div class="head-controls">
+        <span class="slide-counter" data-project-counter aria-live="polite">
+          Proyek <strong data-current-index>01</strong> / {pad(projects.length)}
+        </span>
+        <div class="nav-arrows" aria-label="Navigasi Proyek">
+          <button type="button" class="arrow-btn" data-project-prev aria-label="Proyek sebelumnya">
+            <ChevronLeft size={18} aria-hidden="true" />
+          </button>
+          <button type="button" class="arrow-btn" data-project-next aria-label="Proyek berikutnya">
+            <ChevronRight size={18} aria-hidden="true" />
+          </button>
+        </div>
+      </div>
     </div>
-    <ol class="list">
-      {projects.map(({ proj, Content }, i) => {
+
+    {/* Project Navigation Switcher Tabs */}
+    <nav class="project-tabs" role="tablist" aria-label="Pilih Proyek">
+      {projects.map(({ proj }, i) => {
         const d = proj.data;
+        const shortTitle = d.title.split(':')[0].replace('Menggunakan Adaptive Genetic Algorithm (AGA) dan Walk-Forward Validation', '(AGA)');
         return (
-          <li class="project" id={proj.id}>
-            <header>
-              <p class="num" aria-hidden="true">{pad(i + 1)}</p>
-              <div>
-                <h3>{d.title}</h3>
-                <p class="meta">
-                  <span class="badge">{statusLabel[d.status] ?? d.status}</span>
-                  <span>{d.role} · {d.period}</span>
-                </p>
-              </div>
-            </header>
-            <p class="summary">{d.summary}</p>
-            <ProjectGallery
-              coverImage={d.coverImage}
-              coverAlt={d.coverAlt}
-              gallery={d.gallery}
-              projectId={proj.id}
-            />
-            <dl>
-              <div><dt>Masalah</dt><dd>{d.problem}</dd></div>
-              <div><dt>Pendekatan</dt><dd>{d.approach}</dd></div>
-              <div><dt>Hasil</dt><dd>{d.outcome}</dd></div>
-            </dl>
-            <p class="stack"><span class="label">Stack</span> {d.stack.join(' · ')}</p>
-            <p class="links">
-              {isLink(d.repoUrl)
-                ? <a href={d.repoUrl} target="_blank" rel="noopener">Repositori<ArrowUpRight size={16} aria-hidden="true" /></a>
-                : <span class="muted">Repositori: {d.repoUrl ?? 'privat'}</span>}
-              {isLink(d.demoUrl)
-                ? <a href={d.demoUrl} target="_blank" rel="noopener">Demo<ArrowUpRight size={16} aria-hidden="true" /></a>
-                : <span class="muted">Demo: belum tersedia publik</span>}
-              {isLink(d.videoUrl) && (
-                <a href={d.videoUrl} target="_blank" rel="noopener">Video Demo<ArrowUpRight size={16} aria-hidden="true" /></a>
-              )}
-            </p>
-            {proj.body && proj.body.trim().length > 0 && (
-              <details class="case-study">
-                <summary>
-                  <span>Baca Dokumentasi Teknis & Studi Kasus Lengkap</span>
-                  <ChevronDown size={18} class="chevron" aria-hidden="true" />
-                </summary>
-                <div class="prose">
-                  <Content />
-                </div>
-              </details>
-            )}
-          </li>
+          <button
+            type="button"
+            class={`tab-btn ${i === 0 ? 'active' : ''}`}
+            data-target-index={i}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={proj.id}
+          >
+            <span class="tab-num">{pad(i + 1)}</span>
+            <span class="tab-title">{shortTitle}</span>
+            <span class="tab-badge">{statusLabel[d.status] ?? d.status}</span>
+          </button>
         );
       })}
-    </ol>
+    </nav>
+
+    {/* Horizontal Scroll / Swipe Track */}
+    <div class="projects-slider">
+      <ol class="projects-track" data-projects-track tabindex="0" role="region" aria-label="Koleksi proyek unggulan horizontal">
+        {projects.map(({ proj, Content }, i) => {
+          const d = proj.data;
+          return (
+            <li class="project-slide" id={proj.id} data-index={i}>
+              <div class="slide-card">
+                <header class="slide-header">
+                  <div class="header-main">
+                    <p class="slide-num" aria-hidden="true">{pad(i + 1)}</p>
+                    <div>
+                      <h3>{d.title}</h3>
+                      <p class="slide-meta">
+                        <span class="badge badge-status">{statusLabel[d.status] ?? d.status}</span>
+                        <span>{d.role} · {d.period}</span>
+                      </p>
+                    </div>
+                  </div>
+                </header>
+
+                <p class="summary">{d.summary}</p>
+
+                <div class="gallery-wrapper">
+                  <ProjectGallery
+                    coverImage={d.coverImage}
+                    coverAlt={d.coverAlt}
+                    gallery={d.gallery}
+                    projectId={proj.id}
+                  />
+                </div>
+
+                <dl class="details-grid">
+                  <div class="detail-block">
+                    <dt>Masalah</dt>
+                    <dd>{d.problem}</dd>
+                  </div>
+                  <div class="detail-block">
+                    <dt>Pendekatan</dt>
+                    <dd>{d.approach}</dd>
+                  </div>
+                  <div class="detail-block">
+                    <dt>Hasil</dt>
+                    <dd>{d.outcome}</dd>
+                  </div>
+                </dl>
+
+                <div class="stack-row">
+                  <span class="stack-label">Stack</span>
+                  <div class="stack-tags">
+                    {d.stack.map((item) => (
+                      <span class="stack-tag">{item}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="links-row">
+                  {isLink(d.repoUrl)
+                    ? <a href={d.repoUrl} target="_blank" rel="noopener" class="proj-link primary">
+                        <span>Repositori</span>
+                        <ArrowUpRight size={15} aria-hidden="true" />
+                      </a>
+                    : <span class="muted">Repositori: {d.repoUrl ?? 'privat'}</span>}
+                  {isLink(d.demoUrl)
+                    ? <a href={d.demoUrl} target="_blank" rel="noopener" class="proj-link">
+                        <span>Live Demo</span>
+                        <ArrowUpRight size={15} aria-hidden="true" />
+                      </a>
+                    : <span class="muted">Demo: belum tersedia publik</span>}
+                  {isLink(d.videoUrl) && (
+                    <a href={d.videoUrl} target="_blank" rel="noopener" class="proj-link">
+                      <span>Video Demo</span>
+                      <ArrowUpRight size={15} aria-hidden="true" />
+                    </a>
+                  )}
+                </div>
+
+                {proj.body && proj.body.trim().length > 0 && (
+                  <details class="case-study">
+                    <summary>
+                      <span>Baca Dokumentasi Teknis & Studi Kasus Lengkap</span>
+                      <ChevronDown size={18} class="chevron" aria-hidden="true" />
+                    </summary>
+                    <div class="prose">
+                      <Content />
+                    </div>
+                  </details>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
   </div>
 </section>
 
 <style>
-  .list { display: grid; gap: var(--space-7); min-width: 0; }
-  .project { display: grid; gap: var(--space-4); scroll-margin-top: 1rem; min-width: 0; }
-  header { display: flex; gap: var(--space-4); align-items: baseline; }
-  .num {
+  .projects-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--space-3);
+  }
+  .head-info {
+    max-width: var(--measure);
+  }
+  .head-info h2 {
+    margin: 0;
+    font-size: var(--step-2);
+  }
+  .section-lead {
+    color: var(--text-2);
+    font-size: var(--step--1);
+    margin-top: var(--space-1);
+    line-height: 1.55;
+  }
+
+  .head-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .slide-counter {
+    font-size: var(--step--1);
+    color: var(--text-2);
+  }
+  .slide-counter strong {
+    color: var(--accent);
+    font-family: var(--font-heading);
+    font-size: var(--step-0);
+  }
+  .nav-arrows {
+    display: inline-flex;
+    gap: var(--space-1);
+  }
+  .arrow-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    color: var(--text);
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .arrow-btn:hover {
+    border-color: var(--text);
+    background: var(--bg);
+  }
+
+  /* Project Switcher Tabs */
+  .project-tabs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    margin-top: var(--space-1);
+  }
+  @media (min-width: 48rem) {
+    .project-tabs {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+  }
+
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    color: var(--text-2);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    min-width: 0;
+  }
+  .tab-btn:hover {
+    border-color: var(--text-2);
+    color: var(--text);
+  }
+  .tab-btn.active {
+    border-color: var(--accent);
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .tab-num {
+    font-family: var(--font-heading);
+    font-size: var(--step--1);
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .tab-title {
+    font-size: var(--step--2);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+  }
+  .tab-badge {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--text-2);
+    flex-shrink: 0;
+    text-transform: capitalize;
+  }
+  .tab-btn.active .tab-badge {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Projects Slider Track */
+  .projects-slider {
+    width: 100%;
+    min-width: 0;
+    position: relative;
+  }
+  .projects-track {
+    display: flex;
+    gap: var(--space-5);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0px;
+    padding-bottom: var(--space-2);
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .projects-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project-slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    max-width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .slide-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+  @media (max-width: 36rem) {
+    .slide-card {
+      padding: var(--space-4);
+      gap: var(--space-3);
+    }
+  }
+
+  .slide-header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+  .header-main {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+  .slide-num {
     font-family: var(--font-heading);
     font-size: var(--step-2);
     color: var(--accent);
     line-height: 1;
-    min-width: 2.2ch;
+    min-width: 2ch;
   }
-  .meta {
+  .slide-header h3 {
+    margin: 0;
+    font-size: var(--step-1);
+    line-height: 1.25;
+  }
+  .slide-meta {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -96,28 +372,133 @@ const pad = (n: number) => String(n).padStart(2, '0');
     font-size: var(--step--1);
     color: var(--text-2);
   }
-  .summary { font-size: var(--step-1); }
-  dl { display: grid; gap: var(--space-4); border-top: 1px solid var(--line); padding-top: var(--space-4); }
+  .badge-status {
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .summary {
+    font-size: var(--step-0);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .gallery-wrapper {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Details Grid (3 columns on desktop, 1 on mobile) */
+  .details-grid {
+    display: grid;
+    gap: var(--space-3);
+    border-top: 1px solid var(--line);
+    padding-top: var(--space-4);
+    margin: 0;
+  }
+  @media (min-width: 52rem) {
+    .details-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+  }
+  .detail-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg);
+  }
   dt {
-    font-size: var(--step--1);
+    font-size: var(--step--2);
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
+    color: var(--accent);
+  }
+  dd {
+    margin: 0;
+    font-size: var(--step--1);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--step--1);
+  }
+  .stack-label {
+    font-weight: 700;
+    color: var(--text);
+    font-size: var(--step--2);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .stack-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .stack-tag {
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--bg);
+    font-size: var(--step--2);
+    font-weight: 500;
     color: var(--text-2);
   }
-  dd { max-width: var(--measure); }
-  .stack { font-size: var(--step--1); color: var(--text-2); }
-  .label { font-weight: 700; margin-inline-end: var(--space-2); color: var(--text); }
-  .links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); font-weight: 600; }
-  .links a { display: inline-flex; align-items: center; gap: var(--space-1); padding-block: var(--space-2); }
-  .muted { color: var(--text-2); font-weight: 400; font-size: var(--step--1); padding-block: var(--space-2); }
+
+  .links-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    align-items: center;
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--line);
+  }
+  .proj-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--text-2);
+    text-decoration: none;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--bg);
+    transition: all 0.15s ease;
+  }
+  .proj-link:hover {
+    color: var(--text);
+    border-color: var(--text);
+  }
+  .proj-link.primary {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .muted {
+    color: var(--text-2);
+    font-size: var(--step--1);
+  }
 
   .case-study {
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    background: var(--bg-2);
+    background: var(--bg);
     overflow: hidden;
-    margin-top: var(--space-2);
+    margin-top: var(--space-1);
   }
   .case-study summary {
     display: flex;
@@ -132,7 +513,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     transition: background-color 0.15s;
   }
   .case-study summary:hover {
-    background: var(--bg);
+    background: var(--bg-2);
   }
   .case-study summary :global(.chevron) {
     transition: transform 0.2s ease;
@@ -141,57 +522,144 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .case-study[open] summary :global(.chevron) {
     transform: rotate(180deg);
   }
-  .case-study .prose {
+  .prose {
     padding: var(--space-4);
     border-top: 1px solid var(--line);
     font-size: var(--step--1);
     line-height: 1.65;
   }
-  .case-study .prose :global(h2) {
+  .prose :global(h2) {
     font-size: var(--step-0);
     margin-top: var(--space-4);
     margin-bottom: var(--space-2);
-    font-family: var(--font-heading);
-    color: var(--text);
   }
-  .case-study .prose :global(h3) {
+  .prose :global(h3) {
     font-size: var(--step--1);
-    font-weight: 700;
     margin-top: var(--space-3);
-    margin-bottom: var(--space-2);
-    color: var(--text);
-  }
-  .case-study .prose :global(p) {
-    margin-bottom: var(--space-3);
-  }
-  .case-study .prose :global(ul),
-  .case-study .prose :global(ol) {
-    margin-bottom: var(--space-3);
-    padding-left: 1.5rem;
-  }
-  .case-study .prose :global(li) {
     margin-bottom: var(--space-1);
   }
-  .case-study .prose :global(table) {
+  .prose :global(p) {
+    margin-bottom: var(--space-3);
+    max-width: none;
+  }
+  .prose :global(ul), .prose :global(ol) {
+    padding-left: var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+  .prose :global(li) {
+    margin-bottom: var(--space-1);
+  }
+  .prose :global(table) {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: var(--space-4);
     font-size: var(--step--2);
-    display: block;
-    overflow-x: auto;
   }
-  .case-study .prose :global(th),
-  .case-study .prose :global(td) {
-    padding: var(--space-2) var(--space-3);
+  .prose :global(th), .prose :global(td) {
     border: 1px solid var(--line);
+    padding: var(--space-1) var(--space-2);
     text-align: left;
   }
-  .case-study .prose :global(th) {
-    background: var(--bg);
-    font-weight: 700;
-  }
-
-  @media (min-width: 48rem) {
-    dl { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+  .prose :global(th) {
+    background: var(--bg-2);
+    font-weight: 600;
   }
 </style>
+
+<script>
+  document.querySelectorAll('[data-projects-showcase]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-projects-track]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-project-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-project-next]');
+    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-target-index]');
+    const slides = root.querySelectorAll<HTMLElement>('.project-slide');
+    const counterEl = root.querySelector<HTMLElement>('[data-current-index]');
+
+    const pad = (n: number) => String(n).padStart(2, '0');
+
+    function updateActiveState(index: number) {
+      tabs.forEach((tab) => {
+        const targetIdx = parseInt(tab.getAttribute('data-target-index') ?? '-1', 10);
+        const isActive = targetIdx === index;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      if (counterEl) {
+        counterEl.textContent = pad(index + 1);
+      }
+    }
+
+    function scrollToIndex(index: number) {
+      if (!track) return;
+      const targetSlide = slides[index];
+      if (targetSlide) {
+        targetSlide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        updateActiveState(index);
+      }
+    }
+
+    function getCurrentIndex(): number {
+      if (!track || slides.length === 0) return 0;
+      const trackLeft = track.getBoundingClientRect().left;
+      let closestIdx = 0;
+      let minDiff = Infinity;
+      slides.forEach((slide, idx) => {
+        const diff = Math.abs(slide.getBoundingClientRect().left - trackLeft);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIdx = idx;
+        }
+      });
+      return closestIdx;
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const idx = parseInt(tab.getAttribute('data-target-index') ?? '0', 10);
+        scrollToIndex(idx);
+      });
+    });
+
+    if (prev) {
+      prev.addEventListener('click', () => {
+        const current = getCurrentIndex();
+        const prevIdx = (current - 1 + slides.length) % slides.length;
+        scrollToIndex(prevIdx);
+      });
+    }
+
+    if (next) {
+      next.addEventListener('click', () => {
+        const current = getCurrentIndex();
+        const nextIdx = (current + 1) % slides.length;
+        scrollToIndex(nextIdx);
+      });
+    }
+
+    // Scroll listener with debounce for smooth tracking
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+    track?.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const activeIdx = getCurrentIndex();
+        updateActiveState(activeIdx);
+      }, 50);
+    }, { passive: true });
+
+    // Handle hash on page load or hashchange (e.g. #proyek-2)
+    function handleHash() {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        slides.forEach((slide, idx) => {
+          if (slide.id === hash) {
+            scrollToIndex(idx);
+          }
+        });
+      }
+    }
+
+    window.addEventListener('hashchange', handleHash);
+    setTimeout(handleHash, 200);
+  });
+</script>
