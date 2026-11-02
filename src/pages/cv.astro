@@ -11,6 +11,7 @@ const e = p.education;
 
 const cvRole = "Informatics Graduate | Data & Machine Learning Enthusiast";
 
+const bare = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '');
 const isVideo = (u?: string | null) => !!u && /(youtube\.com|youtu\.be)/i.test(u);
 
 // Kurasi 6 sertifikasi teknis & bahasa terbaik berdurasi panjang untuk CV MagangHub
@@ -83,7 +84,7 @@ const page2Projects = allProjects.slice(3);
             <a href={p.contact.github} target="_blank" rel="noopener noreferrer">GitHub</a>
           )} ·
           {isLink(p.siteUrl) && (
-            <a href={p.siteUrl} target="_blank" rel="noopener noreferrer">Portofolio Web</a>
+            <a href={p.siteUrl} target="_blank" rel="noopener noreferrer">{bare(p.siteUrl)}</a>
           )}
         </p>
       </header>
