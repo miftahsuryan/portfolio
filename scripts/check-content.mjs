@@ -76,8 +76,8 @@ for (const loc of fs.readdirSync(CONTENT)) {
       const file = path.join(projDir, f);
       slugs.add(f.replace(/\.md$/, ''));
       const fm = frontmatter(file);
-      if (!PLACEHOLDER.test(fm.status ?? '') && !['selesai', 'prototipe', 'sedang-dikerjakan'].includes(fm.status))
-        errors.push(`${rel(file)}  status harus: selesai | prototipe | sedang-dikerjakan`);
+      if (!PLACEHOLDER.test(fm.status ?? '') && !['selesai', 'prototipe', 'sedang-dikerjakan', 'pengembangan'].includes(fm.status))
+        errors.push(`${rel(file)}  status harus: selesai | prototipe | sedang-dikerjakan | pengembangan`);
       checkAsset(file, 'coverImage', fm.coverImage);
       if (fm.coverImage && !fm.coverAlt) errors.push(`${rel(file)}  coverImage butuh coverAlt`);
       if (Array.isArray(fm.gallery)) {

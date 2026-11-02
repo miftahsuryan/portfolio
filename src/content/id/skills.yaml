@@ -7,58 +7,63 @@ groups:
   - category: "Machine Learning & AI"
     items:
       - name: "Supervised & Unsupervised ML"
-        projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
+        projectSlugs: ["proyek-1", "proyek-2", "proyek-3", "proyek-4"]
         evidence:
           - "Sertifikat Machine Learning Terapan (80 Jam, Dicoding)"
           - "Sertifikat Belajar Machine Learning untuk Pemula (75 Jam, Dicoding)"
       - name: "Deep Learning (TF & PyTorch)"
-        projectSlugs: ["proyek-2"]
+        projectSlugs: ["proyek-2", "proyek-3"]
         evidence:
           - "Sertifikat Belajar Pengembangan Machine Learning (90 Jam, Dicoding)"
-          - "Model RecommenderNet & Fine-Tuning T5 pada WisataPas"
+          - "Model RecommenderNet WisataPas & Kronos Transformer PyTorch"
       - name: "Adaptive Genetic Algorithm (AGA)"
-        projectSlugs: ["proyek-1"]
+        projectSlugs: ["proyek-1", "proyek-2"]
         evidence:
           - "Skripsi S1 Optimasi Portofolio Saham IDX30 (46,49% Total Return)"
+          - "Modul Walk-Forward AGA Optimizer pada IDX Quant Studio"
       - name: "Hybrid Recommender System"
-        projectSlugs: ["proyek-2"]
+        projectSlugs: ["proyek-3"]
         evidence:
           - "Proyek Akhir Machine Learning Terapan (Dicoding)"
           - "Capstone WisataPas Coding Camp DBS Foundation 2025"
       - name: "NLP & Speech-to-Text"
-        projectSlugs: ["proyek-2", "proyek-3"]
+        projectSlugs: ["proyek-3", "proyek-5"]
         evidence:
-          - "Fine-Tuned T5 Hugging Face Transformers"
+          - "Fine-Tuned T5 Hugging Face Transformers pada WisataPas"
           - "Capstone IoT Speech-to-Text Samsung Innovation Campus Batch 5"
       - name: "Computer Vision & Time Series"
-        projectSlugs: ["proyek-2"]
+        projectSlugs: ["proyek-2", "proyek-3"]
         evidence:
           - "Sertifikat Belajar Pengembangan Machine Learning (Dicoding)"
-          - "Sertifikat Belajar Dasar AI (Google Cloud & Dicoding)"
+          - "Peramalan Candlestick Kronos K-Line Foundation Model"
 
   - category: "Data Science & Analisis Kuantitatif"
     items:
       - name: "Quantitative Portfolio Optimization"
-        projectSlugs: ["proyek-1"]
+        projectSlugs: ["proyek-1", "proyek-2"]
         evidence:
           - "Walk-Forward Optimization Saham IDX30 (2,1025 Sharpe Ratio)"
-          - "Sertifikat Financial Literacy 101 (DBS Foundation & Dicoding)"
+          - "Damodaran Sectoral Valuation & Screening Hub pada IDX Quant Studio"
+          - "Backtest OOS Walk-Forward 40:30:30 AGA (+15,68% Alpha vs IHSG)"
       - name: "Data Engineering & ETL"
-        projectSlugs: ["proyek-2"]
+        projectSlugs: ["proyek-2", "proyek-3", "proyek-4"]
         evidence:
           - "Sertifikat Belajar Fundamental Pemrosesan Data (60 Jam, Dicoding)"
+          - "Pipeline DuckDB & Parquet Ingestion pada IDX Quant Studio"
+          - "Pipeline Ingestion Multimedia & Scraping Terstruktur X-Pulse"
       - name: "EDA & Data Wrangling"
-        projectSlugs: ["proyek-1", "proyek-2"]
+        projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
         evidence:
           - "Sertifikat Belajar Analisis Data dengan Python (22 Jam, Dicoding)"
       - name: "Inferential Statistics"
-        projectSlugs: ["proyek-1"]
+        projectSlugs: ["proyek-1", "proyek-2"]
         evidence:
           - "Uji Shapiro-Wilk, Wilcoxon Signed-Rank, Paired t-test (p < 0,001)"
       - name: "SQL & Relational DB"
-        projectSlugs: []
+        projectSlugs: ["proyek-2", "proyek-3"]
         evidence:
           - "Sertifikat Belajar Dasar SQL (Dicoding)"
+          - "Kueri Analitik DuckDB pada Partisi Data Pasar Modal BEI"
       - name: "Streamlit & Plotly Visualization"
         projectSlugs: ["proyek-1", "proyek-2"]
         evidence:
@@ -68,29 +73,31 @@ groups:
   - category: "Pemrograman & Rekayasa Perangkat Lunak"
     items:
       - name: "Python (OOP & Testing)"
-        projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
+        projectSlugs: ["proyek-1", "proyek-2", "proyek-3", "proyek-4", "proyek-5"]
         evidence:
           - "Sertifikat Memulai Pemrograman dengan Python (35 Jam, Dicoding)"
-          - "Pengembangan skripsi kuantitatif, capstone DBS, dan SIC Batch 5"
+          - "Pengembangan skripsi kuantitatif, capstone DBS, dan IDX Quant Studio"
       - name: "Spec-Driven AI Engineering"
-        projectSlugs: []
+        projectSlugs: ["proyek-4"]
         evidence:
           - "Sertifikat Spec-Driven Development dengan Kiro (AWS & Dicoding)"
+          - "Arsitektur Spec-Driven Pipeline & Enterprise Standards X-Pulse"
       - name: "Git & GitHub Workflow"
-        projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
+        projectSlugs: ["proyek-1", "proyek-2", "proyek-3", "proyek-4"]
         evidence:
           - "Sertifikat Belajar Dasar Git dengan GitHub (Dicoding)"
           - "Repositori kode sumber di GitHub"
       - name: "Algorithms & Data Structures"
-        projectSlugs: ["proyek-1", "proyek-2", "proyek-3"]
+        projectSlugs: ["proyek-1", "proyek-2", "proyek-3", "proyek-4", "proyek-5"]
         evidence:
           - "Sertifikat Pengenalan ke Logika Pemrograman (Dicoding)"
-          - "Implementasi algoritma genetika adaptif dan sistem IoT"
+          - "Implementasi algoritma genetika adaptif dan sistem data kuantitatif"
       - name: "Web Development (JS/HTML/CSS)"
-        projectSlugs: []
+        projectSlugs: ["proyek-2", "proyek-3", "proyek-4"]
         evidence:
           - "Sertifikat Pengembang Software (KBJI 2512.03, Skor 100/100, Dicoding)"
+          - "Cockpit Frontend Modern React 19 + TypeScript + Vite pada IDX Quant Studio"
       - name: "IoT & Embedded ESP32"
-        projectSlugs: ["proyek-3"]
+        projectSlugs: ["proyek-5"]
         evidence:
           - "Perangkat IoT Semi Finalist Samsung Innovation Campus Batch 5"

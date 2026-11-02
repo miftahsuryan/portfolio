@@ -14,7 +14,7 @@
 
   --paper-dark: #141416;
   --paper-2-dark: #1c1c20;
-  --ink-dark: #f4f4f6;
+  --ink-dark: #ececee;
   --ink-2-dark: #a1a1aa;
   --line-dark: #2a2a30;
   --accent-dark: #38bdf8;
@@ -57,11 +57,20 @@
   --font-heading: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
   --font-body: 'Plus Jakarta Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  --step--1: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
-  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
-  --step-1: clamp(1.15rem, 1.08rem + 0.35vw, 1.3rem);
-  --step-2: clamp(1.4rem, 1.25rem + 0.7vw, 1.8rem);
-  --step-3: clamp(2.1rem, 1.5rem + 3vw, 3.6rem);
+  --step--2: clamp(0.85rem, 0.82rem + 0.1vw, 0.925rem);
+  --step--1: clamp(0.95rem, 0.92rem + 0.15vw, 1.05rem);
+  --step-0: clamp(1.0625rem, 1.02rem + 0.25vw, 1.1875rem);
+  --step-1: clamp(1.25rem, 1.18rem + 0.35vw, 1.45rem);
+  --step-2: clamp(1.6rem, 1.45rem + 0.75vw, 2.1rem);
+  --step-3: clamp(2.4rem, 1.9rem + 2.5vw, 3.8rem);
+
+  /* Ergonomic line-height */
+  --leading-heading: 1.25;
+  --leading-body: 1.65;
+  --leading-relaxed: 1.75;
+
+  /* Header & layout */
+  --header-height: 4.25rem;
 
   /* Spasi */
   --space-1: 0.25rem;
@@ -70,10 +79,10 @@
   --space-4: 1rem;
   --space-5: 1.5rem;
   --space-6: 2.5rem;
-  --space-7: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+  --space-7: clamp(4rem, 3rem + 4.5vw, 6.75rem);
 
-  --measure: 66ch;
-  --page-width: 60rem;
+  --measure: 62ch;
+  --page-width: 68rem;
   --gutter: clamp(1.25rem, 5vw, 2.5rem);
   --radius: 6px;
   --radius-card: 12px;

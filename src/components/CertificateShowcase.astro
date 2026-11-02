@@ -17,7 +17,7 @@ const driveFolders = [
   { name: 'Drive Samsung Innovation Campus', url: 'https://drive.google.com/drive/folders/1jOtxipwoEbbdnGidgdYIua-ccc5ZfUhm?usp=share_link' },
 ];
 
-const categories = ['Semua', 'Program & Bootcamp', 'ML & AI', 'Data Science', 'Software Engineering', 'Bahasa & Komputasi'];
+const categories = ['Semua', 'ML & AI', 'Data Science', 'Software Engineering', 'Bahasa & Komputasi', 'Organisasi & Prestasi'];
 
 const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label: string }> = {
   'Machine Learning & AI': { icon: Cpu, filterCat: 'ML & AI', label: 'ML & AI' },
@@ -27,22 +27,22 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
 ---
 
 <div class="skills-cert-section" id="skill" data-cert-showcase>
-  {/* Sub-section: Keahlian Teknis Berdasarkan Domain */}
+  {/* Sub-section: Skill Berdasarkan Domain */}
   <div class="skills-block">
-    <div class="block-head" data-reveal="up">
-      <h3 id="skill-title">Keahlian Teknis Berdasarkan Domain</h3>
+    <div class="block-head">
+      <h3 id="skill-title">Skill</h3>
       <p class="block-lead">
         Kompetensi praktis yang teruji pada proyek dan didukung oleh {certs.length} sertifikasi terverifikasi.
       </p>
     </div>
 
     <div class="domains-grid">
-      {groups.map((g, i) => {
+      {groups.map((g) => {
         const config = domainConfig[g.category] ?? { icon: Award, filterCat: 'Semua', label: g.category };
         const IconComponent = config.icon;
         const certCount = certs.filter(c => c.category === config.filterCat).length;
         return (
-          <article class="domain-card" data-reveal="up" data-reveal-delay={String(i + 1)} data-spotlight>
+          <article class="domain-card">
             <div class="domain-head">
               <div class="domain-icon-wrap">
                 <IconComponent size={20} class="domain-icon" aria-hidden="true" />
@@ -56,20 +56,8 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
             <ul class="skills-chips">
               {g.items.map((it) => (
                 <li class="skill-chip">
-                  <TechIcon name={it.name} size={13} />
+                  <TechIcon name={it.name} size={14} />
                   <span class="skill-name">{it.name}</span>
-                  {it.projectSlugs.length > 0 && (
-                    <span class="chip-projects" aria-label={`Dipakai di proyek`}>
-                      {it.projectSlugs.map((slug) => {
-                        const pr = projectIndex.get(slug);
-                        return pr ? (
-                          <a href={`#${slug}`} class="proj-badge" title={`Lompat ke Proyek ${pr.n}: ${pr.title}`}>
-                            {pr.n}
-                          </a>
-                        ) : null;
-                      })}
-                    </span>
-                  )}
                 </li>
               ))}
             </ul>
@@ -91,13 +79,13 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
     </div>
   </div>
 
-  {/* Sub-section: Galeri Sertifikasi Kompetensi & Program (Carousel) */}
+  {/* Sub-section: Galeri Sertifikasi (Carousel) */}
   <div class="cert-block" id="sertifikat">
-    <div class="cert-head" data-reveal="up">
+    <div class="cert-head">
       <div>
-        <h3 id="sertifikat-title">Sertifikasi & Kredensial Resmi</h3>
+        <h3 id="sertifikat-title">Sertifikasi</h3>
         <p class="cert-lead">
-          <strong>{certs.length} kredensial terverifikasi</strong> dengan total <strong>1.400+ jam pelatihan resmi</strong> (Dicoding, Google Developers, AWS, Samsung, DBS, TBI, UIN).
+          <strong>{certs.length} sertifikat & kredensial terverifikasi</strong> (Dicoding, Google Developers, AWS, TBI, UIN, BEM UNY, IMM).
         </p>
       </div>
 
@@ -109,16 +97,16 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
         </a>
         <div class="nav-btns" aria-label="Navigasi geser sertifikat">
           <button type="button" class="nav-btn" data-cert-prev aria-label="Sertifikat sebelumnya">
-            <ChevronLeft size={16} aria-hidden="true" />
+            <ChevronLeft size={18} aria-hidden="true" />
           </button>
           <button type="button" class="nav-btn" data-cert-next aria-label="Sertifikat berikutnya">
-            <ChevronRight size={16} aria-hidden="true" />
+            <ChevronRight size={18} aria-hidden="true" />
           </button>
         </div>
       </div>
     </div>
 
-    <div class="filter-bar" role="tablist" aria-label="Filter kategori sertifikat" data-reveal="up" data-reveal-delay="1">
+    <div class="filter-bar" role="tablist" aria-label="Filter kategori sertifikat">
       {categories.map((cat, i) => (
         <button
           type="button"
@@ -132,9 +120,9 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
       ))}
     </div>
 
-    <div class="cert-track" data-cert-track tabindex="0" role="region" aria-label="Daftar sertifikat kompetensi" data-reveal="up" data-reveal-delay="2">
+    <div class="cert-track" data-cert-track tabindex="0" role="region" aria-label="Daftar sertifikat kompetensi">
       {certs.map((c) => (
-        <article class="cert-card" data-category={c.category ?? 'Lainnya'} data-spotlight>
+        <article class="cert-card" data-category={c.category ?? 'Lainnya'}>
           <div class="cert-thumb">
             <ImageSlot
               path={c.image ?? null}
@@ -152,7 +140,6 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
             </div>
             <h4>{c.name}</h4>
             <p class="issuer">{c.issuer} · {c.year}</p>
-            {c.summary && <p class="summary">{c.summary}</p>}
             <div class="cert-links">
               {isLink(c.verificationUrl) && (
                 <a href={c.verificationUrl} target="_blank" rel="noopener" class="cert-link primary">
@@ -215,8 +202,8 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
     color: var(--text-2);
     font-size: var(--step--1);
     margin: 0;
-    max-width: var(--measure);
-    line-height: 1.55;
+    max-width: 100%;
+    line-height: var(--leading-body, 1.65);
   }
 
   .domains-grid {
@@ -265,14 +252,14 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   }
   .domain-card h4 {
     margin: 0;
-    font-size: var(--step-0);
+    font-size: var(--step-1);
     font-family: var(--font-heading);
     color: var(--text);
     line-height: 1.25;
   }
   .domain-stats {
     margin: 0;
-    font-size: var(--step--2);
+    font-size: var(--step--1);
     color: var(--text-2);
     font-weight: 500;
   }
@@ -280,7 +267,7 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   .skills-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem;
+    gap: 0.4rem;
     flex-grow: 1;
     align-content: flex-start;
     margin: 0;
@@ -290,42 +277,23 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   .skill-chip {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.25rem 0.55rem;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
     border-radius: var(--radius);
     background: var(--bg);
     border: 1px solid var(--line);
-    font-size: var(--step--2);
+    font-size: var(--step--1);
     color: var(--text);
-    line-height: 1.25;
+    line-height: 1.35;
     font-weight: 500;
+    transition: all 0.15s ease;
+  }
+  .skill-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
   }
   .skill-name {
     word-break: break-word;
-  }
-  .chip-projects {
-    display: inline-flex;
-    gap: 0.2rem;
-    margin-inline-start: 0.1rem;
-  }
-  .proj-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.15rem;
-    height: 1.15rem;
-    padding-inline: 0.2rem;
-    border-radius: 999px;
-    background: var(--accent);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-decoration: none;
-    line-height: 1;
-    transition: opacity 0.15s ease;
-  }
-  .proj-badge:hover {
-    opacity: 0.8;
   }
 
   .domain-foot {
@@ -404,8 +372,9 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   .nav-btn {
     display: inline-grid;
     place-items: center;
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    min-height: 2.5rem;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--bg-2);
@@ -423,13 +392,16 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
     gap: var(--space-2);
   }
   .filter-tab {
-    padding: var(--space-1) var(--space-3);
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
+    padding: 0.25rem 0.65rem;
     border: 1px solid var(--line);
-    border-radius: 999px;
+    border-radius: var(--radius);
     background: var(--bg-2);
     color: var(--text-2);
-    font-size: var(--step--1);
-    font-weight: 500;
+    font-size: var(--step--2);
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.15s ease;
   }
@@ -439,9 +411,8 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   }
   .filter-tab.active {
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
     border-color: var(--accent);
-    font-weight: 600;
   }
   .cert-track {
     display: flex;
@@ -457,7 +428,7 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
     max-width: 100%;
   }
   .cert-card {
-    flex: 0 0 min(85vw, 24rem);
+    flex: 0 0 min(85vw, 20.5rem);
     scroll-snap-align: start;
     display: flex;
     flex-direction: column;
@@ -519,7 +490,7 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   }
   .badge-accent {
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
     border-color: var(--accent);
   }
   .badge-year {
@@ -527,7 +498,7 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   }
   .cert-body h4 {
     margin: 0;
-    font-size: var(--step-0);
+    font-size: var(--step-1);
     line-height: 1.35;
     color: var(--text);
   }
@@ -538,9 +509,9 @@ const domainConfig: Record<string, { icon: typeof Cpu; filterCat: string; label:
   }
   .summary {
     margin: 0;
-    font-size: var(--step--1);
+    font-size: var(--step-0);
     color: var(--text-2);
-    line-height: 1.5;
+    line-height: var(--leading-body, 1.65);
     flex-grow: 1;
   }
   .cert-links {

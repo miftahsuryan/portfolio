@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../components/HeroSection.astro';
+import ServicesSection from '../components/ServicesSection.astro';
 import ProjectShowcase from '../components/ProjectShowcase.astro';
 import AboutEducation from '../components/AboutEducation.astro';
 import ContactSection from '../components/ContactSection.astro';
@@ -9,8 +10,13 @@ import { getProfile } from '../lib/content';
 const p = getProfile();
 ---
 
-<BaseLayout title={`${p.name} · ${p.role}`} description={`${p.role}. ${p.tagline}`}>
+<BaseLayout
+  title={`${p.name} · ${p.role}`}
+  description={`${p.role}. ${p.tagline}`}
+  ogImage="/og-image.png"
+>
   <HeroSection />
+  <ServicesSection />
   <ProjectShowcase />
   <AboutEducation />
   <ContactSection />

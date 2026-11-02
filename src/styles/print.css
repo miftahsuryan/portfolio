@@ -1,14 +1,42 @@
-/* Tanpa @layer agar mengalahkan gaya komponen saat mencetak. */
-@page { size: A4; margin: 14mm 16mm; }
-
-@media print {
-  :root { color-scheme: light !important; }
-  body { background: #fff !important; color: #000 !important; font-size: 10.5pt; line-height: 1.45; }
-  body::before { display: none !important; }
-  .no-print { display: none !important; }
-  a { color: #000 !important; text-decoration: none; }
-  a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 8.5pt; color: #444; word-break: break-all; }
-  a[href^='mailto:']::after { content: ''; }
-  .cv-block { break-inside: avoid; }
+/* Print stylesheet untuk A4 CV & Dokumen Cetak */
+@page {
+  size: A4;
+  margin: 10mm 14mm 10mm 14mm;
 }
 
+@media print {
+  :root {
+    color-scheme: light !important;
+  }
+  body {
+    background: #fff !important;
+    color: #111827 !important;
+    font-size: 9.2pt !important;
+    line-height: 1.38 !important;
+  }
+  body::before {
+    display: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  a {
+    color: #0369a1 !important;
+    text-decoration: underline !important;
+    text-underline-offset: 1.5px !important;
+  }
+  /* Tidak mencetak URL mentah panjang agar link tetap bersih dan tertanam di dalam teks */
+  a[href^='http']::after {
+    content: '' !important;
+  }
+  a[href^='mailto:']::after {
+    content: '' !important;
+  }
+  .cv-block {
+    break-inside: avoid;
+  }
+  .cv-page-break {
+    break-before: page !important;
+    page-break-before: always !important;
+  }
+}

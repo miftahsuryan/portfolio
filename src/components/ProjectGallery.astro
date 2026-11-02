@@ -31,14 +31,34 @@ const hasMultiple = items.length > 1;
 ) : !hasMultiple ? (
   <figure class="single">
     {items[0].videoEmbedUrl ? (
-      <div class="video-container">
-        <iframe
-          src={items[0].videoEmbedUrl}
-          title={items[0].alt}
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        ></iframe>
+      <div class="video-container" data-video-container>
+        <button
+          type="button"
+          class="video-facade"
+          data-video-url={items[0].videoEmbedUrl}
+          title={`Putar video: ${items[0].alt}`}
+          aria-label={`Putar video: ${items[0].alt}`}
+        >
+          {items[0].image ? (
+            <ImageSlot
+              path={items[0].image}
+              alt={items[0].alt}
+              ratio="16 / 9"
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 60rem) 56rem, 100vw"
+            />
+          ) : (
+            <div class="video-placeholder-backdrop">
+              <span class="video-title">{items[0].alt}</span>
+            </div>
+          )}
+          <div class="play-overlay">
+            <div class="play-button" aria-hidden="true">
+              <Play size={24} fill="currentColor" />
+            </div>
+            <span class="play-label">Klik untuk memuat & memutar video demo</span>
+          </div>
+        </button>
       </div>
     ) : (
       <ImageSlot
@@ -58,10 +78,10 @@ const hasMultiple = items.length > 1;
       <p class="hint">{items.length} Visual & Diagram</p>
       <div class="nav-btns" aria-label="Navigasi geser gambar">
         <button type="button" class="nav-btn" data-prev aria-label="Lihat gambar sebelumnya">
-          <ChevronLeft size={16} aria-hidden="true" />
+          <ChevronLeft size={18} aria-hidden="true" />
         </button>
         <button type="button" class="nav-btn" data-next aria-label="Lihat gambar berikutnya">
-          <ChevronRight size={16} aria-hidden="true" />
+          <ChevronRight size={18} aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -69,14 +89,34 @@ const hasMultiple = items.length > 1;
       {items.map((item, index) => (
         <figure class="slide">
           {item.videoEmbedUrl ? (
-            <div class="video-container">
-              <iframe
-                src={item.videoEmbedUrl}
-                title={item.alt}
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen
-              ></iframe>
+            <div class="video-container" data-video-container>
+              <button
+                type="button"
+                class="video-facade"
+                data-video-url={item.videoEmbedUrl}
+                title={`Putar video: ${item.alt}`}
+                aria-label={`Putar video: ${item.alt}`}
+              >
+                {item.image ? (
+                  <ImageSlot
+                    path={item.image}
+                    alt={item.alt}
+                    ratio="16 / 9"
+                    widths={[480, 800, 1200]}
+                    sizes="(min-width: 60rem) 56rem, 100vw"
+                  />
+                ) : (
+                  <div class="video-placeholder-backdrop">
+                    <span class="video-title">{item.alt}</span>
+                  </div>
+                )}
+                <div class="play-overlay">
+                  <div class="play-button" aria-hidden="true">
+                    <Play size={24} fill="currentColor" />
+                  </div>
+                  <span class="play-label">Klik untuk memuat & memutar video demo</span>
+                </div>
+              </button>
             </div>
           ) : (
             <ImageSlot
@@ -118,19 +158,13 @@ const hasMultiple = items.length > 1;
     color: var(--text-2);
     font-weight: 500;
   }
-  .dot {
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-  }
   .nav-btns { display: inline-flex; gap: var(--space-1); flex-shrink: 0; }
   .nav-btn {
     display: inline-grid;
     place-items: center;
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    min-height: 2.5rem;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--bg-2);
@@ -170,13 +204,78 @@ const hasMultiple = items.length > 1;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
-    background: #000;
+    background: #0f172a;
+    position: relative;
   }
   .video-container iframe {
     width: 100%;
     height: 100%;
     border: 0;
     display: block;
+  }
+  .video-facade {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    text-align: center;
+  }
+  .video-facade :global(figure) {
+    width: 100%;
+    height: 100%;
+  }
+  .video-placeholder-backdrop {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+  }
+  .video-title {
+    color: #94a3b8;
+    font-size: var(--step--1);
+    font-weight: 500;
+  }
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    transition: background-color 0.2s ease;
+  }
+  .video-facade:hover .play-overlay {
+    background: rgba(15, 23, 42, 0.6);
+  }
+  .play-button {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  .video-facade:hover .play-button {
+    transform: scale(1.08);
+  }
+  .play-label {
+    color: #f8fafc;
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
   }
   .caption {
     font-size: var(--step--1);
@@ -191,21 +290,50 @@ const hasMultiple = items.length > 1;
 </style>
 
 <script>
-  document.querySelectorAll('[data-gallery]').forEach((gal) => {
-    const track = gal.querySelector<HTMLElement>('[data-track]');
-    const prev = gal.querySelector<HTMLButtonElement>('[data-prev]');
-    const next = gal.querySelector<HTMLButtonElement>('[data-next]');
-    if (!track || !prev || !next) return;
+  function setupGallery() {
+    document.querySelectorAll('[data-gallery]').forEach((gal) => {
+      const track = gal.querySelector<HTMLElement>('[data-track]');
+      const prev = gal.querySelector<HTMLButtonElement>('[data-prev]');
+      const next = gal.querySelector<HTMLButtonElement>('[data-next]');
+      if (!track || !prev || !next) return;
 
-    prev.addEventListener('click', () => {
-      const slide = track.querySelector<HTMLElement>('.slide');
-      const step = (slide?.clientWidth ?? 400) + 16;
-      track.scrollBy({ left: -step, behavior: 'smooth' });
+      prev.addEventListener('click', () => {
+        const slide = track.querySelector<HTMLElement>('.slide');
+        const step = (slide?.clientWidth ?? 400) + 16;
+        track.scrollBy({ left: -step, behavior: 'smooth' });
+      });
+      next.addEventListener('click', () => {
+        const slide = track.querySelector<HTMLElement>('.slide');
+        const step = (slide?.clientWidth ?? 400) + 16;
+        track.scrollBy({ left: step, behavior: 'smooth' });
+      });
     });
-    next.addEventListener('click', () => {
-      const slide = track.querySelector<HTMLElement>('.slide');
-      const step = (slide?.clientWidth ?? 400) + 16;
-      track.scrollBy({ left: step, behavior: 'smooth' });
+
+    // Click-to-Play Video Facade Handler
+    document.querySelectorAll('[data-video-container]').forEach((container) => {
+      const facade = container.querySelector<HTMLButtonElement>('.video-facade');
+      if (!facade) return;
+
+      facade.addEventListener('click', () => {
+        const url = facade.getAttribute('data-video-url');
+        if (!url) return;
+
+        const iframe = document.createElement('iframe');
+        iframe.src = url.includes('?') ? `${url}&autoplay=1` : `${url}?autoplay=1`;
+        iframe.title = facade.getAttribute('aria-label') || 'Video Demo';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+
+        container.innerHTML = '';
+        container.appendChild(iframe);
+      });
     });
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupGallery);
+  } else {
+    setupGallery();
+  }
+  document.addEventListener('astro:page-load', setupGallery);
 </script>

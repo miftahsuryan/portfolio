@@ -2,13 +2,62 @@
 # dengan data asli Anda. Build produksi akan GAGAL selama penanda itu masih ada.
 # Jangan isi NIK, nomor telepon, atau alamat lengkap. Lokasi cukup kota/provinsi.
 
-siteUrl: "TODO: alamat situs, misal https://namaanda.vercel.app"
+siteUrl: "https://miftahsuryan.vercel.app"
 
 name: "Miftahullah Surya Nugraha"
 role: "Machine Learning Engineer / Data Analyst"
-tagline: "Saya mengolah data dan membangun model machine learning dengan Python, dari pemrosesan data sampai evaluasi model."
-availability: "Terbuka untuk Peluang Kerja & Kolaborasi Teknis"
-location: null
+tagline: "Senang mengolah data dan membangun model machine learning terapan dengan Python. Saya mengeksplorasi analisis data kuantitatif, algoritma optimasi, serta pembuatan pipeline dan visualisasi data."
+availability: "Terbuka untuk peluang kerja & kolaborasi proyek"
+location: "D.I. Yogyakarta, Indonesia"
+
+services:
+  - id: "ml-predictive"
+    title: "Machine Learning & Predictive Modeling"
+    category: "ML & AI"
+    summary: "Eksplorasi dan pelatihan model machine learning dasar hingga menengah, evaluasi performa model, serta integrasi API sederhana."
+    deliverables:
+      - "Supervised & Deep Learning (PyTorch, TensorFlow)"
+      - "NLP, Semantic Search & Recommender System"
+      - "Serving API Cepat (FastAPI & Hugging Face)"
+    stack:
+      - "Python"
+      - "TensorFlow"
+      - "PyTorch"
+      - "Scikit-Learn"
+      - "FastAPI"
+    projectSlug: "proyek-3"
+
+  - id: "quant-optimization"
+    title: "Quantitative Analytics & Portfolio Optimization"
+    category: "Data Science"
+    summary: "Eksplorasi analisis data kuantitatif dan algoritma optimasi, pengolahan data historis, serta visualisasi hasil simulasi."
+    deliverables:
+      - "Optimasi Portofolio Adaptif (AGA)"
+      - "Walk-Forward Validation & Uji Inferensial"
+      - "Manajemen Risiko (Sharpe & Drawdown)"
+    stack:
+      - "Python"
+      - "NumPy & Pandas"
+      - "SciPy"
+      - "Plotly"
+      - "yfinance"
+    projectSlug: "proyek-1"
+
+  - id: "data-pipeline-bi"
+    title: "Data Pipeline & Interactive BI Dashboard"
+    category: "Data Engineering"
+    summary: "Pembersihan dan transformasi dataset dengan Python & SQL, serta pembuatan dashboard interaktif untuk eksplorasi data."
+    deliverables:
+      - "Pipeline ETL & Data Wrangling Python"
+      - "Desain Database Relasional (SQL/PostgreSQL)"
+      - "Dashboard Analitik Real-Time (Streamlit)"
+    stack:
+      - "Python"
+      - "Streamlit"
+      - "SQL"
+      - "Pandas"
+      - "Plotly"
+    projectSlug: "proyek-1"
 
 # Foto asli: taruh file di src/assets/profile/ lalu isi path-nya, misal
 # "src/assets/profile/foto.jpg". Biarkan null kalau belum ada.
@@ -17,7 +66,7 @@ avatarAlt: "Foto profil formal Miftahullah Surya Nugraha"
 
 # Maksimal 120 kata, sudut pandang orang pertama.
 about: >-
-  Lulusan S1 Informatika yang berfokus pada machine learning terapan, analisis data kuantitatif, dan pipeline data dengan Python. Berpengalaman merancang sistem optimasi portofolio berbasis algoritma genetika adaptif, arsitektur sistem rekomendasi hybrid, serta perangkat embedded AI untuk komputasi IoT.
+  Lulusan S1 Informatika yang berfokus pada machine learning terapan, analisis data kuantitatif, dan pipeline data dengan Python. Berpengalaman merancang sistem optimasi portofolio berbasis algoritma genetika adaptif, workstation analitik kuantitatif pasar modal, arsitektur rekomendasi hybrid, serta perangkat embedded AI untuk komputasi IoT.
 
 education:
   institution: "UIN Sunan Kalijaga Yogyakarta"
@@ -29,39 +78,6 @@ education:
 
 # verificationUrl: link verifikasi resmi kredensial dicoding.com/certificates/...
 certifications:
-  - name: "English for Business Communication"
-    issuer: "The British Institute (TBI) & DBS Foundation"
-    year: "2025"
-    hours: "3 Jam (86%)"
-    category: "Bahasa & Komputasi"
-    credentialId: "TBI-DAGO/CORP/12998/2025"
-    verificationUrl: null
-    driveUrl: "https://drive.google.com/file/d/11NZdRrOuP0ILkJvVgaxWFmZc45rmZkzD/view"
-    image: "src/assets/certificates/cert-tbi-english.png"
-    summary: "Pelatihan komunikasi bisnis berbahasa Inggris: presentasi profesional, korespondensi formal, dan diskusi teknis (Nilai Akhir 86%)."
-
-  - name: "Test of English Competence (TOEC)"
-    issuer: "Pusat Pengembangan Bahasa UIN Sunan Kalijaga"
-    year: "2026"
-    hours: "Skor 443"
-    category: "Bahasa & Komputasi"
-    credentialId: "UIN.02/L4/PM.03.2/2.20613.13.577/2026"
-    verificationUrl: null
-    driveUrl: "https://drive.google.com/file/d/14nYODm8Zhi25nx-7h0o7Dx6GRucTN75P/view"
-    image: "src/assets/certificates/cert-toec-uin.png"
-    summary: "Uji kompetensi bahasa Inggris terstandarisasi: Listening Comprehension (54), Structure & Written Expression (36), Reading Comprehension (43) - Skor Konversi Total 443."
-
-  - name: "Sertifikasi Teknologi Informasi & Komunikasi (TIK)"
-    issuer: "PTIPD UIN Sunan Kalijaga Yogyakarta"
-    year: "2022"
-    hours: "Skor 83.75"
-    category: "Bahasa & Komputasi"
-    credentialId: "UIN-02/L3/PP.00.9/1.20613.28.1/2022"
-    verificationUrl: null
-    driveUrl: "https://drive.google.com/file/d/1HTJ8QWJC-kIG2lj_1rsKX8KhouZPEFLi/view"
-    image: "src/assets/certificates/cert-ptipd-microsoft.png"
-    summary: "Ujian sertifikasi komputasi & aplikasi perkantoran: Microsoft Word (95/A), Microsoft Excel (75/B), Microsoft PowerPoint (80/B), Internet (85/B) - Total 83.75 (Predikat Memuaskan)."
-
   - name: "Belajar Pengembangan Machine Learning"
     issuer: "Dicoding Indonesia"
     year: "2025"
@@ -216,60 +232,82 @@ certifications:
     image: "src/assets/certificates/cert-302-logika-pemrograman.png"
     summary: "Gerbang Logika (AND, OR, NOT, XOR), Computational Thinking (Dekomposisi, Pengenalan Pola, Abstraksi, Algoritma), dan penerapannya pada studi kasus pemrograman."
 
-  - name: "Coding Camp powered by DBS Foundation - Full Graduate"
-    issuer: "Dicoding Indonesia & PT Bank DBS Indonesia"
+  - name: "English for Business Communication"
+    issuer: "The British Institute (TBI) & DBS Foundation"
     year: "2025"
-    hours: "936 Jam"
-    category: "Program & Bootcamp"
-    credentialId: "CC25/GRAD/XXV-07/MC223D5Y0691"
+    hours: "3 Jam (86%)"
+    category: "Bahasa & Komputasi"
+    credentialId: "TBI-DAGO/CORP/12998/2025"
     verificationUrl: null
-    driveUrl: "https://drive.google.com/file/d/1F6vzx5u3BFVmr2vBqHAUKHNVMeDJ33Gq/view"
-    image: "src/assets/certificates/dbs-coding-camp-2025-cert.png"
-    summary: "Students Full Graduate jalur Machine Learning Engineer: Program intensif 936 jam mencakup 14 modul spesialisasi, soft skills, dan Capstone Project WisataPas (Skor 95.6, Nilai Akhir A 90.7)."
+    driveUrl: "https://drive.google.com/file/d/11NZdRrOuP0ILkJvVgaxWFmZc45rmZkzD/view"
+    image: "src/assets/certificates/cert-tbi-english.png"
+    summary: "Pelatihan komunikasi bisnis berbahasa Inggris: presentasi profesional, korespondensi formal, dan diskusi teknis (Nilai Akhir 86%)."
 
-  - name: "Semi Finalist Samsung Innovation Campus Batch 5"
-    issuer: "Samsung Electronics Indonesia & Skilvul"
-    year: "2024"
-    hours: "Nasional"
-    category: "Program & Bootcamp"
-    credentialId: "SKILVUL/CERT/SIC5/2024.IX/0064"
+  - name: "Test of English Competence (TOEC)"
+    issuer: "Pusat Pengembangan Bahasa UIN Sunan Kalijaga"
+    year: "2026"
+    hours: "Skor 443"
+    category: "Bahasa & Komputasi"
+    credentialId: "UIN.02/L4/PM.03.2/2.20613.13.577/2026"
     verificationUrl: null
-    driveUrl: "https://drive.google.com/file/d/1UkcNPN0KyGoIsZzS8JYK4FqXkcpbkgq6/view"
-    image: "src/assets/certificates/sic5-semifinal-cert.png"
-    summary: "Certificate of Appreciation Semi Finalis nasional SIC Batch 5 untuk proyek 'Alat Komunikasi IoT Berbasis Machine Learning untuk Menerjemahkan Ucapan ke Teks bagi Tunarungu' (Tim 3 Orang)."
+    driveUrl: "https://drive.google.com/file/d/14nYODm8Zhi25nx-7h0o7Dx6GRucTN75P/view"
+    image: "src/assets/certificates/cert-toec-uin.png"
+    summary: "Uji kompetensi bahasa Inggris terstandarisasi: Listening Comprehension (54), Structure & Written Expression (36), Reading Comprehension (43) - Skor Konversi Total 443."
 
-  - name: "Samsung Innovation Campus - Stage 3: Artificial Intelligence (AI)"
-    issuer: "Samsung Electronics Indonesia & Skilvul"
-    year: "2024"
-    hours: "Intensif"
-    category: "Program & Bootcamp"
-    credentialId: "SKILVUL/CERT/SIC5/2024.IX/0149"
+  - name: "Sertifikasi Teknologi Informasi & Komunikasi (TIK)"
+    issuer: "PTIPD UIN Sunan Kalijaga Yogyakarta"
+    year: "2022"
+    hours: "Skor 83.75"
+    category: "Bahasa & Komputasi"
+    credentialId: "UIN-02/L3/PP.00.9/1.20613.28.1/2022"
     verificationUrl: null
-    driveUrl: "https://drive.google.com/file/d/1eq2wcaVaBDRNp4nPkQY8tadeXaaVsaSJ/view"
-    image: "src/assets/certificates/sic5-stage3-ai.png"
-    summary: "Pelatihan 18 Mei - 27 Juli 2024: Machine Learning for IoT, Computer Vision, Deep Learning, Streamlit, Hands-on Data Processing ESP32, dan Final Project Pitching."
+    driveUrl: "https://drive.google.com/file/d/1HTJ8QWJC-kIG2lj_1rsKX8KhouZPEFLi/view"
+    image: "src/assets/certificates/cert-ptipd-microsoft.png"
+    summary: "Ujian sertifikasi komputasi & aplikasi perkantoran: Microsoft Word (95/A), Microsoft Excel (75/B), Microsoft PowerPoint (80/B), Internet (85/B) - Total 83.75 (Predikat Memuaskan)."
 
-  - name: "Samsung Innovation Campus - Stage 2: Internet of Things (IoT)"
-    issuer: "Samsung Electronics Indonesia & Skilvul"
+  - name: "Juara 3 Lomba Basket 3x3 FeArstyc UNY"
+    issuer: "BEM KM FEB Universitas Negeri Yogyakarta"
     year: "2024"
-    hours: "Intensif"
-    category: "Program & Bootcamp"
-    credentialId: "SKILVUL/CERT/SIC5/2024.IX/0482"
+    hours: "Juara 3"
+    category: "Organisasi & Prestasi"
+    credentialId: "040/FEARSTYC/BEM/KM/FEB/UNY/V/2024"
     verificationUrl: null
-    driveUrl: "https://drive.google.com/file/d/1rK4BEOENgawWCHq8X5SW9pcvxlL8Y9ME/view"
-    image: "src/assets/certificates/sic5-stage2-iot.png"
-    summary: "Pelatihan 20 April - 27 April 2024: IoT Fundamentals, mikrokontroler ESP32, sensor interfacing, dan integrasi hardware cerdas."
+    driveUrl: "https://drive.google.com/file/d/1tVJ_aMVvDjnJMwGgztfYix84y0TqKXR9/view"
+    image: "src/assets/certificates/cert-juara-fearstyc-uny.png"
+    summary: "Penghargaan Juara 3 kejuaraan basket 3-on-3 tingkat regional se-DIY yang diselenggarakan oleh BEM FEB Universitas Negeri Yogyakarta."
 
-  - name: "Samsung Innovation Campus - Stage 1: Coding & Programming"
-    issuer: "Samsung Electronics Indonesia & Skilvul"
+  - name: "Sertifikat Kepanitiaan KTC UIN Sunan Kalijaga"
+    issuer: "Rektorat UIN Sunan Kalijaga Yogyakarta"
     year: "2024"
-    hours: "Intensif"
-    category: "Program & Bootcamp"
-    credentialId: "SKILVUL/CERT/SIC5/2024.IX/1940"
+    hours: "Kepanitiaan"
+    category: "Organisasi & Prestasi"
+    credentialId: "B-5871/Un.02//KM.06/11/2024"
     verificationUrl: null
-    driveUrl: "https://drive.google.com/file/d/1lWWXqsGzg4DGRkbN2BFTmlFmWv2jvCxn/view"
-    image: "src/assets/certificates/sic5-stage1-python.png"
-    summary: "Pelatihan 02 Maret - 24 Maret 2024: Pemrograman Python tingkat dasar & menengah, algoritma, serta struktur data."
+    driveUrl: "https://drive.google.com/file/d/1UjRMJBbNq9sR3r3O-iB9b7oCr-myL_CX/view"
+    image: "src/assets/certificates/cert-panitia-ktc.png"
+    summary: "Sertifikat kepanitiaan resmi universitas pada cabang lomba olahraga Kalijaga Talent Competition (KTC) 2024."
+
+  - name: "SK Kepengurusan: Bendahara Umum IMM"
+    issuer: "PK IMM Fak. Sains dan Teknologi UIN Sunan Kalijaga"
+    year: "2024"
+    hours: "2024 - 2025"
+    category: "Organisasi & Prestasi"
+    credentialId: "232/A-23//XII/2025"
+    verificationUrl: null
+    driveUrl: "https://drive.google.com/file/d/1o5jioj7CK4B-O_1Ax3-1huihb6Eou5Ss/view"
+    image: "src/assets/certificates/cert-imm-bendahara-umum.png"
+    summary: "Surat keputusan pengesahan kepengurusan sebagai Bendahara Umum organisasi kemahasiswaan komisariat fakultas."
+
+  - name: "SK Kepengurusan: Medkom IMM"
+    issuer: "PK IMM Fak. Sains dan Teknologi UIN Sunan Kalijaga"
+    year: "2023"
+    hours: "2023 - 2024"
+    category: "Organisasi & Prestasi"
+    credentialId: "279/A-23/XII/2024"
+    verificationUrl: null
+    driveUrl: "https://drive.google.com/file/d/1uugu_FAdPVTsNMY3BIttX3iN74r2ywgg/view"
+    image: "src/assets/certificates/cert-imm-medkom.png"
+    summary: "Surat keputusan kepengurusan resmi sebagai staf bidang Media & Komunikasi (Medkom) organisasi kemahasiswaan."
 
 training:
   - name: "Coding Camp powered by DBS Foundation"
@@ -284,9 +322,8 @@ training:
     image: "src/assets/certificates/dbs-coding-camp-2025-cert.png"
     specialization: "Machine Learning Engineer"
     highlights:
-      - "936 jam pelatihan komprehensif terdistribusi dalam 14 modul spesialisasi & proyek"
-      - "Capstone Final Project (WisataPas - Sistem Rekomendasi Destinasi Wisata): 250 Jam, Skor 95.6"
-      - "Pelatihan Soft Skills & Pengembangan Karier Profesional: 289 Jam, Skor 94.3"
+      - "14 modul spesialisasi & soft skills (936 jam, Nilai Akhir A 90.7)"
+      - "Capstone Project WisataPas: Sistem Rekomendasi Destinasi Wisata (Skor 95.6)"
 
 achievements:
   - title: "Semi Finalist Samsung Innovation Campus Batch 5"
@@ -296,7 +333,7 @@ achievements:
     driveUrl: "https://drive.google.com/file/d/1UkcNPN0KyGoIsZzS8JYK4FqXkcpbkgq6/view"
     folderUrl: "https://drive.google.com/drive/folders/1jOtxipwoEbbdnGidgdYIua-ccc5ZfUhm?usp=share_link"
     image: "src/assets/certificates/sic5-semifinal-cert.png"
-    note: "Pengembangan perangkat Speech-to-Text berbasis ESP32 dan AI untuk pemerataan informasi pengumuman suara bagi tunarungu (Skilvul & Samsung Indonesia). Berkontribusi pada inisiasi ide, koordinasi alur kerja tim 3 orang, pengujian fungsional, dan penyusunan dokumentasi teknis produk."
+    note: "Pengembangan perangkat Speech-to-Text berbasis ESP32 dan AI untuk menampilkan teks pengumuman publik bagi tunarungu."
     stages:
       - name: "Stage 3: Artificial Intelligence (AI)"
         period: "18 Mei - 27 Juli 2024"
@@ -329,18 +366,18 @@ achievements:
 
 organizations:
   - role: "Bendahara Umum"
-    org: "PK IMM Fakultas Sains dan Teknologi UIN Sunan Kalijaga"
+    org: "Ikatan Mahasiswa Muhammadiyah (IMM) Fakultas Sains dan Teknologi, UIN Sunan Kalijaga"
     period: "2024 - 2025"
     credentialId: "232/A-23//XII/2025"
     driveUrl: "https://drive.google.com/file/d/1o5jioj7CK4B-O_1Ax3-1huihb6Eou5Ss/view"
-    note: "Menjabat Bendahara Umum pimpinan komisariat fakultas: mengelola perbendaharaan organisasi, perancangan rencana anggaran belanja, dan akuntabilitas pelaporan kas kepengurusan."
+    note: "Pengelolaan kas, perancangan rencana anggaran biaya (RAB), dan akuntabilitas pelaporan keuangan kepengurusan organisasi mahasiswa."
 
-  - role: "Sekretaris Bidang Media & Komunikasi"
-    org: "PK IMM Fakultas Sains dan Teknologi UIN Sunan Kalijaga"
+  - role: "Divisi Media & Komunikasi (Medkom)"
+    org: "Ikatan Mahasiswa Muhammadiyah (IMM) Fakultas Sains dan Teknologi, UIN Sunan Kalijaga"
     period: "2023 - 2024"
     credentialId: "279/A-23/XII/2024"
     driveUrl: "https://drive.google.com/file/d/1uugu_FAdPVTsNMY3BIttX3iN74r2ywgg/view"
-    note: "Mengoordinasikan publikasi media informasi, perancangan konten visual publikasi, serta strategi komunikasi digital kepengurusan komisariat."
+    note: "Bertanggung jawab atas dokumentasi visual kegiatan dan pengelolaan publikasi media komunikasi organisasi (responsible for documenting and publishing the organization’s activities)."
 
   - role: "Ketua Divisi Basket & Kapten Tim"
     org: "UKM Olahraga UIN Sunan Kalijaga"

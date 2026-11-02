@@ -1,68 +1,88 @@
 ---
-title: "Alat Komunikasi IoT Berbasis Machine Learning untuk Tunarungu"
+title: "WisataPas: Sistem Rekomendasi Destinasi Wisata Hybrid & AI Generatif"
 order: 3
-status: "prototipe"
-role: "Feature Developer & Technical Documentation (Tim 3 Orang)"
-period: "2023 - 2024 · Samsung Innovation Campus Batch 5"
-summary: "Perangkat Speech-to-Text berbasis ESP32 dan AI untuk menampilkan teks pengumuman suara di ruang publik secara real-time bagi teman tunarungu."
-problem: "Penyandang disabilitas tunarungu kerap melewatkan pengumuman penting di ruang publik karena informasi disampaikan secara audio analog. Ketiadaan display visual real-time membatasi aksesibilitas fasilitas umum."
-approach: "Mengintegrasikan mikrokontroler ESP32 dengan modul penangkap audio dan pipeline Speech-to-Text berbasis machine learning. Sistem memproses streaming suara pengumuman dan mengonversinya menjadi teks pada layar display."
-outcome: "Meraih predikat Semi Finalist Nasional pada Samsung Innovation Campus Batch 5 (2024). Menghasilkan prototipe fisik fungsional yang tervalidasi dan video demonstrasi interaktif."
+status: "selesai"
+role: "Machine Learning Engineer (Tim 6 Orang: 3 ML, 3 FEBE)"
+period: "2025 · Capstone Coding Camp powered by DBS Foundation (CC25-CF197)"
+summary: "Platform rekomendasi wisata Indonesia berbasis Hybrid Filtering (TF-IDF & RecommenderNet) dan ringkasan AI generatif T5."
+problem: "Informasi rute dan biaya wisata terfragmentasi, serta sistem rekomendasi biasa gagal personalisasi dan rentan kendala cold-start."
+approach: "Menggabungkan Content-Based TF-IDF, Collaborative Filtering (TensorFlow Keras) pada 16.299 rating, serta fine-tuning T5-small."
+outcome: "Validation RMSE 0,3679 pada RecommenderNet, pencarian semantik presisi, serta deployment API via FastAPI dan frontend Netlify."
 stack:
   - "Python"
-  - "ESP32 (IoT)"
-  - "Speech-to-Text (AI)"
-  - "Machine Learning"
-  - "C/C++"
-repoUrl: "https://github.com/askarhabibulloh/SIC-5-Team-28"
-demoUrl: "https://youtu.be/E6jOqyUa1pk"
-videoUrl: "https://youtu.be/E6jOqyUa1pk"
-coverImage: "src/assets/projects/SIC/hasil_alat.jpeg"
-coverAlt: "Prototipe perangkat keras Speech-to-Text berbasis ESP32 dengan modul audio dan layar display"
+  - "TensorFlow & Keras"
+  - "Scikit-learn (TF-IDF)"
+  - "Transformers (T5)"
+  - "PyTorch"
+  - "Pandas & NumPy"
+  - "FastAPI"
+  - "Netlify"
+repoUrl: "https://github.com/WisataPas/WisataPas_ML"
+demoUrl: "https://wisatapas.netlify.app"
+videoUrl: "https://drive.google.com/file/d/1vIXrm37aLaXNmvuFVmE5akL1sUwTz5FC/view?usp=drive_link"
+coverImage: "src/assets/projects/WisataPas/wisatapas_web_preview.png"
+coverAlt: "Antarmuka platform web rekomendasi wisata cerdas WisataPas dan arsitektur Machine Learning"
 gallery:
-  - image: "src/assets/projects/SIC/sertifikat-semifinalis.png"
-    alt: "Sertifikat resmi Semi Finalist Samsung Innovation Campus Batch 5 (2024)"
-    caption: "Kredensial Resmi: Sertifikat Semi Finalist Samsung Innovation Campus Batch 5 dari PT Samsung Electronics Indonesia & Skilvul (No: SKILVUL/CERT/SIC5/2024.IX/0064)"
-  - image: "src/assets/projects/SIC/hasil_alat.jpeg"
-    alt: "Prototipe perangkat keras Speech-to-Text berbasis ESP32 dengan modul audio dan layar display"
-    caption: "Prototipe Fisik: Perangkat keras IoT ESP32 terhubung dengan modul penerima suara dan display teks"
-  - videoEmbedUrl: "https://www.youtube-nocookie.com/embed/E6jOqyUa1pk"
-    alt: "Video demonstrasi prototipe perangkat IoT Speech-to-Text"
-    caption: "Video Demo: Pengujian fungsional penangkapan suara dan penampilan teks secara langsung"
-  - image: "src/assets/projects/SIC/rancangan.jpeg"
-    alt: "Diagram skematik arsitektur alur kerja IoT ESP32 dan model Speech-to-Text"
-    caption: "Arsitektur Sistem: Alur pemrosesan dari audio masukan pengumuman publik hingga konversi teks di layar"
-  - image: "src/assets/projects/SIC/anggota_kelompok.jpeg"
-    alt: "Foto bersama anggota tim pengembang proyek Samsung Innovation Campus Batch 5"
-    caption: "Kolaborasi Tim: Anggota Tim 28 bersama mentor industri Samsung Innovation Campus Batch 5"
+  - image: "src/assets/projects/WisataPas/wisatapas_web_preview.png"
+    alt: "Antarmuka aplikasi web WisataPas yang menampilkan peta interaktif dan rekomendasi destinasi"
+    caption: "Antarmuka Web: Platform WisataPas dengan peta interaktif dan rekomendasi destinasi personal"
+  - videoEmbedUrl: "https://drive.google.com/file/d/1vIXrm37aLaXNmvuFVmE5akL1sUwTz5FC/preview"
+    alt: "Video demonstrasi aplikasi dan alur kerja sistem rekomendasi WisataPas"
+    caption: "Video Demo Aplikasi: Demonstrasi fitur personalisasi rekomendasi dan pencarian kueri"
+  - image: "src/assets/projects/WisataPas/rmse_collaborative_filtering.png"
+    alt: "Grafik kurva penurunan RMSE pelatihan dan validasi model RecommenderNet"
+    caption: "Evaluasi Model: Kurva pelatihan RecommenderNet konvergen pada Validation RMSE 0,3679"
+  - image: "src/assets/projects/WisataPas/cbf_recommendation_output.png"
+    alt: "Tabel hasil inferensi model Content-Based Filtering menggunakan kemiripan Cosine Similarity"
+    caption: "Inferensi Content-Based: Rekomendasi destinasi relevan berdasarkan kesamaan atribut lokasi"
+  - image: "src/assets/projects/WisataPas/model_evaluation_detail.png"
+    alt: "Hasil prediksi rekomendasi destinasi wisata untuk pengguna berdasarkan riwayat interaksi"
+    caption: "Hasil Rekomendasi Personal: Daftar destinasi rekomendasi teratas untuk pengguna spesifik"
 ---
 
-## Konteks & Latar Belakang
-Program **Samsung Innovation Campus (SIC) Batch 5** diselenggarakan oleh **Samsung Indonesia** bekerja sama dengan **Skilvul** dengan fokus pada integrasi Artificial Intelligence (AI) dan Internet of Things (IoT). Melalui program ini, peserta melewati serangkaian tahapan intensif:
-1. **Dasar-Dasar AI & IoT**: Pembelajaran konsep fundamental sensor, mikrokontroler, machine learning, dan pemrograman Python.
-2. **Bootcamp AI & IoT**: Pelatihan teknis lanjutan, problem-solving, serta pemantapan algoritma dan struktur data.
-3. **Pengembangan Proyek Akhir (Capstone Project)**: Perancangan prototipe produk teknologi untuk memecahkan masalah sosial nyata (*Tech for Good*).
+## Konteks & Latar Belakang Proyek
+Proyek **WisataPas** dikembangkan sebagai proyek akhir (*Capstone Project*) pada program **Coding Camp powered by DBS Foundation 2025** oleh tim **CC25-CF197**. Proyek ini mempertemukan alur keahlian *Machine Learning* dan *Front-End & Back-End (FEBE)* untuk membangun solusi nyata dalam memajukan pariwisata Indonesia yang berkelanjutan dan inklusif.
 
-## Masalah yang Diselesaikan
-Di area fasilitas publik seperti stasiun kereta api, terminal, bandara, maupun ruang rekreasi publik, pengumuman penting (seperti jadwal keberangkatan, keterlambatan, atau pengumuman darurat) sering kali disampaikan semata-mata lewat pengeras suara (speaker analog). Hal ini menciptakan kesenjangan akses informasi bagi penyandang disabilitas pendengaran (tunarungu). Tanpa adanya representasi visual real-time, mereka berisiko ketinggalan informasi krusial.
+## Masalah Pariwisata Domestik
+Pada tahun 2024, Indonesia mencatatkan lebih dari 1 miliar pergerakan wisatawan domestik. Namun, wisatawan kerap mengalami kendala saat merencanakan perjalanan:
+1. **Penyebaran Informasi yang Tidak Merata**: Rute, estimasi biaya tiket, fasilitas, dan jam operasional destinasi wisata di luar kota besar sulit ditemukan dalam satu tempat.
+2. **Keterbatasan Rekomendasi Konvensional**: Sebagian besar platform perjalanan hanya menampilkan destinasi populer (*trending*) tanpa mempertimbangkan kecocokan preferensi minat, kategori, atau keterbatasan anggaran pengguna.
+3. **Kendala Cold-Start Pengguna Baru**: Pengguna yang belum memiliki riwayat rating sering kali tidak mendapatkan rekomendasi yang kontekstual.
 
-## Pendekatan Teknis & Solusi
-Untuk mengatasi kendala tersebut, Tim 28 mengembangkan perangkat penerjemah suara-ke-teks otomatis (*Speech-to-Text*) terintegrasi:
-- **Komputasi IoT & Hardware**: Memanfaatkan mikrokontroler **ESP32** yang hemat daya, terhubung ke modul penerima audio/suara dan modul display (layar monitor/LED display).
-- **Pemrosesan Machine Learning & Audio**: Mengolah masukan sinyal audio dari speaker lingkungan, menyaring derau (*noise*), dan mengonversinya menjadi teks digital menggunakan model *Speech-to-Text*.
-- **Penyajian Real-Time**: Teks hasil transkripsi langsung ditransmisikan dan ditampilkan di layar antarmuka pengguna tanpa latensi tinggi, sehingga pengunjung tunarungu dapat membaca isi pengumuman seketika.
+## Pendekatan Teknis: Hybrid Recommendation Engine
+Untuk memberikan rekomendasi yang presisi dan relevan, tim merancang arsitektur sistem rekomendasi hibrida (*Hybrid Recommendation System*) yang menggabungkan tiga pilar teknologi AI:
 
-## Kolaborasi Tim & Kontribusi Saya
-Proyek ini dikembangkan secara kolaboratif oleh tim 3 orang di bawah arahan mentor industri:
-- **Susunan Tim**: Miftahullah Surya Nugraha, Muhammad Askar Habibulloh, dan Rizki Surya Nugroho.
-- **Mentor Pembimbing**: Pratama Putra.
-- **Peran & Tanggung Jawab Utama Saya**:
-  1. **Brainstorming Ide & Konseptualisasi**: Menginisiasi gagasan solusi pengubah suara pengumuman publik menjadi teks visual untuk mengatasi kesenjangan aksesibilitas teman tunarungu.
-  2. **Koordinasi Tim & Komunikasi Progres**: Membantu mengoordinasikan alur kerja tim 3 orang, memantau penyelesaian target dari tahap bootcamp hingga proyek akhir, serta menjembatani konsultasi berkala dengan mentor.
-  3. **Dokumentasi Teknis & Pelaporan**: Bertanggung jawab menyusun dokumentasi komprehensif terkait rancangan sistem, repositori kode sumber di GitHub, dan materi demonstrasi produk.
-  4. **Pengujian Fungsional & Pengembangan Fitur**: Melakukan pengujian sistem penangkapan audio secara berulang serta mendukung pengembangan logika fitur transkripsi suara-ke-teks.
+### 1. Content-Based Filtering (CBF)
+- **Ekstraksi Fitur Teks**: Menggabungkan fitur nama destinasi, kategori wisata, kota, dan narasi deskripsi, kemudian diekstraksi ke dalam matriks representasi numerik menggunakan `TfidfVectorizer`.
+- **Pengukuran Kemiripan**: Menghitung bobot kemiripan antar-destinasi menggunakan `cosine_similarity`.
+- **Pencarian Bahasa Alami (*Semantic Search*)**: Memungkinkan pengguna memasukkan kueri teks bebas (seperti *"wisata alam daerah yogyakarta"*) untuk menemukan destinasi yang paling cocok secara instan, sekaligus menjadi solusi efektif mengatasi masalah *cold-start* bagi pengunjung baru.
 
-## Hasil & Dampak
-- Berhasil melaju hingga tahap **Semi Finalist Samsung Innovation Campus Batch 5 (2024)**.
-- Prototipe berhasil dibangun dan didokumentasikan dalam format video demonstrasi produk fungsional serta repositori kode sumber.
-- Membuktikan penerapan nyata perpaduan IoT dan Machine Learning untuk tujuan aksesibilitas dan kesetaraan informasi (*Tech for Good*).
+### 2. Collaborative Filtering (CF) – RecommenderNet
+- **Arsitektur Jaringan Syaraf Tiruan**: Mengembangkan model custom `RecommenderNet` berbasis **TensorFlow & Keras** (`tf.keras.Model`).
+- **User & Item Embeddings**: Mempelajari representasi vektor laten (*latent embeddings*) untuk 450 pengguna dan 608 destinasi wisata, dilengkapi inisialisasi bobot `he_normal`, regularisasi L2 (`1e-4`), dan lapisan `Dropout` untuk mencegah *overfitting*.
+- **Evaluasi Kinerja**: Model dilatih menggunakan fungsi loss *Binary Crossentropy* dan dievaluasi dengan metrik *Root Mean Squared Error* (RMSE), berhasil mencapai **Validation RMSE 0,3679** (turun signifikan dari *initial baseline* di atas 0,60).
+
+### 3. Generative AI Text Summarization (Fine-Tuned T5)
+- **Ringkasan Destinasi Otomatis**: Melakukan *fine-tuning* pada model **T5-small** (`T5ForConditionalGeneration` dari Hugging Face Transformers) dengan backend **PyTorch**.
+- **Penyajian Natural**: Menghasilkan kalimat ringkasan rekomendasi berbahasa Indonesia yang menarik dan komunikatif (misal: merangkum kategori, kota, dan rating menjadi satu narasi persuasif yang siap dibaca wisatawan).
+
+## Pengembangan & Augmentasi Dataset
+Dataset dasar diperoleh dari Kaggle (*Indonesia Tourism Destination*), yang kemudian diperkaya secara mandiri oleh tim:
+- **Destinasi Wisata**: Diperluas dari 437 menjadi **608 destinasi** di berbagai kota Indonesia.
+- **Web Scraping Citra Destinasi**: Mengumpulkan URL gambar aktual setiap destinasi secara terstruktur untuk visualisasi di aplikasi web.
+- **Data Rating & Interaksi**: Ditingkatkan dari ~10.000 menjadi **16.299 penilaian** dari **450 profil pengguna** untuk memastikan distribusi matriks interaksi cukup padat bagi pelatihan model *collaborative filtering*.
+
+## Kolaborasi Tim & Pembagian Peran
+Proyek ini dikembangkan secara kolaboratif oleh 6 anggota tim:
+- **Tim Machine Learning**: Miftahullah Surya Nugraha, Husnul Khatimah, dan Marsha Kamila.
+- **Tim Front-End & Back-End (FEBE)**: Sofyan Farros, Muhammad Jamaluddin, dan Abdullah Ridho Laksmana.
+- **Fokus Kontribusi Saya**:
+  1. Terlibat aktif dalam eksplorasi data (*EDA*), pembersihan missing values, dan pengolahan data rating pengguna.
+  2. Mengembangkan pipeline vektorisasi *Content-Based Filtering* dan pencarian kueri berbasis kemiripan kosinus.
+  3. Menguji arsitektur dan parameter pelatihan model *RecommenderNet* untuk meminimalkan nilai Validation RMSE.
+  4. Menyiapkan serialisasi artefak model (`.keras`, `.pkl`) untuk kebutuhan deployment endpoint API.
+
+## Integrasi Sistem & Deployment
+- **Model Serving**: API Machine Learning dibungkus menggunakan **FastAPI** dan dideploy di **Hugging Face Spaces**.
+- **Backend & Database**: Layanan backend dibangun menggunakan **Node.js + Hapi.js** dengan basis data relasional **PostgreSQL (Supabase)**.
+- **Frontend & Peta Interaktif**: Antarmuka responsif dibangun dengan **TailwindCSS**, **JavaScript modern**, dan pustaka **Leaflet.js** untuk visualisasi peta interaktif, serta dideploy secara publik di **Netlify**.

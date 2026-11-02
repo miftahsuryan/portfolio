@@ -1,0 +1,66 @@
+---
+title: "Alat Komunikasi IoT Berbasis Machine Learning untuk Tunarungu"
+order: 5
+status: "prototipe"
+role: "Feature Developer & Technical Documentation (Tim 3 Orang)"
+period: "2023 - 2024 · Samsung Innovation Campus Batch 5"
+summary: "Perangkat IoT Speech-to-Text berbasis ESP32 dan AI untuk transkripsi visual pengumuman audio di ruang publik bagi tunarungu."
+problem: "Pengumuman audio analog di fasilitas publik sulit diakses tunarungu tanpa adanya display visual waktu nyata."
+approach: "Integrasi mikrokontroler ESP32, sensor audio, dan model Speech-to-Text untuk konversi suara ke teks langsung."
+outcome: "Semi Finalist Nasional Samsung Innovation Campus Batch 5 (2024), prototipe fisik tervalidasi, dan video demonstrasi."
+stack:
+  - "Python"
+  - "ESP32 (IoT)"
+  - "Speech-to-Text (AI)"
+  - "Machine Learning"
+  - "C/C++"
+repoUrl: null
+demoUrl: "https://youtu.be/E6jOqyUa1pk"
+videoUrl: "https://youtu.be/E6jOqyUa1pk"
+coverImage: "src/assets/projects/SIC/hasil_alat.jpeg"
+coverAlt: "Prototipe perangkat keras Speech-to-Text berbasis ESP32 dengan modul audio dan layar display"
+gallery:
+  - image: "src/assets/projects/SIC/hasil_alat.jpeg"
+    alt: "Prototipe perangkat keras Speech-to-Text berbasis ESP32 dengan modul audio dan layar display"
+    caption: "Prototipe Fisik: Perangkat keras IoT ESP32 terhubung dengan modul penerima suara dan display teks"
+  - videoEmbedUrl: "https://www.youtube-nocookie.com/embed/E6jOqyUa1pk"
+    alt: "Video demonstrasi prototipe perangkat IoT Speech-to-Text"
+    caption: "Video Demo: Pengujian fungsional penangkapan suara dan penampilan teks secara langsung"
+  - image: "src/assets/projects/SIC/rancangan.jpeg"
+    alt: "Diagram skematik arsitektur alur kerja IoT ESP32 dan model Speech-to-Text"
+    caption: "Arsitektur Sistem: Alur pemrosesan dari audio masukan pengumuman publik hingga konversi teks di layar"
+  - image: "src/assets/projects/SIC/anggota_kelompok.jpeg"
+    alt: "Foto bersama anggota tim pengembang proyek Samsung Innovation Campus Batch 5"
+    caption: "Kolaborasi Tim: Anggota Tim 28 bersama mentor industri Samsung Innovation Campus Batch 5"
+---
+
+## Konteks & Latar Belakang
+Program **Samsung Innovation Campus (SIC) Batch 5** diselenggarakan oleh **Samsung Indonesia** bekerja sama dengan **Skilvul** dengan fokus pada integrasi Artificial Intelligence (AI) dan Internet of Things (IoT). Melalui program ini, peserta melewati serangkaian tahapan intensif:
+1. **Dasar-Dasar AI & IoT**: Pembelajaran konsep fundamental sensor, mikrokontroler, machine learning, dan pemrograman Python.
+2. **Bootcamp AI & IoT**: Pelatihan teknis lanjutan, problem-solving, serta pemantapan algoritma dan struktur data.
+3. **Pengembangan Proyek Akhir (Capstone Project)**: Perancangan prototipe produk teknologi untuk memecahkan masalah sosial nyata (*Tech for Good*).
+
+## Masalah yang Diselesaikan
+Di area fasilitas publik seperti stasiun kereta api, terminal, bandara, maupun ruang rekreasi publik, pengumuman penting (seperti jadwal keberangkatan, keterlambatan, atau pengumuman darurat) sering kali disampaikan semata-mata lewat pengeras suara (speaker analog). Hal ini menciptakan kesenjangan akses informasi bagi penyandang disabilitas pendengaran (tunarungu). Tanpa adanya representasi visual real-time, mereka berisiko ketinggalan informasi krusial.
+
+## Pendekatan Teknis & Solusi
+Untuk mengatasi kendala tersebut, Tim 28 mengembangkan perangkat penerjemah suara-ke-teks otomatis (*Speech-to-Text*) terintegrasi:
+- **Komputasi IoT & Hardware**: Memanfaatkan mikrokontroler **ESP32** yang hemat daya, terhubung ke modul penerima audio/suara dan modul display (layar monitor/LED display).
+- **Pemrosesan Machine Learning & Audio**: Mengolah masukan sinyal audio dari speaker lingkungan, menyaring derau (*noise*), dan mengonversinya menjadi teks digital menggunakan model *Speech-to-Text*.
+- **Penyajian Real-Time**: Teks hasil transkripsi langsung ditransmisikan dan ditampilkan di layar antarmuka pengguna tanpa latensi tinggi, sehingga pengunjung tunarungu dapat membaca isi pengumuman seketika.
+
+## Kolaborasi Tim & Kontribusi Saya
+Proyek ini dikembangkan secara kolaboratif oleh tim 3 orang di bawah arahan mentor industri:
+- **Susunan Tim**: Miftahullah Surya Nugraha, Muhammad Askar Habibulloh, dan Rizki Surya Nugroho.
+- **Mentor Pembimbing**: Pratama Putra.
+- **Peran & Tanggung Jawab Utama Saya**:
+  1. **Brainstorming Ide & Konseptualisasi**: Menginisiasi gagasan solusi pengubah suara pengumuman publik menjadi teks visual untuk mengatasi kesenjangan aksesibilitas teman tunarungu.
+  2. **Koordinasi Tim & Komunikasi Progres**: Membantu mengoordinasikan alur kerja tim 3 orang, memantau penyelesaian target dari tahap bootcamp hingga proyek akhir, serta menjembatani konsultasi berkala dengan mentor.
+  3. **Dokumentasi Teknis & Pelaporan**: Bertanggung jawab menyusun dokumentasi komprehensif terkait rancangan sistem, repositori kode sumber di GitHub, dan materi demonstrasi produk.
+  4. **Pengujian Fungsional & Pengembangan Fitur**: Melakukan pengujian sistem penangkapan audio secara berulang serta mendukung pengembangan logika fitur transkripsi suara-ke-teks.
+
+## Hasil & Dampak
+- Berhasil melaju hingga tahap **Semi Finalist Samsung Innovation Campus Batch 5 (2024)**.
+- Prototipe berhasil dibangun dan didokumentasikan dalam format video demonstrasi produk fungsional serta repositori kode sumber.
+- Membuktikan penerapan nyata perpaduan IoT dan Machine Learning untuk tujuan aksesibilitas dan kesetaraan informasi (*Tech for Good*).
+

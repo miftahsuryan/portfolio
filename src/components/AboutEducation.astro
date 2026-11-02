@@ -9,8 +9,8 @@ const p = getProfile();
 
 <section class="section" id="pencapaian" aria-labelledby="pencapaian-title">
   <div class="wrap">
-    <div class="section-head" data-reveal="up">
-      <h2 id="pencapaian-title">Pelatihan Industri & Prestasi</h2>
+    <div class="section-head">
+      <h2 id="pencapaian-title">Pelatihan Industri</h2>
       <p class="section-lead">
         Program intensif berstandar industri dan kompetisi teknologi tingkat nasional.
       </p>
@@ -18,8 +18,8 @@ const p = getProfile();
 
     <div class="programs-grid">
       {/* Card 1: DBS Foundation Coding Camp */}
-      {p.training.map((t, i) => (
-        <article class="program-card" data-reveal="up" data-reveal-delay={String(i + 1)} data-spotlight>
+      {p.training.map((t) => (
+        <article class="program-card">
           {t.image && (
             <div class="program-thumb">
               <ImageSlot
@@ -72,7 +72,7 @@ const p = getProfile();
 
       {/* Card 2: Samsung Innovation Campus Batch 5 */}
       {p.achievements.filter(a => a.stages).map((a) => (
-        <article class="program-card" data-reveal="up" data-reveal-delay="2" data-spotlight>
+        <article class="program-card">
           {a.image && (
             <div class="program-thumb">
               <ImageSlot
@@ -96,18 +96,20 @@ const p = getProfile();
             {a.note && <p class="program-note">{a.note}</p>}
 
             {a.stages && (
-              <div class="stages-box">
-                <ol class="stages-list">
+              <div class="stages-strip">
+                <span class="stages-label">Tahapan Seleksi:</span>
+                <div class="stages-tags">
                   {a.stages.map((st) => (
-                    <li class="stage-item">
-                      <span class="stage-dot" aria-hidden="true"></span>
-                      <div class="stage-info">
-                        <span class="stage-name">{st.name}</span>
-                        <span class="stage-period">{st.period}</span>
-                      </div>
-                    </li>
+                    isLink(st.driveUrl) ? (
+                      <a href={st.driveUrl} target="_blank" rel="noopener" class="stage-tag is-link" title={`Unduh sertifikat ${st.name}`}>
+                        <span>{st.name.replace('Samsung Innovation Campus - ', '')}</span>
+                        <ExternalLink size={10} aria-hidden="true" />
+                      </a>
+                    ) : (
+                      <span class="stage-tag">{st.name.replace('Samsung Innovation Campus - ', '')}</span>
+                    )
                   ))}
-                </ol>
+                </div>
               </div>
             )}
 
@@ -159,8 +161,8 @@ const p = getProfile();
     color: var(--text-2);
     font-size: var(--step--1);
     margin: 0;
-    max-width: var(--measure);
-    line-height: 1.55;
+    max-width: 100%;
+    line-height: var(--leading-body, 1.65);
   }
 
   .programs-grid {
@@ -194,10 +196,10 @@ const p = getProfile();
     border-bottom: 1px solid var(--line);
   }
   .program-body {
-    padding: var(--space-4);
+    padding: var(--space-5);
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-3);
     flex-grow: 1;
     min-width: 0;
   }
@@ -217,7 +219,7 @@ const p = getProfile();
   }
   .badge-accent {
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
     border-color: var(--accent);
   }
   .badge-outline {
@@ -226,7 +228,7 @@ const p = getProfile();
   }
   .program-title {
     margin: 0;
-    font-size: var(--step-0);
+    font-size: var(--step-1);
     line-height: 1.35;
     color: var(--text);
   }
@@ -238,15 +240,15 @@ const p = getProfile();
   }
   .program-note {
     margin: 0;
-    font-size: var(--step--1);
-    color: var(--text);
-    line-height: 1.5;
+    font-size: var(--step-0);
+    color: var(--text-2);
+    line-height: var(--leading-body, 1.65);
   }
 
   .program-highlights {
     display: grid;
-    gap: var(--space-1);
-    margin-top: var(--space-1);
+    gap: var(--space-2);
+    margin-top: var(--space-2);
     font-size: var(--step--1);
     padding: 0;
     list-style: none;
@@ -254,9 +256,9 @@ const p = getProfile();
   .program-highlights li {
     display: flex;
     align-items: flex-start;
-    gap: var(--space-2);
+    gap: 0.55rem;
     color: var(--text-2);
-    line-height: 1.45;
+    line-height: 1.6;
   }
   .check-icon {
     color: #16a34a;
@@ -264,53 +266,44 @@ const p = getProfile();
     margin-top: 0.2rem;
   }
 
-  .stages-box {
-    background: var(--bg);
-    padding: var(--space-3);
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    margin-top: var(--space-1);
+  .stages-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: var(--space-2);
   }
-  .stages-heading {
+  .stages-label {
     font-size: var(--step--2);
     font-weight: 600;
     color: var(--text-2);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    margin-bottom: var(--space-2);
+    letter-spacing: 0.04em;
   }
-  .stages-list {
-    display: grid;
-    gap: var(--space-2);
-    padding: 0;
-    list-style: none;
-  }
-  .stage-item {
+  .stages-tags {
     display: flex;
-    align-items: flex-start;
-    gap: var(--space-2);
-    font-size: var(--step--1);
+    flex-wrap: wrap;
+    gap: 0.35rem;
   }
-  .stage-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    margin-top: 0.45rem;
-    flex-shrink: 0;
-  }
-  .stage-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-  }
-  .stage-name {
-    font-weight: 600;
+  .stage-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    font-size: var(--step--2);
+    font-weight: 500;
     color: var(--text);
   }
-  .stage-period {
-    font-size: var(--step--2);
+  .stage-tag.is-link {
+    text-decoration: none;
     color: var(--text-2);
+    transition: all 0.15s ease;
+  }
+  .stage-tag.is-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
   }
 
   .card-links {

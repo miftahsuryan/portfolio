@@ -6,7 +6,6 @@ import '../styles/base.css';
 import '../styles/print.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import InteractiveMotion from '../components/InteractiveMotion.astro';
 import { getProfile, isTodo, isLink } from '../lib/content';
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
   ogImage?: string;
   bare?: boolean; // halaman tanpa header/footer situs
 }
-const { title, description, path = '/', ogImage, bare = false } = Astro.props;
+const { title, description, path = '/', ogImage = '/og-image.png', bare = false } = Astro.props;
 
 const p = getProfile();
 const canonical = new URL(path, Astro.site).href;
@@ -35,6 +34,15 @@ const jsonLd = {
     alumniOf: { '@type': 'CollegeOrUniversity', name: p.education.institution },
   }),
   ...(ok(p.contact.email) && { email: p.contact.email }),
+  knowsAbout: [
+    'Machine Learning',
+    'Data Analysis',
+    'Python',
+    'Quantitative Finance',
+    'Deep Learning',
+    'Recommender Systems',
+    'Data Engineering',
+  ],
   sameAs: [p.contact.linkedin, p.contact.github].filter(isLink),
 };
 ---
@@ -77,7 +85,6 @@ const jsonLd = {
       <slot />
     </main>
     {!bare && <SiteFooter />}
-    <InteractiveMotion />
   </body>
 </html>
 

@@ -1,125 +1,278 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Printer, Download, ArrowLeft } from '@lucide/astro';
-import { getProfile, getSkillGroups, getProjects, hasCvPdf, statusLabel, isLink } from '../lib/content';
+import { getProfile, getSkillGroups, getProjects, hasCvPdf, isLink } from '../lib/content';
 
 const p = getProfile();
 const groups = getSkillGroups();
-const projects = await getProjects();
+const allProjects = await getProjects();
 const pdf = hasCvPdf();
 const e = p.education;
-const bare = (u: string) => u.replace(/^https?:\/\//, '');
+
+const cvRole = "Informatics Graduate | Data & Machine Learning Enthusiast";
+
+const isVideo = (u?: string | null) => !!u && /(youtube\.com|youtu\.be)/i.test(u);
+
+// Kurasi 6 sertifikasi teknis & bahasa terbaik berdurasi panjang untuk CV MagangHub
+const curatedCertNames = [
+  'Belajar Pengembangan Machine Learning',
+  'Machine Learning Terapan',
+  'Belajar Machine Learning untuk Pemula',
+  'Belajar Fundamental Pemrosesan Data',
+  'English for Business Communication',
+  'Test of English Competence (TOEC)',
+];
+
+const cvCertifications = p.certifications.filter((c) =>
+  curatedCertNames.some((name) => c.name.toLowerCase().includes(name.toLowerCase()))
+);
+
+// Training utama: Coding Camp DBS Foundation (936 jam)
+const cvTraining = p.training.filter((t) =>
+  t.name.toLowerCase().includes('coding camp') || t.name.toLowerCase().includes('dbs')
+);
+
+// Prestasi non-proyek: exclude SIC (karena SIC sudah dijelaskan di Proyek 05)
+const cvAchievements = p.achievements.filter(
+  (a) => !a.title.toLowerCase().includes('samsung')
+);
+
+// Organisasi: posisi kepemimpinan inti
+const cvOrganizations = p.organizations.filter(
+  (o) => !o.role.toLowerCase().includes('panitia')
+);
+
+// Pembagian halaman untuk anggaran presisi 2 Halaman A4
+const page1Projects = allProjects.slice(0, 3);
+const page2Projects = allProjects.slice(3);
 ---
 
-<BaseLayout title={`CV · ${p.name}`} description={`CV ${p.name}, ${p.role}.`} path="/cv" bare>
+<BaseLayout
+  title={`CV · ${p.name}`}
+  description={`Curriculum Vitae ${p.name} - ${cvRole}`}
+  path="/cv"
+  bare
+>
   <div class="wrap cv">
     <div class="actions no-print">
-      <a class="back" href="/"><ArrowLeft size={16} aria-hidden="true" />Kembali</a>
+      <a class="back" href="/"><ArrowLeft size={16} aria-hidden="true" />Kembali ke Beranda</a>
       <div class="buttons">
         <button type="button" class="btn btn-primary" data-print>
           <Printer size={18} aria-hidden="true" />Cetak / Simpan PDF
         </button>
-        {pdf && <a class="btn" href="/cv.pdf" download><Download size={18} aria-hidden="true" />Unduh cv.pdf</a>}
+        {pdf && (
+          <a class="btn" href="/cv.pdf" download>
+            <Download size={18} aria-hidden="true" />Unduh cv.pdf (A4 Resmi)
+          </a>
+        )}
       </div>
     </div>
 
-    <header class="cv-block">
-      <h1>{p.name}</h1>
-      <p class="role">{p.role}</p>
-      <p class="contact">
-        {p.location ? `${p.location} · ` : ''}
-        <a href={`mailto:${p.contact.email}`}>{p.contact.email}</a> ·
-        {isLink(p.contact.linkedin) ? <a href={p.contact.linkedin}>{bare(p.contact.linkedin)}</a> : p.contact.linkedin} ·
-        {isLink(p.contact.github) ? <a href={p.contact.github}>{bare(p.contact.github)}</a> : p.contact.github}
-      </p>
-    </header>
+    {/* ===== HALAMAN 1 ===== */}
+    <div class="cv-page">
+      <header class="cv-header cv-block">
+        <h1 class="cv-name">{p.name}</h1>
+        <p class="cv-role">{cvRole}</p>
+        <p class="cv-contact">
+          {p.location ? `${p.location} · ` : ''}
+          <a href={`mailto:${p.contact.email}`}>{p.contact.email}</a> ·
+          {isLink(p.contact.linkedin) && (
+            <a href={p.contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          )} ·
+          {isLink(p.contact.github) && (
+            <a href={p.contact.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+          )} ·
+          {isLink(p.siteUrl) && (
+            <a href={p.siteUrl} target="_blank" rel="noopener noreferrer">Portofolio Web</a>
+          )}
+        </p>
+      </header>
 
-    <section class="cv-block" aria-labelledby="cv-about">
-      <h2 id="cv-about">Tentang</h2>
-      <p>{p.about}</p>
-    </section>
+      <section class="cv-section cv-block" aria-labelledby="cv-about">
+        <h2 id="cv-about" class="cv-heading">Ringkasan Profesional</h2>
+        <p class="cv-summary">{p.about}</p>
+      </section>
 
-    <section aria-labelledby="cv-proyek">
-      <h2 id="cv-proyek">Proyek</h2>
-      {projects.map((proj) => {
-        const d = proj.data;
-        return (
-          <article class="cv-block item">
-            <h3>{d.title} <span class="meta">· {statusLabel[d.status] ?? d.status}</span></h3>
-            <p class="meta">{d.role} · {d.period}</p>
-            <p>{d.summary}</p>
-            <p><strong>Hasil:</strong> {d.outcome}</p>
-            <p class="meta">Stack: {d.stack.join(', ')}</p>
-            <p class="meta">
-              {isLink(d.repoUrl) && <a href={d.repoUrl}>Repositori</a>}
-              {isLink(d.repoUrl) && isLink(d.demoUrl) && ' · '}
-              {isLink(d.demoUrl) && <a href={d.demoUrl}>Demo</a>}
-              {(isLink(d.repoUrl) || isLink(d.demoUrl)) && isLink(d.videoUrl) && ' · '}
-              {isLink(d.videoUrl) && <a href={d.videoUrl}>Video Demo</a>}
+      <section class="cv-section cv-block" aria-labelledby="cv-edu">
+        <h2 id="cv-edu" class="cv-heading">Pendidikan Formal</h2>
+        <div class="edu-block">
+          <div class="item-head">
+            <span class="item-title"><strong>{e.institution}</strong></span>
+            <span class="item-period">{e.period}</span>
+          </div>
+          <p class="item-sub">
+            {e.degree} · Fakultas Sains dan Teknologi
+            {e.showGpa && e.gpa ? ` · IPK ${e.gpa} (Cumlaude)` : ''}
+          </p>
+          {e.thesis && (
+            <p class="thesis-line">
+              <strong>Tugas Akhir / Skripsi:</strong> <em>{e.thesis}</em>
             </p>
-          </article>
-        );
-      })}
-    </section>
+          )}
+        </div>
+      </section>
 
-    <section class="cv-block" aria-labelledby="cv-skill">
-      <h2 id="cv-skill">Skill</h2>
-      <ul>
-        {groups.map((g) => (
-          <li><strong>{g.category}:</strong> {g.items.map((i) => i.name).join(', ')}</li>
-        ))}
-      </ul>
-    </section>
-
-    <section class="cv-block" aria-labelledby="cv-edu">
-      <h2 id="cv-edu">Pendidikan</h2>
-      <p><strong>{e.institution}</strong></p>
-      <p>{e.degree} · {e.period}{e.showGpa && e.gpa ? ` · IPK ${e.gpa}` : ''}</p>
-      {e.thesis && <p class="meta">Tugas akhir: {e.thesis}</p>}
-    </section>
-
-    {(p.training.length > 0 || p.certifications.length > 0) && (
-      <section class="cv-block" aria-labelledby="cv-cert">
-        <h2 id="cv-cert">Sertifikasi dan pelatihan</h2>
-        <ul>
-          {p.training.map((t) => (
-            <li>
-              <strong>{t.name}</strong>, {t.issuer}, {t.period}{t.note && ` · ${t.note}`}
-              {isLink(t.driveUrl) && <> · <a href={t.driveUrl} target="_blank">Sertifikat PDF</a></>}
-            </li>
+      <section class="cv-section cv-block" aria-labelledby="cv-skills">
+        <h2 id="cv-skills" class="cv-heading">Keahlian Teknis</h2>
+        <div class="skills-list">
+          {groups.map((g) => (
+            <div class="skill-row">
+              <span class="skill-label"><strong>{g.category}:</strong></span>
+              <span class="skill-values">{g.items.map((i) => i.name).join(', ')}</span>
+            </div>
           ))}
-          {p.certifications.map((c) => (
-            <li>
-              <strong>{c.name}</strong>, {c.issuer}, {c.year}{c.hours && ` (${c.hours})`}
-              {c.credentialId && <span class="meta"> · ID: {c.credentialId}</span>}
-              {isLink(c.verificationUrl) && <> · <a href={c.verificationUrl} target="_blank">Verifikasi</a></>}
-              {!isLink(c.verificationUrl) && isLink(c.driveUrl) && <> · <a href={c.driveUrl} target="_blank">Sertifikat PDF</a></>}
+        </div>
+      </section>
+
+      <section class="cv-section" aria-labelledby="cv-projects-p1">
+        <h2 id="cv-projects-p1" class="cv-heading">Pengalaman Proyek Pilihan</h2>
+        <div class="projects-list">
+          {page1Projects.map((proj) => {
+            const d = proj.data;
+            return (
+              <article class="cv-project-item cv-block">
+                <div class="item-head">
+                  <span class="item-title"><strong>{d.title}</strong></span>
+                  <span class="item-period">{d.period}</span>
+                </div>
+                <div class="project-links">
+                  <span class="role-desc">{d.role}</span>
+                  <span class="link-group">
+                    {isLink(d.repoUrl) && (
+                      <a href={d.repoUrl} target="_blank" rel="noopener noreferrer" class="doc-link">[GitHub Repository]</a>
+                    )}
+                    {isLink(d.repoUrl) && (isLink(d.demoUrl) || isLink(d.videoUrl)) && <span class="sep">|</span>}
+                    {isLink(d.demoUrl) && !isVideo(d.demoUrl) && (
+                      <a href={d.demoUrl} target="_blank" rel="noopener noreferrer" class="doc-link">[Live Demo]</a>
+                    )}
+                    {isLink(d.demoUrl) && !isVideo(d.demoUrl) && isLink(d.videoUrl) && <span class="sep">|</span>}
+                    {(isVideo(d.demoUrl) || isLink(d.videoUrl)) && (
+                      <a href={isVideo(d.demoUrl) ? d.demoUrl : d.videoUrl!} target="_blank" rel="noopener noreferrer" class="doc-link">[Video Demo]</a>
+                    )}
+                  </span>
+                </div>
+                <p class="project-summary">{d.summary}</p>
+                <p class="project-outcome"><strong>Hasil & Dampak:</strong> {d.outcome}</p>
+                <p class="project-stack"><strong>Tech Stack:</strong> {d.stack.join(', ')}</p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </div>
+
+    {/* ===== HALAMAN 2 ===== */}
+    <div class="cv-page cv-page-break">
+      <section class="cv-section" aria-labelledby="cv-projects-p2">
+        <h2 id="cv-projects-p2" class="cv-heading">Lanjutan Proyek Pilihan</h2>
+        <div class="projects-list">
+          {page2Projects.map((proj) => {
+            const d = proj.data;
+            return (
+              <article class="cv-project-item cv-block">
+                <div class="item-head">
+                  <span class="item-title"><strong>{d.title}</strong></span>
+                  <span class="item-period">{d.period}</span>
+                </div>
+                <div class="project-links">
+                  <span class="role-desc">{d.role}</span>
+                  <span class="link-group">
+                    {isLink(d.repoUrl) && (
+                      <a href={d.repoUrl} target="_blank" rel="noopener noreferrer" class="doc-link">[GitHub Repository]</a>
+                    )}
+                    {isLink(d.repoUrl) && (isLink(d.demoUrl) || isLink(d.videoUrl)) && <span class="sep">|</span>}
+                    {isLink(d.demoUrl) && !isVideo(d.demoUrl) && (
+                      <a href={d.demoUrl} target="_blank" rel="noopener noreferrer" class="doc-link">[Live Demo]</a>
+                    )}
+                    {isLink(d.demoUrl) && !isVideo(d.demoUrl) && isLink(d.videoUrl) && <span class="sep">|</span>}
+                    {(isVideo(d.demoUrl) || isLink(d.videoUrl)) && (
+                      <a href={isVideo(d.demoUrl) ? d.demoUrl : d.videoUrl!} target="_blank" rel="noopener noreferrer" class="doc-link">[Video Demo]</a>
+                    )}
+                  </span>
+                </div>
+                <p class="project-summary">{d.summary}</p>
+                <p class="project-outcome"><strong>Hasil & Dampak:</strong> {d.outcome}</p>
+                <p class="project-stack"><strong>Tech Stack:</strong> {d.stack.join(', ')}</p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section class="cv-section cv-block" aria-labelledby="cv-cert">
+        <h2 id="cv-cert" class="cv-heading">Sertifikasi & Pelatihan Terverifikasi</h2>
+        <ul class="cv-compact-list">
+          {cvTraining.map((t) => {
+            const link = t.driveUrl ?? t.verificationUrl;
+            return (
+              <li class="cv-list-item">
+                <div class="item-head">
+                  <span class="item-title"><strong>{t.name} ({t.hours ?? '936 Jam'})</strong></span>
+                  <span class="item-period">{t.period}</span>
+                </div>
+                <p class="item-meta">
+                  {t.issuer} · {t.note}
+                  {t.credentialId && link ? (
+                    <> · ID: <a href={link} target="_blank" rel="noopener noreferrer" class="id-link">{t.credentialId}</a></>
+                  ) : t.credentialId ? (
+                    <> · ID: {t.credentialId}</>
+                  ) : null}
+                </p>
+              </li>
+            );
+          })}
+          {cvCertifications.map((c) => {
+            const link = c.verificationUrl ?? c.driveUrl;
+            return (
+              <li class="cv-list-item">
+                <div class="item-head">
+                  <span class="item-title"><strong>{c.name}</strong>{c.hours && ` (${c.hours})`}</span>
+                  <span class="item-period">{c.year}</span>
+                </div>
+                <p class="item-meta">
+                  {c.issuer}
+                  {c.credentialId && link ? (
+                    <> · ID: <a href={link} target="_blank" rel="noopener noreferrer" class="id-link">{c.credentialId}</a></>
+                  ) : c.credentialId ? (
+                    <> · ID: {c.credentialId}</>
+                  ) : null}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      <section class="cv-section cv-block" aria-labelledby="cv-org">
+        <h2 id="cv-org" class="cv-heading">Organisasi & Kepemimpinan</h2>
+        <ul class="cv-compact-list">
+          {cvOrganizations.map((o) => (
+            <li class="cv-list-item">
+              <div class="item-head">
+                <span class="item-title"><strong>{o.role}</strong> — {o.org}</span>
+                <span class="item-period">{o.period}</span>
+              </div>
+              {o.note && <p class="item-meta">{o.note}</p>}
             </li>
           ))}
         </ul>
       </section>
-    )}
 
-    {(p.organizations.length > 0 || p.achievements.length > 0) && (
-      <section class="cv-block" aria-labelledby="cv-org">
-        <h2 id="cv-org">Organisasi dan pencapaian</h2>
-        <ul>
-          {p.organizations.map((o) => (
-            <li>
-              <strong>{o.role}</strong>, {o.org}{o.period && ` · ${o.period}`}
-              {o.note && <span class="meta"> — {o.note}</span>}
-              {isLink(o.driveUrl) && <> · <a href={o.driveUrl} target="_blank">Sertifikat / Bukti</a></>}
-            </li>
-          ))}
-          {p.achievements.map((a) => (
-            <li>
-              <strong>{a.title}</strong> ({a.year}){a.note && `. ${a.note}`}
-              {isLink(a.driveUrl) && <> · <a href={a.driveUrl} target="_blank">Sertifikat PDF</a></>}
+      <section class="cv-section cv-block" aria-labelledby="cv-achieve">
+        <h2 id="cv-achieve" class="cv-heading">Prestasi Kejuaraan</h2>
+        <ul class="cv-compact-list">
+          {cvAchievements.map((a) => (
+            <li class="cv-list-item">
+              <div class="item-head">
+                <span class="item-title"><strong>{a.title}</strong></span>
+                <span class="item-period">{a.year}</span>
+              </div>
+              {a.note && <p class="item-meta">{a.note}</p>}
             </li>
           ))}
         </ul>
       </section>
-    )}
+    </div>
   </div>
 
   <script>
@@ -128,7 +281,11 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
 </BaseLayout>
 
 <style>
-  .cv { padding-block: var(--space-5) var(--space-7); max-width: 48rem; }
+  .cv {
+    padding-block: var(--space-5) var(--space-7);
+    max-width: 50rem;
+    margin-inline: auto;
+  }
   .actions {
     display: flex;
     flex-wrap: wrap;
@@ -137,33 +294,317 @@ const bare = (u: string) => u.replace(/^https?:\/\//, '');
     gap: var(--space-3);
     margin-bottom: var(--space-6);
   }
-  .back { display: inline-flex; align-items: center; gap: var(--space-1); padding-block: var(--space-2); }
-  .buttons { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  h1 { font-size: var(--step-3); }
-  .role { font-family: var(--font-heading); font-size: var(--step-1); color: var(--accent); margin-top: var(--space-1); }
-  .contact { margin-top: var(--space-3); font-size: var(--step--1); color: var(--text-2); max-width: none; }
-  section { margin-top: var(--space-6); }
-  h2 {
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
     font-size: var(--step--1);
-    font-family: var(--font-body);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
     color: var(--text-2);
-    border-bottom: 1px solid var(--line);
-    padding-bottom: var(--space-2);
-    margin-bottom: var(--space-4);
+    text-decoration: none;
+    transition: color 0.15s ease;
   }
-  .item { margin-bottom: var(--space-5); }
-  .item p, li { margin-top: var(--space-1); }
-  .meta { font-size: var(--step--1); color: var(--text-2); font-weight: 400; font-family: var(--font-body); }
-  ul { display: grid; gap: var(--space-2); }
+  .back:hover {
+    color: var(--accent);
+  }
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 2.5rem;
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--bg-2);
+    color: var(--text);
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn:hover {
+    border-color: var(--text-2);
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--on-accent);
+    border-color: var(--accent);
+  }
+  .btn-primary:hover {
+    filter: brightness(1.1);
+  }
 
+  /* CV Core Typography & Layout */
+  .cv-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+  .cv-page + .cv-page {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px dashed var(--line);
+  }
+
+  .cv-header {
+    border-bottom: 2px solid var(--text);
+    padding-bottom: 0.65rem;
+  }
+  .cv-name {
+    margin: 0;
+    font-size: 1.85rem;
+    line-height: 1.15;
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+  .cv-role {
+    margin: 0.2rem 0 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.01em;
+  }
+  .cv-contact {
+    margin: 0.35rem 0 0;
+    font-size: 0.85rem;
+    color: var(--text-2);
+    line-height: 1.45;
+  }
+  .cv-contact a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .cv-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .cv-heading {
+    margin: 0;
+    font-size: 0.85rem;
+    font-family: var(--font-body);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.25rem;
+  }
+
+  .cv-summary {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .edu-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .item-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .item-title {
+    font-size: 0.92rem;
+    color: var(--text);
+  }
+  .item-period {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-2);
+    flex-shrink: 0;
+  }
+  .item-sub {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-2);
+  }
+  .thesis-line {
+    margin: 0.15rem 0 0;
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .skill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  .skill-label {
+    color: var(--text);
+  }
+  .skill-values {
+    color: var(--text-2);
+  }
+
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .cv-project-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+  }
+  .project-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+  }
+  .role-desc {
+    color: var(--text-2);
+    font-weight: 500;
+  }
+  .link-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .doc-link {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 1.5px;
+  }
+  .sep {
+    color: var(--line);
+  }
+  .project-summary {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.42;
+    color: var(--text);
+  }
+  .project-outcome {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.4;
+    color: var(--text);
+  }
+  .project-stack {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-2);
+    font-family: var(--font-mono);
+  }
+
+  .cv-compact-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .cv-list-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+  }
+  .item-meta {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--text-2);
+    line-height: 1.35;
+  }
+  .id-link {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    text-decoration: underline;
+    text-underline-offset: 1.5px;
+  }
+
+  /* Media Print Tuning untuk Garansi 2 Halaman A4 */
   @media print {
-    .cv { padding: 0; max-width: none; }
-    section { margin-top: 5mm; }
-    h1 { font-size: 22pt; }
-    .role, .contact, .meta, h2 { color: #333 !important; }
+    .cv {
+      padding: 0 !important;
+      max-width: none !important;
+    }
+    .cv-page + .cv-page {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      border-top: none !important;
+    }
+    .cv-name {
+      font-size: 19pt !important;
+    }
+    .cv-role {
+      font-size: 10.5pt !important;
+      color: #0369a1 !important;
+    }
+    .cv-contact {
+      font-size: 8.5pt !important;
+      color: #374151 !important;
+    }
+    .cv-heading {
+      font-size: 8.5pt !important;
+      color: #111827 !important;
+      border-bottom: 1px solid #d1d5db !important;
+      margin-top: 4pt !important;
+      padding-bottom: 1.5pt !important;
+    }
+    .cv-summary {
+      font-size: 8.8pt !important;
+      line-height: 1.35 !important;
+    }
+    .item-title {
+      font-size: 9pt !important;
+    }
+    .item-period {
+      font-size: 8pt !important;
+      color: #4b5563 !important;
+    }
+    .item-sub, .thesis-line, .skill-row {
+      font-size: 8.5pt !important;
+      line-height: 1.32 !important;
+    }
+    .projects-list {
+      gap: 5pt !important;
+    }
+    .cv-project-item {
+      gap: 1.5pt !important;
+    }
+    .project-summary, .project-outcome {
+      font-size: 8.4pt !important;
+      line-height: 1.32 !important;
+    }
+    .project-stack {
+      font-size: 7.8pt !important;
+    }
+    .cv-compact-list {
+      gap: 3.5pt !important;
+    }
+    .item-meta {
+      font-size: 8.2pt !important;
+      line-height: 1.3 !important;
+    }
+    .doc-link, .id-link {
+      color: #0369a1 !important;
+      text-decoration: underline !important;
+    }
   }
 </style>
-

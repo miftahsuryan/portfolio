@@ -3,7 +3,7 @@ import { ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, FolderGit2 } from
 import { render } from 'astro:content';
 import ProjectGallery from './ProjectGallery.astro';
 import TechIcon from './TechIcon.astro';
-import { getProjects, statusLabel, isLink } from '../lib/content';
+import { getProjects, isLink } from '../lib/content';
 
 const rawProjects = await getProjects();
 const projects = await Promise.all(
@@ -17,11 +17,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 <section class="section" id="proyek" aria-labelledby="proyek-title">
   <div class="wrap projects-container" data-projects-showcase>
-    <div class="section-head" data-reveal="up">
+    <div class="section-head">
       <div class="head-info">
-        <h2 id="proyek-title">Proyek Unggulan</h2>
+        <h2 id="proyek-title">Proyek</h2>
         <p class="section-lead">
-          Studi kasus end-to-end: machine learning terapan, optimasi kuantitatif, dan rekayasa IoT.
+          Studi kasus end-to-end: machine learning terapan, analitik kuantitatif, sistem rekomendasi, dan rekayasa IoT.
         </p>
       </div>
 
@@ -44,7 +44,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <nav class="project-tabs" role="tablist" aria-label="Pilih Proyek" data-reveal="up" data-reveal-delay="1">
       {projects.map(({ proj }, i) => {
         const d = proj.data;
-        const shortTitle = d.title.split(':')[0].replace('Menggunakan Adaptive Genetic Algorithm (AGA) dan Walk-Forward Validation', '(AGA)');
+        let shortTitle = d.title.split(':')[0];
+        if (d.title.includes('IDX30')) shortTitle = 'Portofolio IDX30';
+        else if (d.title.includes('IDX Quant')) shortTitle = 'IDX Quant Studio';
+        else if (d.title.includes('WisataPas')) shortTitle = 'WisataPas';
+        else if (d.title.includes('X-Pulse')) shortTitle = 'X-Pulse Analytics';
+        else if (d.title.includes('Tunarungu')) shortTitle = 'IoT Smart Tunnel';
         return (
           <button
             type="button"
@@ -56,7 +61,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
           >
             <span class="tab-num">{pad(i + 1)}</span>
             <span class="tab-title">{shortTitle}</span>
-            <span class="tab-badge">{statusLabel[d.status] ?? d.status}</span>
           </button>
         );
       })}
@@ -72,16 +76,17 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <div class="slide-card">
                 <header class="slide-header">
                   <div class="header-main">
-                    <p class="slide-num" aria-hidden="true">{pad(i + 1)}</p>
-                    <div>
-                      <h3>{d.title}</h3>
+                    <span class="slide-num" aria-hidden="true">{pad(i + 1)}</span>
+                    <div class="header-content">
+                      <h3 class="slide-title">{d.title}</h3>
                       <p class="slide-meta">
-                        <span class="badge badge-status">{statusLabel[d.status] ?? d.status}</span>
                         <span>{d.role} · {d.period}</span>
                       </p>
                     </div>
                   </div>
                 </header>
+
+                {d.summary && <p class="summary">{d.summary}</p>}
 
                 <div class="gallery-wrapper">
                   <ProjectGallery
@@ -138,12 +143,16 @@ const pad = (n: number) => String(n).padStart(2, '0');
                       <ArrowUpRight size={15} aria-hidden="true" />
                     </a>
                   )}
+                  <a href="#kontak" class="proj-link talk-link">
+                    <span>Diskusikan Proyek</span>
+                    <ArrowUpRight size={15} aria-hidden="true" />
+                  </a>
                 </div>
 
                 {proj.body && proj.body.trim().length > 0 && (
                   <details class="case-study">
                     <summary>
-                      <span>Baca Dokumentasi Teknis & Studi Kasus Lengkap</span>
+                      <span>Detail studi kasus</span>
                       <ChevronDown size={18} class="chevron" aria-hidden="true" />
                     </summary>
                     <div class="prose">
@@ -170,13 +179,20 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   .section-head {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-end;
     gap: var(--space-3);
+    width: 100%;
+    margin-bottom: var(--space-2);
   }
   .head-info {
-    max-width: var(--measure);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 100%;
+    flex-grow: 1;
   }
   .head-info h2 {
     margin: 0;
@@ -184,24 +200,29 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
   .section-lead {
     color: var(--text-2);
-    font-size: var(--step--1);
+    font-size: var(--step-0);
     margin-top: var(--space-1);
-    line-height: 1.55;
+    line-height: var(--leading-body, 1.65);
   }
 
   .head-controls {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: var(--space-3);
+    padding: 0.35rem 0.45rem 0.35rem 0.85rem;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
   }
   .slide-counter {
     font-size: var(--step--1);
     color: var(--text-2);
+    font-family: var(--font-mono);
   }
   .slide-counter strong {
     color: var(--accent);
-    font-family: var(--font-heading);
-    font-size: var(--step-0);
+    font-weight: 700;
+    font-size: var(--step--1);
   }
   .nav-arrows {
     display: inline-flex;
@@ -210,18 +231,19 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .arrow-btn {
     display: inline-grid;
     place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.15rem;
+    height: 2.15rem;
     border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--bg-2);
+    border-radius: calc(var(--radius) - 2px);
+    background: var(--bg);
     color: var(--text);
     cursor: pointer;
-    transition: background-color 0.15s, border-color 0.15s;
+    transition: all 0.15s ease;
   }
   .arrow-btn:hover {
     border-color: var(--text);
-    background: var(--bg);
+    background: var(--text);
+    color: var(--bg);
   }
 
   /* Project Switcher Tabs */
@@ -231,18 +253,25 @@ const pad = (n: number) => String(n).padStart(2, '0');
     gap: var(--space-2);
     margin-top: var(--space-1);
   }
-  @media (min-width: 48rem) {
+  @media (min-width: 36rem) {
     .project-tabs {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-3);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+  }
+  @media (min-width: 58rem) {
+    .project-tabs {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--space-2);
     }
   }
 
   .tab-btn {
     display: flex;
     align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: var(--space-2) 0.85rem;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--bg-2);
@@ -267,10 +296,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
     font-size: var(--step--1);
     font-weight: 700;
     color: var(--accent);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
     flex-shrink: 0;
   }
   .tab-title {
-    font-size: var(--step--2);
+    font-size: var(--step--1);
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -278,8 +309,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     flex-grow: 1;
   }
   .tab-badge {
-    font-size: 0.65rem;
-    padding: 0.1rem 0.4rem;
+    font-size: var(--step--2);
+    padding: 0.15rem 0.45rem;
     border-radius: var(--radius);
     border: 1px solid var(--line);
     background: var(--bg);
@@ -333,44 +364,64 @@ const pad = (n: number) => String(n).padStart(2, '0');
     padding: var(--space-5);
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-5);
     min-width: 0;
   }
   @media (max-width: 36rem) {
     .slide-card {
       padding: var(--space-4);
-      gap: var(--space-3);
+      gap: var(--space-4);
     }
   }
 
   .slide-header {
     display: flex;
-    align-items: baseline;
-    gap: var(--space-3);
+    flex-direction: column;
+    gap: var(--space-2);
   }
   .header-main {
     display: flex;
-    align-items: baseline;
+    align-items: flex-start;
     gap: var(--space-3);
+    width: 100%;
   }
   .slide-num {
-    font-family: var(--font-heading);
-    font-size: var(--step-2);
-    color: var(--accent);
-    line-height: 1;
-    min-width: 2ch;
-  }
-  .slide-header h3 {
     margin: 0;
-    font-size: var(--step-1);
-    line-height: 1.25;
+    padding: 0;
+    font-family: var(--font-heading);
+    font-size: clamp(1.35rem, 1.2rem + 0.55vw, 1.65rem);
+    line-height: 1.3;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .header-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+    flex-grow: 1;
+    width: 100%;
+  }
+  .slide-title {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-heading);
+    font-size: clamp(1.35rem, 1.2rem + 0.55vw, 1.65rem);
+    line-height: 1.3;
+    font-weight: 700;
+    color: var(--text);
+    text-wrap: unset;
+    width: 100%;
+    max-width: 100%;
   }
   .slide-meta {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-2) var(--space-3);
-    margin-top: var(--space-2);
+    margin: 0;
     font-size: var(--step--1);
     color: var(--text-2);
   }
@@ -385,8 +436,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   .summary {
     font-size: var(--step-0);
-    line-height: 1.55;
+    line-height: var(--leading-body, 1.65);
+    color: var(--text-2);
     margin: 0;
+    width: 100%;
+    max-width: 100%;
+    text-wrap: unset;
   }
 
   .gallery-wrapper {
@@ -397,25 +452,28 @@ const pad = (n: number) => String(n).padStart(2, '0');
   /* Details Grid (3 columns on desktop, 1 on mobile) */
   .details-grid {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-5);
     border-top: 1px solid var(--line);
-    padding-top: var(--space-4);
+    padding-top: var(--space-5);
     margin: 0;
   }
   @media (min-width: 52rem) {
     .details-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-4);
+      gap: var(--space-5);
+    }
+    .detail-block:not(:first-child) {
+      border-left: 1px solid var(--line);
+      padding-left: var(--space-5);
     }
   }
   .detail-block {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    padding: var(--space-3);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--bg);
+    gap: 0.45rem;
+    padding: 0;
+    border: none;
+    background: transparent;
   }
   dt {
     font-size: var(--step--2);
@@ -427,8 +485,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
   dd {
     margin: 0;
     font-size: var(--step--1);
-    color: var(--text);
-    line-height: 1.5;
+    color: var(--text-2);
+    line-height: var(--leading-body, 1.65);
   }
 
   .stack-row {
@@ -552,15 +610,25 @@ const pad = (n: number) => String(n).padStart(2, '0');
     margin-bottom: var(--space-3);
     max-width: none;
   }
-  .prose :global(ul), .prose :global(ol) {
+  .prose :global(ul) {
     padding-left: var(--space-4);
     margin-bottom: var(--space-3);
+    list-style: disc;
+  }
+  .prose :global(ol) {
+    padding-left: var(--space-4);
+    margin-bottom: var(--space-3);
+    list-style: decimal;
   }
   .prose :global(li) {
     margin-bottom: var(--space-1);
   }
   .prose :global(table) {
+    display: block;
     width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     border-collapse: collapse;
     margin-bottom: var(--space-4);
     font-size: var(--step--2);
@@ -569,10 +637,23 @@ const pad = (n: number) => String(n).padStart(2, '0');
     border: 1px solid var(--line);
     padding: var(--space-1) var(--space-2);
     text-align: left;
+    white-space: nowrap;
   }
   .prose :global(th) {
     background: var(--bg-2);
     font-weight: 600;
+  }
+
+  .proj-link.talk-link {
+    margin-inline-start: auto;
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+    background: color-mix(in srgb, var(--accent) 6%, var(--bg));
+  }
+  .proj-link.talk-link:hover {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--on-accent);
   }
 </style>
 
@@ -600,12 +681,18 @@ const pad = (n: number) => String(n).padStart(2, '0');
       }
     }
 
-    function scrollToIndex(index: number) {
+    function scrollToIndex(index: number, options: { alignVertical?: boolean } = {}) {
       if (!track) return;
       const targetSlide = slides[index];
       if (targetSlide) {
-        targetSlide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        track.scrollTo({ left: targetSlide.offsetLeft, behavior: 'smooth' });
         updateActiveState(index);
+        if (options.alignVertical) {
+          const section = document.getElementById('proyek');
+          if (section) {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
       }
     }
 
@@ -663,13 +750,15 @@ const pad = (n: number) => String(n).padStart(2, '0');
       if (hash) {
         slides.forEach((slide, idx) => {
           if (slide.id === hash) {
-            scrollToIndex(idx);
+            scrollToIndex(idx, { alignVertical: true });
           }
         });
       }
     }
 
     window.addEventListener('hashchange', handleHash);
-    setTimeout(handleHash, 200);
+    if (window.location.hash) {
+      setTimeout(handleHash, 150);
+    }
   });
 </script>

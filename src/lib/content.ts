@@ -3,6 +3,16 @@ import { load } from 'js-yaml';
 import { getCollection } from 'astro:content';
 import type { ImageMetadata } from 'astro';
 
+export interface ServiceItem {
+  id: string;
+  title: string;
+  category: string;
+  summary: string;
+  deliverables: string[];
+  stack: string[];
+  projectSlug?: string;
+}
+
 export interface Profile {
   siteUrl: string;
   name: string;
@@ -10,6 +20,7 @@ export interface Profile {
   tagline: string;
   availability: string;
   location: string | null;
+  services?: ServiceItem[];
   avatar: string | null;
   avatarAlt: string;
   about: string;
@@ -88,6 +99,7 @@ export function getProfile(): Profile {
   const p = readYaml<Profile>('src/content/id/profile.yaml');
   return {
     ...p,
+    services: p.services ?? [],
     certifications: p.certifications ?? [],
     training: p.training ?? [],
     achievements: p.achievements ?? [],
@@ -127,7 +139,9 @@ export function resolveImage(path: string | null): ImageMetadata | null {
 export const statusLabel: Record<string, string> = {
   selesai: 'Selesai',
   prototipe: 'Prototipe',
-  'sedang-dikerjakan': 'Sedang dikerjakan',
+  pengembangan: 'Pengembangan',
+  'dalam-pengembangan': 'Pengembangan',
+  'sedang-dikerjakan': 'Sedang Dikerjakan',
 };
 
 export const isTodo = (v?: string | null) => !!v && /\bTODO\b/i.test(v);
