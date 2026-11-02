@@ -6,8 +6,8 @@ role: "Machine Learning (Proyek Skripsi)"
 period: "2025 - 2026"
 summary: "Eksplorasi optimasi bobot portofolio saham IDX30 menggunakan Adaptive Genetic Algorithm (AGA) dan validasi Walk-Forward berbasis Python & Streamlit."
 problem: "Metode Mean-Variance statis rentan optimum lokal, konsentrasi risiko ekstrem, dan mengabaikan friksi biaya transaksi riil."
-approach: "Mesin AGA berpenalti diversifikasi HHI dan batas alokasi tertentu, diuji via 4 fase Walk-Forward dan dideploy ke dashboard Streamlit."
-outcome: "Total Return 46,49% (vs IDX30 13,48%), Sharpe Ratio 2,1025, Max Drawdown -15,74%, dan terbukti signifikan secara statistik (p < 0,05)."
+approach: "Mesin AGA berpenalti diversifikasi HHI dan batas alokasi 20%, diuji via 4 fase Walk-Forward dan dideploy ke terminal riset Streamlit."
+outcome: "Total Return 46,51% (vs IDX30 13,48%), Sharpe Ratio 2,1036 (vs 0,3767), Max Drawdown -15,74%, dan terbukti signifikan secara statistik (p < 0,001)."
 stack:
   - "Python"
   - "Adaptive Genetic Algorithm (AGA)"
@@ -23,52 +23,158 @@ coverImage: "src/assets/projects/AGA/streamlit_dashboard_preview.png"
 coverAlt: "Dasbor interaktif optimasi portofolio saham IDX30 berbasis Streamlit dan Plotly"
 gallery:
   - image: "src/assets/projects/AGA/streamlit_dashboard_preview.png"
-    alt: "Antarmuka web dashboard interaktif Streamlit untuk simulasi alokasi portofolio saham IDX30"
-    caption: "Dashboard Interaktif Streamlit: Simulasi optimasi portofolio real-time & visualisasi bobot aset"
+    alt: "Antarmuka terminal riset dan web dashboard interaktif Streamlit untuk simulasi alokasi portofolio saham IDX30"
+    caption: "Terminal Riset & Investasi Streamlit: Simulasi optimasi portofolio real-time & visualisasi bobot lot aset"
   - image: "src/assets/projects/AGA/wfo_cumulative_equity_drawdown.png"
     alt: "Grafik perbandingan kurva pertumbuhan modal (equity curve) dan drawdown out-of-sample strategi AGA terhadap benchmark"
-    caption: "Kinerja Out-of-Sample: Return kumulatif 46,49% mengungguli Standard GA, Equal Weight, dan Indeks IDX30"
+    caption: "Kinerja Out-of-Sample: Return kumulatif 46,51% mengungguli Standard GA (33,90%), Equal Weight (38,51%), dan Indeks IDX30 (13,48%)"
   - image: "src/assets/projects/AGA/weights_allocation_aga_4phases.png"
     alt: "Diagram alokasi bobot portofolio saham IDX30 sepanjang 4 fase rolling Walk-Forward"
-    caption: "Dinamika Alokasi Bobot: Pembatasan konsentrasi aset maksimum 20% melalui mekanisme perbaikan proporsional"
+    caption: "Dinamika Alokasi Bobot: Pembatasan konsentrasi aset maksimum 20% melalui mekanisme perbaikan proporsional (repair mechanism)"
   - image: "src/assets/projects/AGA/convergence_sga_vs_aga.png"
     alt: "Grafik konvergensi nilai fitness fungsi objektif membandingkan Adaptive GA dengan Standard GA"
-    caption: "Validasi Algoritma: Operator adaptif (AGA) mempertahankan diversitas gen dan mencegah konvergensi prematur"
+    caption: "Validasi Algoritma: Operator adaptif (AGA) mempertahankan diversitas gen dan mencegah konvergensi prematur ke optimum lokal"
 ---
 
-## Konteks & Latar Belakang
-Proyek ini merupakan penelitian tugas akhir (*Skripsi*) S1 Informatika yang berfokus pada ranah **Quantitative Finance** dan **Evolutionary Machine Learning**. Penelitian ini memecahkan tantangan alokasi aset dinamis pada 22 saham konsisten konstituen indeks **IDX30** (saham *blue-chip* terlikuid di Bursa Efek Indonesia) periode 2022–2026.
+## Konteks & Latar Belakang Riset
+Proyek ini merupakan penelitian tugas akhir (*Skripsi*) S1 Informatika yang berfokus pada ranah **Quantitative Finance** dan **Evolutionary Machine Learning**. Penelitian ini memecahkan tantangan alokasi aset dinamis pada **22 saham konstituen konsisten indeks IDX30** (saham *blue-chip* terlikuid di Bursa Efek Indonesia) periode 2022–2026.
 
 ## Permasalahan Kuantitatif
-Metode alokasi aset modern (*Markowitz Mean-Variance*) sering menghadapi kendala praktis di dunia nyata:
-1. **Konvergensi Prematur**: Standard Genetic Algorithm (SGA) dengan parameter statis cenderung mengalami stagnasi pada optimum lokal di tahap awal evolusi, atau sebaliknya merusak gen berbobot baik di tahap akhir.
-2. **Konsentrasi Risiko Ekstrem**: Fungsi objektif rasio Sharpe tanpa regulasi sering kali menempatkan 100% modal hanya pada 1–2 saham agresif.
-3. **Asumsi Pasar Tidak Realistis**: Pengujian *backtesting* konvensional sering mengabaikan pergeseran rezim pasar (*regime shift*), *weight drift*, dan friksi biaya transaksi riil (biaya broker, levy bursa, dan PPh final).
+Model alokasi aset modern (*Markowitz Mean-Variance*) sering menghadapi kendala praktis di dunia nyata:
+1. **Konvergensi Prematur**: *Standard Genetic Algorithm* (SGA) dengan parameter statis cenderung mengalami stagnasi pada optimum lokal di tahap awal evolusi, atau sebaliknya merusak gen berbobot baik di tahap akhir eksploitasi.
+2. **Konsentrasi Risiko Ekstrem**: Fungsi objektif rasio Sharpe tanpa regulasi sering kali menempatkan 100% modal hanya pada 1–2 saham agresif (*corner solutions*).
+3. **Asumsi Pasar Tidak Realistis**: Pengujian *backtesting* konvensional sering mengabaikan pergeseran rezim pasar (*regime shift*), pergeseran bobot harga (*price drift*), dan friksi biaya transaksi riil (biaya broker, levy bursa, dan PPh final transaksi).
 
-## Inovasi Arsitektur Algoritma (AGA)
-Untuk mengatasi kelemahan tersebut, dirancang mesin optimasi kuantitatif *end-to-end* dengan inovasi utama:
-- **Operator Genetik Adaptif (Srinivas & Patnaik)**: Probabilitas *crossover* (<em>P<sub>c</sub></em>) dan mutasi (<em>P<sub>m</sub></em>) diskalakan secara otomatis per individu berdasarkan varians nilai fitness populasi (<em>k</em><sub>1</sub> … <em>k</em><sub>6</sub>). Hal ini menjaga diversitas eksplorasi gen pada generasi awal dan mempercepat konvergensi presisi pada generasi akhir.
-- **Formulasi Multi-Objektif Teregulasi**: Memaksimalkan Sharpe Ratio terbobot sekaligus menambahkan penalti konsentrasi berbasis *Herfindahl-Hirschman Index* (HHI, <em>λ</em><sub>div</sub> = 0,05) guna menjamin diversifikasi portofolio.
-- **Mekanisme Perbaikan Alokasi (*Repair Mechanism*)**: Menerapkan batas keras alokasi per aset tunggal (<em>w<sub>i</sub></em> ≤ 20%) melalui algoritma redistribusi proporsional berbasis kelebihan bobot (*excess redistribution*).
+## Formulasi Matematis & Inovasi Algoritma (AGA)
+Untuk mengatasi kelemahan tersebut, dirancang mesin optimasi kuantitatif *end-to-end* dengan formulasi dan inovasi utama:
+
+### 1. Formulasi Multi-Objektif Teregulasi HHI
+Untuk mencegah konsentrasi modal ekstrem dan menjamin diversifikasi portofolio, fungsi objektif dirumuskan dengan menambahkan penalti *Herfindahl-Hirschman Index* (HHI) dan penalti pelanggaran kendala bobot:
+
+> **Fungsi Objektif Multi-Tujuan:**  
+> **Minimalkan Fitness F(w) = − [ (wᵀ μ) / √(wᵀ Σ w + ε) ] + λ_div · Σ (w_i)² + γ · Σ max(0, w_i − w_max)²**
+
+**Parameter Formulasi:**
+- **μ**: Vektor return ekspektasian harian 22 aset konstituen IDX30.
+- **Σ**: Matriks kovariansi return historis aset.
+- **λ_div = 0,05**: Parameter penalti konsentrasi HHI yang telah dituning secara empiris.
+- **w_max = 0,20**: Batas keras alokasi modal maksimum 20% per aset tunggal.
+- **γ = 1000,0**: Pengali penalti keras (*hard penalty multiplier*) untuk pelanggaran batas alokasi.
+
+### 2. Operator Genetik Adaptif (Srinivas & Patnaik)
+Probabilitas *crossover* (P_c) dan mutasi (P_m) diskalakan secara otomatis per individu berdasarkan sebaran varians nilai fitness populasi generasi berjalan:
+
+> - **Probabilitas Crossover Adaptif (P_c):**
+>   - Jika `f_c ≤ f_avg` → `k1 − [ (k1 − k3)(f_avg − f_c) / (f_avg − f_min) ]`
+>   - Jika `f_c > f_avg` → `k2`
+>
+> - **Probabilitas Mutasi Adaptif (P_m):**
+>   - Jika `f_i ≤ f_avg` → `k4 − [ (k4 − k6)(f_avg − f_i) / (f_avg − f_min) ]`
+>   - Jika `f_i > f_avg` → `k5`
+
+**Hyperparameter Optimal:**
+- `k1 = 0,9`, `k2 = 0,9`, `k3 = 0,1`
+- `k4 = 0,9`, `k5 = 0,9`, `k6 = 0,3`
+- Ukuran Populasi: `M = 500` individu, Jumlah Generasi: `G = 88`.
+
+Mekanisme ini menjaga diversitas eksplorasi kromosom pada generasi awal dan mempercepat konvergensi presisi pada generasi akhir tanpa terjebak di optimum lokal.
+
+### 3. Mekanisme Perbaikan Bobot (*Repair Mechanism*)
+Menerapkan batas alokasi (`w_i ≤ 20%`) dan normalisasi total bobot (`Σ w_i = 1`) melalui algoritma redistribusi proporsional berbasis kelebihan bobot (*excess redistribution*). Kelebihan bobot dari aset yang melebihi batas didistribusikan secara proporsional ke aset lain yang belum mencapai batas, diulang secara iteratif hingga seluruh batasan terpenuhi.
+
+### 4. Engine Konversi Lot Saham Riil BEI
+Hasil bobot kontinu dikonversi secara presisi menjadi jumlah **Lot Saham Riil (1 Lot = 100 lembar)** berdasarkan nominal modal investasi (Rupiah) dan harga penutupan pasar:
+
+> **Jumlah Lot_i = ⌊ (w_i × Modal Investasi) / (Harga_i × 100) ⌋**
 
 ## Metodologi Pengujian: Walk-Forward Optimization (WFO)
-Kinerja strategi diuji secara ketat menggunakan simulasi *out-of-sample Walk-Forward Optimization* (WFO) sepanjang 4 temporal *rolling windows*, memperhitungkan biaya transaksi riil (beli 0,15%, jual 0,25%) serta penyesuaian bobot (*rebalancing* berkala).
+Kinerja strategi dievaluasi secara ketat menggunakan simulasi *out-of-sample Walk-Forward Optimization* (WFO) sepanjang **4 fase temporal bergulir (*rolling forward windows*)** periode 2025–2026. Evaluasi ini memperhitungkan friksi pasar riil:
+- **Biaya Akuisisi (Beli)**: Komisi broker 0,15%.
+- **Biaya Likuidasi (Jual)**: 0,25% (0,15% broker + 0,10% PPh Final transaksi bursa).
+- **Risk-Free Rate**: 6,00% per tahun (mengacu pada benchmark BI-Rate Bank Indonesia).
+- **Rebalancing Terjadwal**: Penyesuaian bobot antarfase dengan memperhitungkan pergeseran harga (*price drift*) intra-fase dan reinvestasi modal bersih.
 
-### Ringkasan Performa Out-of-Sample (vs Benchmark)
-| Metrik Finansial | AGA (4x Rebalance) | Standard GA | Equal Weight (1/N) | IDX30 Index | Selisih AGA vs Benchmark |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Total Return (%)** | **46,49%** | 33,90% | 38,51% | 13,48% | **+33,01%** |
-| **Annualized Return (%)** | **50,59%** | 36,75% | 41,82% | 14,53% | **+36,06%** |
-| **Sharpe Ratio** | **2,1025** | 1,4467 | 1,5961 | 0,3767 | **+1,7258 (+458%)** |
-| **Max Drawdown (%)** | **-15,74%** | -17,35% | -18,78% | -17,14% | **+1,40% (Risiko Terkendali)** |
-| **Total Biaya Transaksi** | 0,43% | 0,50% | 0,15% | 0,38% | Biaya realistis |
+---
 
-## Validasi Statistik Inferensial
-Keunggulan performa fungsi objektif AGA diuji secara ketat melalui **80 eksperimen independen** (10 *runs* × 4 fase × 2 algoritma):
-- Uji normalitas **Shapiro-Wilk** membuktikan sebaran data non-normal.
-- Uji non-parametrik **Wilcoxon Signed-Rank** dan **Paired t-test** dengan koreksi **Holm-Bonferroni** mengonfirmasi bahwa konvergensi fitness AGA lebih unggul secara signifikan (<em>p</em> &lt; 0,001) dibanding Standard GA pada seluruh 4 fase pengujian.
+## Ringkasan Performa Out-of-Sample (vs Benchmark)
 
-## Deployment & Web Dashboard Interaktif
-Sistem dideploy secara publik sebagai aplikasi web interaktif menggunakan **Streamlit** dan **Plotly**, menyediakan dua kapabilitas utama:
-1. **Showcase Visual Hasil Skripsi**: Visualisasi kurva pertumbuhan modal (*equity curve*), perbandingan *drawdown*, dan rincian alokasi bobot per fase WFO.
-2. **Simulator Optimasi Real-Time**: Memfasilitasi pengguna untuk menentukan modal investasi, batas bobot aset, dan target diversifikasi untuk menghitung alokasi portofolio saham IDX30 secara langsung.
+| Peringkat | Strategi Investasi | Total Return (%) | Annualized Return (%) | Annualized Volatility (%) | Sharpe Ratio | Max Drawdown (%) | Biaya Transaksi Bersih (%) | Nilai Akhir Portofolio (Rp 100 Juta) |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 🥇 | **Adaptive Genetic Algorithm (AGA)** | **46,51%** | **50,61%** | **21,21%** | **2,1036** | **-15,74%** | 0,43% | **Rp 146.510.342** |
+| 🥈 | **Equal Weight Benchmark (1/N)** | 38,51% | 41,82% | 22,44% | 1,5961 | -18,78% | 0,15% | Rp 138.514.890 |
+| 🥉 | **Standard Genetic Algorithm (SGA)** | 33,90% | 36,75% | 21,26% | 1,4467 | -17,35% | 0,50% | Rp 133.896.110 |
+| 4 | **IDX30 Market Index Benchmark** | 13,48% | 14,53% | 22,63% | 0,3767 | -17,14% | 0,38% | Rp 113.480.000 |
+
+> **Temuan Kunci:** Strategi AGA menghasilkan **Total Return +33,03% lebih tinggi** dan **Sharpe Ratio +458% lebih tinggi** dibanding indeks pasar resmi IDX30, sekaligus menekan risiko Maximum Drawdown ke level **-15,74%** (terendah dan paling terkendali di antara seluruh strategi benchmark).
+
+---
+
+## Validasi Uji Hipotesis Statistik Inferensial
+Untuk membuktikan bahwa keunggulan performa AGA bukan kebetulan stokastik, dilakukan pengujian inferensial ketat pada **80 eksperimen independen** (10 *runs* × 4 fase WFO × 2 algoritma):
+
+1. **Uji Normalitas Shapiro-Wilk**: Mengevaluasi distribusi selisih metrik (Δ = Metrik_AGA − Metrik_SGA).
+2. **Uji Hipotesis Terarah**: Jika Δ berdistribusi normal, diterapkan **Paired Student's t-test** dua arah; jika non-normal, diterapkan **Wilcoxon Signed-Rank test** non-parametrik dengan koreksi **Holm-Bonferroni**.
+
+| Fase WFO | Metrik yang Diuji | Rerata SGA ± SD | Rerata AGA ± SD | Uji Normalitas | p-value Normalitas | Uji Hipotesis | Nilai Statistik | p-value | Kesimpulan (α = 0,05) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Fase 1** | Fitness Objektif | 0,0168 ± 0,0033 | **0,0111 ± 0,0009** | Shapiro-Wilk | 0,7066 | Paired t-test | t = -6,282 | **p = 0,00014** | Signifikan Statistik |
+| **Fase 2** | Fitness Objektif | 0,0283 ± 0,0017 | **0,0222 ± 0,0006** | Shapiro-Wilk | 0,5009 | Paired t-test | t = -9,456 | **p < 0,00001** | Signifikan Statistik |
+| **Fase 3** | Fitness Objektif | 0,0049 ± 0,0025 | **-0,0008 ± 0,0011** | Shapiro-Wilk | 0,5127 | Paired t-test | t = -8,005 | **p < 0,00001** | Signifikan Statistik |
+| **Fase 4** | Fitness Objektif | -0,0020 ± 0,0016 | **-0,0072 ± 0,0009** | Shapiro-Wilk | 0,3674 | Paired t-test | t = -8,772 | **p < 0,00001** | Signifikan Statistik |
+| **Fase 1** | Sharpe Ratio | 0,0410 ± 0,0046 | **0,0469 ± 0,0027** | Shapiro-Wilk | 0,4636 | Paired t-test | t = 3,114 | **p = 0,0124** | Signifikan Statistik |
+| **Fase 2** | Sharpe Ratio | 0,0258 ± 0,0067 | **0,0336 ± 0,0021** | Shapiro-Wilk | 0,0386 | Wilcoxon | W = 0,000 | **p = 0,00195** | Signifikan Statistik |
+
+> Pada seluruh 4 fase temporal, AGA membuktikan **peningkatan fitness fungsi objektif yang signifikan secara statistik (p < 0,001)** dengan standar deviasi yang jauh lebih konsisten, membuktikan bahwa kontrol parameter adaptif meningkatkan stabilitas konvergensi secara nyata.
+
+---
+
+## Arsitektur Terminal Riset & Web Dashboard (Streamlit App)
+Sistem dideploy secara publik sebagai aplikasi web interaktif di **Streamlit Community Cloud** ([portfolio-optimization-aga.streamlit.app](https://portfolio-optimization-aga.streamlit.app)) dengan arsitektur 3 tab riset utama:
+
+### 1. Tab 1 — Kinerja Walk-Forward Out-of-Sample (OOS)
+- **Scorecard KPI Presisi**: Total Return (+46,51%), Sharpe Ratio (2,1036), Annualized Return (50,61%), dan Nilai Akhir Portofolio (Rp 146,51 Juta).
+- **Kurva Portofolio Dual-Axis Plotly**: Visualisasi pertumbuhan modal nominal (IDR) dan kurva *peak-to-trough drawdown* (%) harian yang disinkronkan sepanjang 4 fase WFO dengan garis demarkasi rebalancing.
+- **Engine Alokasi Lot Saham BEI**: Menampilkan alokasi bobot kontinu yang langsung dikonversi menjadi rekomendasi jumlah lot saham riil (kelipatan 100 lembar) dan estimasi modal yang terpakai.
+- **Matriks Uji Signifikansi Statistik**: Tabulasi lengkap hasil uji Shapiro-Wilk, t-test, dan Wilcoxon per fase.
+
+### 2. Tab 2 — Simulasi Optimasi Algoritma Interaktif (Live AGA vs SGA)
+- **Pemilih Keranjang Saham Fleksibel**: Memungkinkan pengguna memilih sub-aset khusus dari 22 konstituen IDX30.
+- **Slider Parameter & Batasan**: Kontrol real-time untuk batas alokasi maksimum (`w_max`), bobot penalti HHI (`λ_div`), ukuran populasi (`M`), dan jumlah generasi (`G`).
+- **Eksekusi Komparatif Real-Time**: Menjalankan algoritma AGA dan Standard GA secara simultan dengan grafik Plotly komparasi kecepatan konvergensi fitness, diversitas populasi, dan trajektori adaptasi rate P_c & P_m.
+
+### 3. Tab 3 — Universe Aset & Diagnostik Risiko
+- **Risk-Return Efficient Frontier**: Diagram sebaran 22 aset konstituen IDX30 (Volatilitas Tahunan vs Return Tahunan) dengan visualisasi gradien warna Sharpe Ratio per saham.
+- **Heatmap Korelasi 22×22**: Matriks korelasi return harian antarsaham untuk memetakan diversifikasi pasangan aset non-korelatif.
+- **Trajektori Harga Ternormalisasi**: Visualisasi tren harga saham historis dengan basis awal 100 (*Base = 100*).
+
+---
+
+## Struktur Paket Kode Modular
+
+```text
+.
+├── app.py                          # Terminal Riset Web Interaktif Streamlit (Dual-Mode)
+├── data/
+│   └── raw/                        # Data historis konstituen & harga saham BEI (2022-2026)
+├── notebooks/
+│   ├── 01_data_scraping.ipynb      # Pipeline otomatisasi scraping Yahoo Finance
+│   └── 02_idx30_portfolio_aga.ipynb# Eksperimen skripsi lengkap & analisis inferensial
+├── results/
+│   ├── figures/                    # 19 grafik resolusi tinggi visualisasi skripsi (.png)
+│   └── tables/                     # Ringkasan data performa kuantitatif (.csv)
+└── src/                            # Package Python modular berstandar industri
+    ├── backtest.py                 # Multi-phase WFO backtest engine dengan friksi trading
+    ├── config.py                   # Parameter konstanta, hyperparameter, dan split waktu
+    ├── data_loader.py              # Preprocessing data pasar, filter likuiditas & return
+    ├── objectives.py               # Fungsi objektif Mean-Variance berpenalti HHI & repair
+    ├── optimizers.py               # Implementasi algoritma SGA dan Adaptive GA (AGA)
+    ├── statistics.py               # Modul uji statistik inferensial (t-test, Wilcoxon, Holm)
+    └── visualization.py            # Modul plotting kurva publikasi riset
+```
+
+---
+
+## Akses Tautan Resmi Proyek
+- **Repositori Kode Sumber**: [github.com/miftahsuryan/idx30-portfolio-optimization-aga](https://github.com/miftahsuryan/idx30-portfolio-optimization-aga)
+- **Live Interactive Dashboard**: [portfolio-optimization-aga.streamlit.app](https://portfolio-optimization-aga.streamlit.app)
+- **Lisensi**: MIT Open-Source License
