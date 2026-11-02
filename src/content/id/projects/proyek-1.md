@@ -6,7 +6,7 @@ role: "Machine Learning (Proyek Skripsi)"
 period: "2025 - 2026"
 summary: "Eksplorasi optimasi bobot portofolio saham IDX30 menggunakan Adaptive Genetic Algorithm (AGA) dan validasi Walk-Forward berbasis Python & Streamlit."
 problem: "Metode Mean-Variance statis rentan optimum lokal, konsentrasi risiko ekstrem, dan mengabaikan friksi biaya transaksi riil."
-approach: "Mesin AGA berpenalti diversifikasi HHI dan batas alokasi 20%, diuji via 4 fase Walk-Forward dan dideploy ke terminal riset Streamlit."
+approach: "Mesin AGA berpenalti diversifikasi HHI dan batas alokasi 20%, diuji via 4 fase Walk-Forward dan dideploy ke terminal riset Streamlit bertaraf institusional."
 outcome: "Total Return 46,51% (vs IDX30 13,48%), Sharpe Ratio 2,1036 (vs 0,3767), Max Drawdown -15,74%, dan terbukti signifikan secara statistik (p < 0,001)."
 stack:
   - "Python"
@@ -20,14 +20,17 @@ stack:
 repoUrl: "https://github.com/miftahsuryan/idx30-portfolio-optimization-aga"
 demoUrl: "https://portfolio-optimization-aga.streamlit.app"
 coverImage: "src/assets/projects/AGA/streamlit_dashboard_preview.png"
-coverAlt: "Dasbor interaktif optimasi portofolio saham IDX30 berbasis Streamlit dan Plotly"
+coverAlt: "Dasbor terminal riset kuantitatif optimasi portofolio saham IDX30 berbasis Streamlit dan Plotly"
 gallery:
   - image: "src/assets/projects/AGA/streamlit_dashboard_preview.png"
-    alt: "Antarmuka terminal riset dan web dashboard interaktif Streamlit untuk simulasi alokasi portofolio saham IDX30"
-    caption: "Terminal Riset & Investasi Streamlit: Simulasi optimasi portofolio real-time & visualisasi bobot lot aset"
+    alt: "Antarmuka terminal riset kuantitatif dan web dashboard interaktif Streamlit untuk simulasi alokasi portofolio saham IDX30"
+    caption: "Terminal Riset & Investasi Kuantitatif Streamlit: Desain institusional FactSet/Bloomberg, simulasi real-time, dan kalkulator alokasi lot saham BEI"
   - image: "src/assets/projects/AGA/wfo_cumulative_equity_drawdown.png"
     alt: "Grafik perbandingan kurva pertumbuhan modal (equity curve) dan drawdown out-of-sample strategi AGA terhadap benchmark"
     caption: "Kinerja Out-of-Sample: Return kumulatif 46,51% mengungguli Standard GA (33,90%), Equal Weight (38,51%), dan Indeks IDX30 (13,48%)"
+  - image: "src/assets/projects/AGA/wfo_comparative_metrics_bar.png"
+    alt: "Diagram batang komparatif 6 metrik kinerja finansial out-of-sample strategi AGA terhadap seluruh benchmark"
+    caption: "Perbandingan Komprehensif 6 Metrik: Outperformance konsisten pada Total Return, Sharpe Ratio, dan perlindungan Max Drawdown"
   - image: "src/assets/projects/AGA/weights_allocation_aga_4phases.png"
     alt: "Diagram alokasi bobot portofolio saham IDX30 sepanjang 4 fase rolling Walk-Forward"
     caption: "Dinamika Alokasi Bobot: Pembatasan konsentrasi aset maksimum 20% melalui mekanisme perbaikan proporsional (repair mechanism)"
@@ -128,24 +131,41 @@ Untuk membuktikan bahwa keunggulan performa AGA bukan kebetulan stokastik, dilak
 
 ---
 
-## Arsitektur Terminal Riset & Web Dashboard (Streamlit App)
-Sistem dideploy secara publik sebagai aplikasi web interaktif di **Streamlit Community Cloud** ([portfolio-optimization-aga.streamlit.app](https://portfolio-optimization-aga.streamlit.app)) dengan arsitektur 3 tab riset utama:
+## Arsitektur Institutional Terminal Riset (Streamlit App)
+Aplikasi dideploy secara publik sebagai **Quantitative Research & Investment Terminal** bertaraf institusional di **Streamlit Community Cloud** ([portfolio-optimization-aga.streamlit.app](https://portfolio-optimization-aga.streamlit.app)):
 
-### 1. Tab 1 — Kinerja Walk-Forward Out-of-Sample (OOS)
-- **Scorecard KPI Presisi**: Total Return (+46,51%), Sharpe Ratio (2,1036), Annualized Return (50,61%), dan Nilai Akhir Portofolio (Rp 146,51 Juta).
-- **Kurva Portofolio Dual-Axis Plotly**: Visualisasi pertumbuhan modal nominal (IDR) dan kurva *peak-to-trough drawdown* (%) harian yang disinkronkan sepanjang 4 fase WFO dengan garis demarkasi rebalancing.
-- **Engine Alokasi Lot Saham BEI**: Menampilkan alokasi bobot kontinu yang langsung dikonversi menjadi rekomendasi jumlah lot saham riil (kelipatan 100 lembar) dan estimasi modal yang terpakai.
-- **Matriks Uji Signifikansi Statistik**: Tabulasi lengkap hasil uji Shapiro-Wilk, t-test, dan Wilcoxon per fase.
+### 1. Desain Antarmuka Institusional (FactSet / Bloomberg Aesthetic)
+- **Tipografi Finansial Modern**: Menggunakan kombinasi font *Inter* dan *JetBrains Mono* dengan skema warna monokromatik bersih dan bebas dari visual yang tidak perlu.
+- **Specification Badges Institusional**:
+  - `UNIVERSE: 22 IDX30 EQUITIES` — Konstituen saham blue-chip terlikuid dengan riwayat 3 tahun penuh.
+  - `MODEL: MEAN-VARIANCE + HHI PENALTY` — Maksimasi Sharpe Ratio terbobot penalti diversifikasi HHI.
+  - `OPERATOR CONTROL: DYNAMIC (SRINIVAS & PATNAIK)` — Kontrol probabilitas crossover ($P_c$) dan mutasi ($P_m$) adaptif.
+  - `VALIDATION: 4-PHASE WALK-FORWARD (2025-2026)` — Pengujian out-of-sample expanding window realistis.
+  - `BENCHMARK: IDX30 & 1/N EQUAL WEIGHT` — Tolok ukur kinerja terhadap pasar dan strategi pasif.
 
-### 2. Tab 2 — Simulasi Optimasi Algoritma Interaktif (Live AGA vs SGA)
-- **Pemilih Keranjang Saham Fleksibel**: Memungkinkan pengguna memilih sub-aset khusus dari 22 konstituen IDX30.
-- **Slider Parameter & Batasan**: Kontrol real-time untuk batas alokasi maksimum (`w_max`), bobot penalti HHI (`λ_div`), ukuran populasi (`M`), dan jumlah generasi (`G`).
-- **Eksekusi Komparatif Real-Time**: Menjalankan algoritma AGA dan Standard GA secara simultan dengan grafik Plotly komparasi kecepatan konvergensi fitness, diversitas populasi, dan trajektori adaptasi rate P_c & P_m.
+### 2. Panel Kontrol Lingkungan Eksekusi & Friksi Pasar (Sidebar)
+- **Portfolio Sizing Dinamis**: Pengguna dapat memasukkan modal investasi awal (dalam IDR, default Rp 100.000.000). Sistem secara dinamis menghitung alokasi nominal uang dan kebutuhan lot trading riil.
+- **Transparansi Friksi Pasar Nyata**:
+  - *Biaya Akuisisi (Beli)*: Komisi broker 0,15%.
+  - *Biaya Likuidasi (Jual)*: 0,25% (0,15% broker + 0,10% PPh Final transaksi bursa).
+  - *Risk-Free Rate*: 6,00% per tahun (mengacu pada benchmark BI-Rate Bank Indonesia).
+  - *Jadwal Rebalancing*: Kuartalan (*quarterly expanding window*) dengan continuous intra-phase asset price drift dan reinvestasi modal bersih.
 
-### 3. Tab 3 — Universe Aset & Diagnostik Risiko
-- **Risk-Return Efficient Frontier**: Diagram sebaran 22 aset konstituen IDX30 (Volatilitas Tahunan vs Return Tahunan) dengan visualisasi gradien warna Sharpe Ratio per saham.
-- **Heatmap Korelasi 22×22**: Matriks korelasi return harian antarsaham untuk memetakan diversifikasi pasangan aset non-korelatif.
-- **Trajektori Harga Ternormalisasi**: Visualisasi tren harga saham historis dengan basis awal 100 (*Base = 100*).
+### 3. Tiga Tab Riset Interaktif Terdedikasi
+- **Tab 1 — Walk-Forward Performance (OOS)**:
+  - *High-Precision KPI Scorecards*: Total Out-of-Sample Return (**46,51%**), Annualized Sharpe Ratio (**2,1036**), Annualized Return (**50,61%**), Maximum Drawdown (**-15,74%**), dan Terminal Portfolio Value (**Rp 146.510.342** dari modal Rp 100 Juta).
+  - *Kurva Harian Dual-Axis Plotly*: Trajektori pertumbuhan modal nominal (IDR) dan kurva drawdown (%) dengan garis demarkasi vertikal fase rebalancing (`Rebalance: Phase 2`, `Rebalance: Phase 3`, `Rebalance: Phase 4`).
+  - *Actionable IDX Lot Allocation Engine*: Mengonversi bobot kontinu $\mathbf{w}$ menjadi rekomendasi lot saham bulat riil sesuai aturan BEI (**1 Lot = 100 lembar**) dan estimasi modal terpakai:
+    `Jumlah Lot_i = ⌊ (w_i × Modal Investasi) / (Harga_i × 100) ⌋`
+  - *Matriks Uji Hipotesis Statistik*: Tabulasi hasil uji Shapiro-Wilk, t-test, dan Wilcoxon per fase.
+- **Tab 2 — Algorithm Optimization Simulation (Live AGA vs SGA)**:
+  - *Custom Universe Selector*: Memilih sub-keranjang saham khusus dari 22 konstituen IDX30.
+  - *Hyperparameter & Constraint Sliders*: Kontrol real-time untuk batas alokasi maksimum (`w_max`), bobot penalti HHI (`λ_div`), ukuran populasi (`M`), dan jumlah generasi (`G`).
+  - *Live Evolutionary Execution*: Menjalankan algoritma AGA dan Standard GA secara simultan dengan grafik Plotly komparasi kecepatan konvergensi fitness, diversitas populasi, dan trajektori adaptasi rate P_c & P_m.
+- **Tab 3 — Asset Universe & Risk Diagnostics**:
+  - *Risk-Return Efficient Frontier*: Diagram sebaran 22 aset konstituen IDX30 (Volatilitas Tahunan vs Return Tahunan) dengan visualisasi gradien warna Sharpe Ratio per saham.
+  - *Heatmap Korelasi 22×22*: Matriks korelasi return harian antarsaham untuk memetakan diversifikasi pasangan aset non-korelatif.
+  - *Trajektori Harga Ternormalisasi*: Visualisasi tren harga saham historis dengan basis awal 100 (*Base = 100*).
 
 ---
 
