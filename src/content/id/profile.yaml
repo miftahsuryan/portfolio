@@ -76,6 +76,25 @@ education:
   showGpa: true # ubah ke false bila IPK tidak ingin ditampilkan
   thesis: "Optimasi Portofolio Saham IDX30 Menggunakan Adaptive Genetic Algorithm (AGA) dan Walk-Forward Validation"
 
+highSchool:
+  institution: "MAN Insan Cendekia Paser"
+  location: "Kab. Paser, Kalimantan Timur, Indonesia"
+  major: "IPA"
+  score: "91.48 / 100"
+  period: "2018 - 2021"
+
+experience:
+  - company: "CV. SURYA NUGRAHA HOUSE"
+    brand: "Surya Food House"
+    role: "Manajemen Media, Strategi & Pengembangan Produk"
+    period: "Januari 2026 - Mei 2026"
+    location: "Kab. Paser, Kalimantan Timur, Indonesia"
+    summary: "Mengoptimalkan operasional dan strategi pemasaran digital bisnis kuliner keluarga (Surya Food House) melalui pendekatan analitik data."
+    highlights:
+      - "Memimpin kurasi konten dan manajemen interaksi pelanggan pada media sosial (@suryafoodhouse) untuk membangun brand awareness."
+      - "Mengeksekusi kampanye pemasaran digital bertarget berdasarkan segmentasi demografi dan analisis tren konversi audiens."
+      - "Menyusun rekomendasi pengadaan stok bahan baku dan merumuskan inovasi menu berbasis data penjualan guna menyeimbangkan efisiensi biaya operasional dengan pertumbuhan bisnis."
+
 # verificationUrl: link verifikasi resmi kredensial dicoding.com/certificates/...
 certifications:
   - name: "Belajar Pengembangan Machine Learning"
@@ -333,7 +352,7 @@ achievements:
     driveUrl: "https://drive.google.com/file/d/1UkcNPN0KyGoIsZzS8JYK4FqXkcpbkgq6/view"
     folderUrl: "https://drive.google.com/drive/folders/1jOtxipwoEbbdnGidgdYIua-ccc5ZfUhm?usp=share_link"
     image: "src/assets/certificates/sic5-semifinal-cert.png"
-    note: "Pengembangan perangkat Speech-to-Text berbasis ESP32 dan AI untuk menampilkan teks pengumuman publik bagi tunarungu."
+    note: "Terpilih sebagai Semi Finalis Nasional melalui pengembangan 'Alat Komunikasi IoT Berbasis Machine Learning untuk Menerjemahkan Ucapan ke Teks bagi Tunarungu', serta meraih predikat Master (skor 95.63) pada tahap Coding & Programming (Python, Algorithm & Data Structure)."
     stages:
       - name: "Stage 3: Artificial Intelligence (AI)"
         period: "18 Mei - 27 Juli 2024"
@@ -393,5 +412,7 @@ organizations:
 
 contact:
   email: "miftahullahsuryan@gmail.com"
+  phone: "081257780379"
+  domicile: "Kab. Paser, Kalimantan Timur (Domisili: DI Yogyakarta)"
   linkedin: "https://www.linkedin.com/in/miftahullah-surya-nugraha-0442a6295/"
   github: "https://github.com/miftahsuryan"

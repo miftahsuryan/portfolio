@@ -32,6 +32,22 @@ export interface Profile {
     showGpa: boolean;
     thesis: string | null;
   };
+  highSchool?: {
+    institution: string;
+    location: string;
+    major: string;
+    score: string;
+    period: string;
+  } | null;
+  experience?: {
+    company: string;
+    brand?: string;
+    role: string;
+    period: string;
+    location: string;
+    summary: string;
+    highlights?: string[];
+  }[];
   certifications: {
     name: string;
     issuer: string;
@@ -85,7 +101,13 @@ export interface Profile {
     driveUrl?: string;
     credentialId?: string;
   }[];
-  contact: { email: string; linkedin: string; github: string };
+  contact: {
+    email: string;
+    phone?: string;
+    domicile?: string;
+    linkedin: string;
+    github: string;
+  };
 }
 
 export interface SkillGroup {
@@ -100,6 +122,8 @@ export function getProfile(): Profile {
   return {
     ...p,
     services: p.services ?? [],
+    experience: p.experience ?? [],
+    highSchool: p.highSchool ?? null,
     certifications: p.certifications ?? [],
     training: p.training ?? [],
     achievements: p.achievements ?? [],

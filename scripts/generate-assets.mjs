@@ -182,19 +182,38 @@ async function run() {
   await ogPage.close();
   console.log('✓ public/og-image.png created');
 
-  // 2. Generate CV PDF from local dev server or static file
+  // 2. Generate Dual-Type CV PDFs from local dev server
   const cvPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   try {
-    await cvPage.goto('http://localhost:4321/cv', { waitUntil: 'networkidle', timeout: 8000 });
+    // 2a. Generate CV ATS (1-Column Minimalist)
+    console.log('Generating public/cv-ats.pdf from http://localhost:4321/cv?type=ats ...');
+    await cvPage.goto('http://localhost:4321/cv?type=ats', { waitUntil: 'networkidle', timeout: 12000 });
+    await cvPage.waitForTimeout(1000);
     await cvPage.pdf({
-      path: path.join(PUBLIC, 'cv.pdf'),
+      path: path.join(PUBLIC, 'cv-ats.pdf'),
       format: 'A4',
       printBackground: true,
-      margin: { top: '14mm', bottom: '14mm', left: '16mm', right: '16mm' },
+      margin: { top: '0mm', bottom: '0mm', left: '0mm', right: '0mm' },
     });
-    console.log('✓ public/cv.pdf created from http://localhost:4321/cv');
+    console.log('✓ public/cv-ats.pdf created');
+
+    // Default cv.pdf is synced with ATS version
+    fs.copyFileSync(path.join(PUBLIC, 'cv-ats.pdf'), path.join(PUBLIC, 'cv.pdf'));
+    console.log('✓ public/cv.pdf synced with ATS version');
+
+    // 2b. Generate CV Visual (2-Column SIAPkerja Teal)
+    console.log('Generating public/cv-visual.pdf from http://localhost:4321/cv?type=visual ...');
+    await cvPage.goto('http://localhost:4321/cv?type=visual', { waitUntil: 'networkidle', timeout: 12000 });
+    await cvPage.waitForTimeout(1000);
+    await cvPage.pdf({
+      path: path.join(PUBLIC, 'cv-visual.pdf'),
+      format: 'A4',
+      printBackground: true,
+      margin: { top: '0mm', bottom: '0mm', left: '0mm', right: '0mm' },
+    });
+    console.log('✓ public/cv-visual.pdf created');
   } catch (err) {
-    console.warn('Could not generate cv.pdf from localhost:4321/cv:', err.message);
+    console.warn('Could not generate CV PDFs from localhost:4321/cv:', err.message);
   } finally {
     await cvPage.close();
   }

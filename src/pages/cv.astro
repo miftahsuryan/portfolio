@@ -1,6 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Printer, Download, ArrowLeft } from '@lucide/astro';
+import { Image } from 'astro:assets';
+import {
+  Printer,
+  Download,
+  ArrowLeft,
+  Mail,
+  Phone,
+  MapPin,
+  Globe,
+  Award,
+  BookOpen,
+  Briefcase,
+  Layers,
+  GraduationCap,
+} from '@lucide/astro';
+import formalPhoto from '../assets/profile/foto_profile_formal.jpg';
 import { getProfile, getSkillGroups, getProjects, hasCvPdf, isLink } from '../lib/content';
 
 const p = getProfile();
@@ -8,13 +23,14 @@ const groups = getSkillGroups();
 const allProjects = await getProjects();
 const pdf = hasCvPdf();
 const e = p.education;
+const hs = p.highSchool;
+const exp = p.experience ?? [];
 
 const cvRole = "Informatics Graduate | Data & Machine Learning Enthusiast";
-
 const bare = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '');
 const isVideo = (u?: string | null) => !!u && /(youtube\.com|youtu\.be)/i.test(u);
 
-// Kurasi 6 sertifikasi teknis & bahasa terbaik berdurasi panjang untuk CV MagangHub
+// Kurasi 6 sertifikasi berbobot tinggi untuk efisiensi ruang ATS
 const curatedCertNames = [
   'Belajar Pengembangan Machine Learning',
   'Machine Learning Terapan',
@@ -28,299 +44,791 @@ const cvCertifications = p.certifications.filter((c) =>
   curatedCertNames.some((name) => c.name.toLowerCase().includes(name.toLowerCase()))
 );
 
-// Training utama: Coding Camp DBS Foundation (936 jam)
 const cvTraining = p.training.filter((t) =>
   t.name.toLowerCase().includes('coding camp') || t.name.toLowerCase().includes('dbs')
 );
 
-// Prestasi non-proyek: exclude SIC (karena SIC sudah dijelaskan di Proyek 05)
 const cvAchievements = p.achievements.filter(
   (a) => !a.title.toLowerCase().includes('samsung')
 );
 
-// Organisasi: posisi kepemimpinan inti
 const cvOrganizations = p.organizations.filter(
   (o) => !o.role.toLowerCase().includes('panitia')
 );
 
-// Pembagian halaman untuk anggaran presisi 2 Halaman A4
-const page1Projects = allProjects.slice(0, 3);
-const page2Projects = allProjects.slice(3);
+// Kurasi 4 proyek unggulan berformat XYZ untuk CV
+const projAga = allProjects.find((pr) => pr.id.includes('proyek-1')) ?? allProjects[0];
+const projQuant = allProjects.find((pr) => pr.id.includes('proyek-2')) ?? allProjects[1];
+const projWisata = allProjects.find((pr) => pr.id.includes('proyek-3')) ?? allProjects[2];
+const projSic = allProjects.find((pr) => pr.id.includes('proyek-5')) ?? allProjects[4];
+
+// Format nomor telepon untuk tampilan rapi
+const formattedPhone = p.contact.phone
+  ? p.contact.phone.replace(/(\d{4})(\d{4})(\d{4})/, '$1-$2-$3')
+  : '0812-5778-0379';
+const cleanPhone = p.contact.phone || '081257780379';
 ---
 
 <BaseLayout
   title={`CV · ${p.name}`}
-  description={`Curriculum Vitae ${p.name} - ${cvRole}`}
+  description={`Curriculum Vitae ${p.name} - ${cvRole} (Format ATS & Visual)`}
   path="/cv"
   bare
 >
-  <div class="wrap cv">
-    <div class="actions no-print">
-      <a class="back" href="/"><ArrowLeft size={16} aria-hidden="true" />Kembali ke Beranda</a>
-      <div class="buttons">
-        <button type="button" class="btn btn-primary" data-print>
-          <Printer size={18} aria-hidden="true" />Cetak / Simpan PDF
+  <div class="wrap cv-container">
+    {/* ===== ACTION BAR & VIEW SWITCHER (Screen Only) ===== */}
+    <nav class="actions no-print" aria-label="Kontrol Tampilan & Ekspor CV">
+      <a class="back-link" href="/">
+        <ArrowLeft size={16} aria-hidden="true" />
+        <span>Kembali ke Beranda</span>
+      </a>
+
+      <div class="view-switcher" role="tablist" aria-label="Pilih Format CV">
+        <button
+          type="button"
+          class="switch-btn active"
+          data-switch-view="ats"
+          role="tab"
+          aria-selected="true"
+          aria-controls="cv-ats-container"
+        >
+          <Layers size={15} aria-hidden="true" />
+          <span>Tipe 1: Standar ATS (1 Kolom)</span>
         </button>
-        {pdf && (
-          <a class="btn" href="/cv.pdf" download>
-            <Download size={18} aria-hidden="true" />Unduh cv.pdf (A4 Resmi)
-          </a>
-        )}
+        <button
+          type="button"
+          class="switch-btn"
+          data-switch-view="visual"
+          role="tab"
+          aria-selected="false"
+          aria-controls="cv-visual-container"
+        >
+          <Briefcase size={15} aria-hidden="true" />
+          <span>Tipe 2: Visual 2-Kolom (SIAPkerja)</span>
+        </button>
+      </div>
+
+      <div class="export-buttons">
+        <button type="button" class="btn btn-primary" data-print-action>
+          <Printer size={16} aria-hidden="true" />
+          <span>Cetak / Simpan PDF</span>
+        </button>
+        <a class="btn btn-outline" href="/cv.pdf" download id="download-active-pdf">
+          <Download size={16} aria-hidden="true" />
+          <span>Unduh cv.pdf (A4 Resmi)</span>
+        </a>
+      </div>
+    </nav>
+
+    {/* =========================================================================
+        TIPE 1: CV STANDAR ATS 2026 (1 Kolom Murni Minimalis — Sesuai PDF 1)
+        ========================================================================= */}
+    <div class="cv-layout cv-ats-view" id="cv-ats-container">
+      {/* --- HALAMAN 1 (ATS) --- */}
+      <div class="cv-sheet ats-sheet">
+        {/* Header Kontak */}
+        <header class="ats-header">
+          <h1 class="ats-name">{p.name}</h1>
+          <p class="ats-contact-line">
+            <span>{p.contact.domicile || 'Kab. Paser, Kalimantan Timur (Domisili: DI Yogyakarta)'}</span>
+            <span class="sep">|</span>
+            <a href={`mailto:${p.contact.email}`} class="ats-link">{p.contact.email}</a>
+            <span class="sep">|</span>
+            <a href={`https://wa.me/62${cleanPhone.replace(/^0/, '')}`} class="ats-link">{cleanPhone}</a>
+          </p>
+          <p class="ats-contact-subline">
+            <span>Portofolio: <a href={p.siteUrl} target="_blank" rel="noopener noreferrer" class="ats-link">{bare(p.siteUrl)}</a></span>
+            <span class="sep">|</span>
+            {isLink(p.contact.linkedin) && (
+              <a href={p.contact.linkedin} target="_blank" rel="noopener noreferrer" class="ats-link">LinkedIn Profile</a>
+            )}
+            <span class="sep">|</span>
+            {isLink(p.contact.github) && (
+              <a href={p.contact.github} target="_blank" rel="noopener noreferrer" class="ats-link">GitHub Repository</a>
+            )}
+          </p>
+        </header>
+
+        {/* Ringkasan Profesional */}
+        <section class="ats-section">
+          <h2 class="ats-heading">Ringkasan Profesional</h2>
+          <p class="ats-text">
+            Lulusan S1 Informatika UIN Sunan Kalijaga (IPK 3,77/4,00, Cumlaude) dengan keahlian inti pada Machine Learning, analisis data kuantitatif, dan data pipeline berbasis Python. Memiliki rekam jejak dalam merancang sistem optimasi portofolio investasi saham dengan Algoritma Genetika Adaptif (menghasilkan Total Return 46,51% dan Sharpe Ratio 2,10) serta arsitektur sistem rekomendasi hybrid. Teruji menyelesaikan program intensif 936 jam Coding Camp DBS Foundation dengan predikat Nilai A (90,7) dan memiliki pengalaman kepemimpinan sebagai Bendahara Umum serta Ketua Divisi Olahraga mahasiswa. Terbiasa bekerja dalam ekosistem spec-driven development dan siap memberikan dampak nyata di dunia industri.
+          </p>
+        </section>
+
+        {/* Riwayat Pendidikan */}
+        <section class="ats-section">
+          <h2 class="ats-heading">Riwayat Pendidikan</h2>
+          <div class="ats-item">
+            <div class="ats-item-header">
+              <span class="ats-item-title"><strong>{e.institution}</strong> — Yogyakarta, Indonesia</span>
+              <span class="ats-item-period">{e.period}</span>
+            </div>
+            <p class="ats-item-sub">
+              {e.degree} · Fakultas Sains dan Teknologi · <strong>IPK {e.gpa} (Predikat Cumlaude)</strong>
+            </p>
+            {e.thesis && (
+              <p class="ats-thesis-line">
+                <strong>Tugas Akhir / Skripsi:</strong> <em>{e.thesis}</em>
+              </p>
+            )}
+          </div>
+
+          {hs && (
+            <div class="ats-item" style="margin-top: 0.25rem;">
+              <div class="ats-item-header">
+                <span class="ats-item-title"><strong>{hs.institution}</strong> — {hs.location}</span>
+                <span class="ats-item-period">{hs.period}</span>
+              </div>
+              <p class="ats-item-sub">
+                Jurusan {hs.major} · <strong>Nilai Rata-Rata Kelulusan: {hs.score}</strong>
+              </p>
+            </div>
+          )}
+        </section>
+
+        {/* Pengalaman Kerja */}
+        <section class="ats-section">
+          <h2 class="ats-heading">Pengalaman Kerja</h2>
+          {exp.map((item) => (
+            <article class="ats-item">
+              <div class="ats-item-header">
+                <span class="ats-item-title"><strong>{item.company}</strong> — {item.location}</span>
+                <span class="ats-item-period">{item.period}</span>
+              </div>
+              <p class="ats-item-role"><em>{item.role}</em></p>
+              <ul class="ats-bullet-list">
+                {item.highlights ? (
+                  item.highlights.map((hl) => <li>{hl}</li>)
+                ) : (
+                  <li>{item.summary}</li>
+                )}
+              </ul>
+            </article>
+          ))}
+        </section>
+
+        {/* Pengalaman Proyek Unggulan (Halaman 1: Proyek 01) */}
+        <section class="ats-section">
+          <h2 class="ats-heading">Pengalaman Proyek & Riset Pilihan</h2>
+
+          {/* Proyek 01: IDX30 AGA */}
+          <article class="ats-item">
+            <div class="ats-item-header">
+              <span class="ats-item-title"><strong>{projAga.data.title}</strong></span>
+              <span class="ats-item-period">{projAga.data.period}</span>
+            </div>
+            <div class="ats-item-links">
+              <span>{projAga.data.role}</span>
+              <span class="ats-links-group">
+                {isLink(projAga.data.repoUrl) && (
+                  <a href={projAga.data.repoUrl} target="_blank" rel="noopener noreferrer" class="ats-doc-link">[GitHub Repository]</a>
+                )}
+                {isLink(projAga.data.demoUrl) && (
+                  <>
+                    <span class="sep">|</span>
+                    <a href={projAga.data.demoUrl} target="_blank" rel="noopener noreferrer" class="ats-doc-link">[Live Demo Terminal]</a>
+                  </>
+                )}
+              </span>
+            </div>
+            <ul class="ats-bullet-list">
+              <li>Mengembangkan engine optimasi alokasi bobot 22 konstituen saham IDX30 menggunakan Adaptive Genetic Algorithm (AGA) dengan operator probabilitas adaptif Srinivas & Patnaik dan penalti diversifikasi Herfindahl-Hirschman Index (HHI).</li>
+              <li>Mencapai <strong>Total Return 46,51%</strong> (mengungguli tolok ukur pasar IDX30 sebesar +33,03%), <strong>Sharpe Ratio 2,1036</strong> (vs 0,3767), dan <strong>Max Drawdown -15,74%</strong> pada validasi 4-fase expanding Walk-Forward.</li>
+              <li>Memvalidasi keunggulan performa model melalui 80 kali simulasi stokastik dengan uji hipotesis inferensial berpasangan (Shapiro-Wilk, Paired t-test, dan Wilcoxon Signed-Rank, <em>p &lt; 0,001</em>).</li>
+              <li>Mendeploy terminal riset kuantitatif interaktif berbasis Streamlit Cloud dengan kalkulator alokasi lot saham riil bursa (1 lot = 100 lembar).</li>
+            </ul>
+          </article>
+
+          {/* Proyek 02: IDX Quant Studio */}
+          <article class="ats-item" style="margin-top: 0.35rem;">
+            <div class="ats-item-header">
+              <span class="ats-item-title"><strong>{projQuant.data.title}</strong></span>
+              <span class="ats-item-period">{projQuant.data.period}</span>
+            </div>
+            <div class="ats-item-links">
+              <span>{projQuant.data.role}</span>
+              <span class="ats-links-group">
+                {isLink(projQuant.data.repoUrl) && (
+                  <a href={projQuant.data.repoUrl} target="_blank" rel="noopener noreferrer" class="ats-doc-link">[GitHub Repository]</a>
+                )}
+              </span>
+            </div>
+            <ul class="ats-bullet-list">
+              <li>Merancang workstation analitik finansial komprehensif untuk 970+ emiten Bursa Efek Indonesia (BEI) menggunakan pipeline penyimpanan data DuckDB dan partisi Apache Parquet.</li>
+              <li>Mengintegrasikan modul valuasi fundamental sektoral Aswath Damodaran (DDM & DCF) serta lapis mitigasi halusinasi AI berdasar Typed Fact Layer.</li>
+              <li>Membuktikan ketahanan strategi melalui backtest Walk-Forward 40:30:30 bebas look-ahead bias dengan raihan Alpha <strong>+15,68% vs IHSG</strong> pada pengujian out-of-sample riil.</li>
+            </ul>
+          </article>
+        </section>
+      </div>
+
+      {/* --- HALAMAN 2 (ATS) --- */}
+      <div class="cv-sheet ats-sheet ats-page-break">
+        {/* Lanjutan Proyek (Proyek 03 & 05) */}
+        <section class="ats-section">
+          <h2 class="ats-heading">Lanjutan Proyek Riset & Rekayasa Perangkat Lunak</h2>
+
+          {/* Proyek 03: WisataPas */}
+          <article class="ats-item">
+            <div class="ats-item-header">
+              <span class="ats-item-title"><strong>{projWisata.data.title}</strong></span>
+              <span class="ats-item-period">{projWisata.data.period}</span>
+            </div>
+            <div class="ats-item-links">
+              <span>{projWisata.data.role}</span>
+              <span class="ats-links-group">
+                {isLink(projWisata.data.repoUrl) && (
+                  <a href={projWisata.data.repoUrl} target="_blank" rel="noopener noreferrer" class="ats-doc-link">[GitHub Repository]</a>
+                )}
+                {isLink(projWisata.data.demoUrl) && (
+                  <>
+                    <span class="sep">|</span>
+                    <a href={projWisata.data.demoUrl} target="_blank" rel="noopener noreferrer" class="ats-doc-link">[Live Demo]</a>
+                  </>
+                )}
+              </span>
+            </div>
+            <ul class="ats-bullet-list">
+              <li>Membangun arsitektur sistem rekomendasi hybrid mengombinasikan Content-Based Filtering (Cosine Similarity) dan Collaborative Filtering berbasis Deep Learning (RecommenderNet TensorFlow).</li>
+              <li>Meraih predikat <strong>Capstone Project Terbaik</strong> Coding Camp DBS Foundation 2025 dengan skor <strong>95,6 / 100</strong> dan mencatatkan Root Mean Squared Error (RMSE) 0,3329 pada data uji evaluasi.</li>
+            </ul>
+          </article>
+
+          {/* Proyek 05: SIC5 IoT Tunarungu */}
+          <article class="ats-item" style="margin-top: 0.35rem;">
+            <div class="ats-item-header">
+              <span class="ats-item-title"><strong>{projSic.data.title}</strong></span>
+              <span class="ats-item-period">{projSic.data.period}</span>
+            </div>
+            <div class="ats-item-links">
+              <span>{projSic.data.role}</span>
+              <span class="ats-links-group">
+                {isLink(projSic.data.demoUrl) && (
+                  <a href={projSic.data.demoUrl} target="_blank" rel="noopener noreferrer" class="ats-doc-link">[Video Demonstrasi Produk]</a>
+                )}
+              </span>
+            </div>
+            <ul class="ats-bullet-list">
+              <li>Merancang dan menguji prototipe perangkat keras IoT berbasis mikrokontroler ESP32 dan model Speech-to-Text untuk mengonversi pengumuman audio di fasilitas publik menjadi teks visual ramah tunarungu.</li>
+              <li>Terpilih sebagai <strong>Semi Finalis Nasional Samsung Innovation Campus Batch 5 (2024)</strong> dan meraih predikat <strong>Master (skor 95,63)</strong> pada tahap seleksi Coding & Programming (Python, Algorithm & Data Structure).</li>
+            </ul>
+          </article>
+        </section>
+
+        {/* Keahlian Teknis (Hard Skills) */}
+        <section class="ats-section">
+          <h2 class="ats-heading">Keahlian Teknis (Skills)</h2>
+          <div class="ats-skills-grid">
+            {groups.map((g) => (
+              <div class="ats-skill-line">
+                <span class="ats-skill-cat"><strong>{g.category}:</strong></span>
+                <span class="ats-skill-items">{g.items.map((i) => i.name).join(', ')}</span>
+              </div>
+            ))}
+            <div class="ats-skill-line">
+              <span class="ats-skill-cat"><strong>Bahasa:</strong></span>
+              <span class="ats-skill-items">Bahasa Indonesia (Penutur Asli), Bahasa Inggris (TOEC Skor 443 · TBI English for Business Communication 86%)</span>
+            </div>
+          </div>
+        </section>
+
+        {/* Pelatihan & Sertifikasi Terverifikasi */}
+        <section class="ats-section">
+          <h2 class="ats-heading">Pelatihan & Sertifikasi Terverifikasi</h2>
+          <ul class="ats-compact-list">
+            {cvTraining.map((t) => {
+              const link = t.driveUrl ?? t.verificationUrl;
+              return (
+                <li class="ats-compact-item">
+                  <div class="ats-item-header">
+                    <span class="ats-item-title"><strong>{t.name} ({t.hours ?? '936 Jam'})</strong> — {t.issuer}</span>
+                    <span class="ats-item-period">{t.period}</span>
+                  </div>
+                  <p class="ats-item-meta">
+                    {t.note}
+                    {t.credentialId && (
+                      <> · Kredensial: {link ? <a href={link} target="_blank" rel="noopener noreferrer" class="ats-id-link">{t.credentialId}</a> : t.credentialId}</>
+                    )}
+                  </p>
+                </li>
+              );
+            })}
+            {cvCertifications.map((c) => {
+              const link = c.verificationUrl ?? c.driveUrl;
+              return (
+                <li class="ats-compact-item">
+                  <div class="ats-item-header">
+                    <span class="ats-item-title"><strong>{c.name}</strong>{c.hours && ` (${c.hours})`} — {c.issuer}</span>
+                    <span class="ats-item-period">{c.year}</span>
+                  </div>
+                  <p class="ats-item-meta">
+                    {c.credentialId && (
+                      <>Kredensial ID: {link ? <a href={link} target="_blank" rel="noopener noreferrer" class="ats-id-link">{c.credentialId}</a> : c.credentialId}</>
+                    )}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        {/* Organisasi & Pencapaian */}
+        <section class="ats-section">
+          <h2 class="ats-heading">Organisasi & Pencapaian</h2>
+          <ul class="ats-compact-list">
+            {cvOrganizations.map((o) => (
+              <li class="ats-compact-item">
+                <div class="ats-item-header">
+                  <span class="ats-item-title"><strong>{o.role}</strong> — {o.org}</span>
+                  <span class="ats-item-period">{o.period}</span>
+                </div>
+                {o.note && <p class="ats-item-meta">{o.note}</p>}
+              </li>
+            ))}
+            {cvAchievements.map((a) => (
+              <li class="ats-compact-item">
+                <div class="ats-item-header">
+                  <span class="ats-item-title"><strong>{a.title}</strong></span>
+                  <span class="ats-item-period">{a.year}</span>
+                </div>
+                {a.note && <p class="ats-item-meta">{a.note}</p>}
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </div>
 
-    {/* ===== HALAMAN 1 ===== */}
-    <div class="cv-page">
-      <header class="cv-header cv-block">
-        <h1 class="cv-name">{p.name}</h1>
-        <p class="cv-role">{cvRole}</p>
-        <p class="cv-contact">
-          {p.location ? `${p.location} · ` : ''}
-          <a href={`mailto:${p.contact.email}`}>{p.contact.email}</a> ·
-          {isLink(p.contact.linkedin) && (
-            <a href={p.contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          )} ·
-          {isLink(p.contact.github) && (
-            <a href={p.contact.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-          )} ·
-          {isLink(p.siteUrl) && (
-            <a href={p.siteUrl} target="_blank" rel="noopener noreferrer">{bare(p.siteUrl)}</a>
-          )}
-        </p>
-      </header>
-
-      <section class="cv-section cv-block" aria-labelledby="cv-about">
-        <h2 id="cv-about" class="cv-heading">Ringkasan Profesional</h2>
-        <p class="cv-summary">{p.about}</p>
-      </section>
-
-      <section class="cv-section cv-block" aria-labelledby="cv-edu">
-        <h2 id="cv-edu" class="cv-heading">Pendidikan Formal</h2>
-        <div class="edu-block">
-          <div class="item-head">
-            <span class="item-title"><strong>{e.institution}</strong></span>
-            <span class="item-period">{e.period}</span>
+    {/* =========================================================================
+        TIPE 2: CV VISUAL MODERN 2-KOLOM (Gaya SIAPkerja — Sesuai PDF 2)
+        ========================================================================= */}
+    <div class="cv-layout cv-visual-view" id="cv-visual-container" style="display: none;">
+      {/* --- HALAMAN 1 (VISUAL) --- */}
+      <div class="cv-sheet visual-sheet">
+        {/* Sidebar Kiri (Teal) */}
+        <aside class="visual-sidebar">
+          <div class="visual-avatar-wrap">
+            <Image
+              src={formalPhoto}
+              alt={p.name}
+              class="visual-avatar-img"
+              width={260}
+              height={260}
+              loading="eager"
+            />
           </div>
-          <p class="item-sub">
-            {e.degree} · Fakultas Sains dan Teknologi
-            {e.showGpa && e.gpa ? ` · IPK ${e.gpa} (Cumlaude)` : ''}
-          </p>
-          {e.thesis && (
-            <p class="thesis-line">
-              <strong>Tugas Akhir / Skripsi:</strong> <em>{e.thesis}</em>
+
+          <div class="sidebar-block">
+            <h3 class="sidebar-title">Kontak</h3>
+            <ul class="sidebar-contact-list">
+              <li>
+                <Mail size={13} class="sidebar-icon" aria-hidden="true" />
+                <a href={`mailto:${p.contact.email}`}>{p.contact.email}</a>
+              </li>
+              <li>
+                <Phone size={13} class="sidebar-icon" aria-hidden="true" />
+                <a href={`https://wa.me/62${cleanPhone.replace(/^0/, '')}`}>{formattedPhone}</a>
+              </li>
+              <li>
+                <MapPin size={13} class="sidebar-icon" aria-hidden="true" />
+                <span>{p.contact.domicile || 'Kab. Paser, Kalimantan Timur (Domisili: DI Yogyakarta)'}</span>
+              </li>
+              <li>
+                <Globe size={13} class="sidebar-icon" aria-hidden="true" />
+                <a href={p.siteUrl} target="_blank" rel="noopener noreferrer">{bare(p.siteUrl)}</a>
+              </li>
+              {isLink(p.contact.linkedin) && (
+                <li>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-icon" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                  <a href={p.contact.linkedin} target="_blank" rel="noopener noreferrer">linkedin.com/in/miftahullah-surya-nugraha</a>
+                </li>
+              )}
+              {isLink(p.contact.github) && (
+                <li>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-icon" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                  <a href={p.contact.github} target="_blank" rel="noopener noreferrer">github.com/miftahsuryan</a>
+                </li>
+              )}
+            </ul>
+          </div>
+
+          <div class="sidebar-block">
+            <h3 class="sidebar-title">Skills</h3>
+            <ul class="sidebar-skills-list">
+              <li>Machine Learning</li>
+              <li>Portfolio Optimization</li>
+              <li>Quantitative Analytics</li>
+              <li>Data Processing & ETL</li>
+              <li>Deep Learning (TF & PyTorch)</li>
+              <li>Natural Language Processing (NLP)</li>
+              <li>Algorithms & Data Structures</li>
+              <li>Python Programming</li>
+              <li>SQL & DuckDB Database</li>
+              <li>Data Visualization (Plotly & Streamlit)</li>
+              <li>Git & Version Control</li>
+            </ul>
+          </div>
+
+          <div class="sidebar-block">
+            <h3 class="sidebar-title">Bahasa</h3>
+            <ul class="sidebar-skills-list">
+              <li>Bahasa Indonesia (Penutur Asli)</li>
+              <li>English (TOEC Skor 443 · TBI 86%)</li>
+            </ul>
+          </div>
+
+          <div class="sidebar-badge-siap">
+            <span class="siap-logo-text">SIAPkerja 2026</span>
+            <span class="siap-sub-text">Terverifikasi Standar Kemnaker</span>
+          </div>
+        </aside>
+
+        {/* Konten Kanan (Putih) */}
+        <main class="visual-main">
+          <header class="visual-header">
+            <h1 class="visual-name">{p.name}</h1>
+            <p class="visual-role">{cvRole}</p>
+          </header>
+
+          <section class="visual-section">
+            <h2 class="visual-heading">Tentang Saya</h2>
+            <p class="visual-summary">
+              Kunjungi portofolio proyek saya di: <a href={p.siteUrl} target="_blank" rel="noopener noreferrer" class="visual-link">{bare(p.siteUrl)}</a> | Lulusan S1 Informatika UIN Sunan Kalijaga (IPK 3,77, Cumlaude) dengan keahlian inti pada Machine Learning, analisis data kuantitatif, dan data pipeline berbasis Python. Memiliki rekam jejak dalam merancang sistem optimasi portofolio saham (Algoritma Genetika Adaptif), sistem rekomendasi hybrid (WisataPas), dan workstation kuantitatif (IDX Quant Studio). Kompetensi teknis ini divalidasi melalui predikat Full Graduate Coding Camp DBS Foundation 2025 (Nilai A / 90,7). Dengan memadukan daya analitik dan pengalaman manajerial sebagai Ketua Divisi Basket serta Bendahara Umum IMM Fakultas, saya siap memberikan dampak nyata di dunia industri.
             </p>
-          )}
-        </div>
-      </section>
+          </section>
 
-      <section class="cv-section cv-block" aria-labelledby="cv-skills">
-        <h2 id="cv-skills" class="cv-heading">Keahlian Teknis</h2>
-        <div class="skills-list">
-          {groups.map((g) => (
-            <div class="skill-row">
-              <span class="skill-label"><strong>{g.category}:</strong></span>
-              <span class="skill-values">{g.items.map((i) => i.name).join(', ')}</span>
+          <section class="visual-section">
+            <h2 class="visual-heading">Pengalaman Kerja</h2>
+            {exp.map((item) => (
+              <div class="visual-item">
+                <div class="visual-item-header">
+                  <h3 class="visual-item-title">{item.role}</h3>
+                  <span class="visual-item-period">{item.period}</span>
+                </div>
+                <p class="visual-item-org">{item.company} · {item.location}</p>
+                <p class="visual-item-text">
+                  Berpengalaman dalam mengelola dan mengembangkan operasional bisnis keluarga (Surya Food House) melalui pendekatan pemasaran digital dan analisis data. Memimpin kurasi konten dan manajemen interaksi pelanggan di Instagram (@suryafoodhouse) untuk membangun brand awareness, serta mengeksekusi kampanye bertarget berdasarkan pemetaan demografi audiens. Melalui analisis tren konversi, memberikan insight strategis yang memandu strategi pengadaan stok dan merumuskan inovasi menu berbasis data guna meningkatkan efisiensi operasional.
+                </p>
+              </div>
+            ))}
+          </section>
+
+          <section class="visual-section">
+            <h2 class="visual-heading">Pengalaman Proyek Pilihan</h2>
+
+            {/* Proyek 01: IDX30 AGA */}
+            <div class="visual-item">
+              <div class="visual-item-header">
+                <h3 class="visual-item-title">Optimasi Portofolio Saham IDX30 (Adaptive Genetic Algorithm)</h3>
+                <span class="visual-item-period">2025 – 2026</span>
+              </div>
+              <p class="visual-item-org">
+                Machine Learning (Proyek Skripsi) · 
+                <a href={projAga.data.repoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[GitHub]</a> · 
+                <a href={projAga.data.demoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[Live Demo]</a>
+              </p>
+              <p class="visual-item-text">
+                Mengoptimalkan bobot portofolio 22 konstituen saham IDX30 dengan penalti konsentrasi HHI dan operator adaptif. Menghasilkan Total Return <strong>46,51%</strong> (vs IDX30 13,48%), <strong>Sharpe Ratio 2,1036</strong>, dan Max Drawdown -15,74% pada validasi 4-fase expanding Walk-Forward. Signifikansi performa terbukti secara inferensial (<em>p &lt; 0,001</em>).
+              </p>
             </div>
-          ))}
-        </div>
-      </section>
 
-      <section class="cv-section" aria-labelledby="cv-projects-p1">
-        <h2 id="cv-projects-p1" class="cv-heading">Pengalaman Proyek Pilihan</h2>
-        <div class="projects-list">
-          {page1Projects.map((proj) => {
-            const d = proj.data;
-            return (
-              <article class="cv-project-item cv-block">
-                <div class="item-head">
-                  <span class="item-title"><strong>{d.title}</strong></span>
-                  <span class="item-period">{d.period}</span>
-                </div>
-                <div class="project-links">
-                  <span class="role-desc">{d.role}</span>
-                  <span class="link-group">
-                    {isLink(d.repoUrl) && (
-                      <a href={d.repoUrl} target="_blank" rel="noopener noreferrer" class="doc-link">[GitHub Repository]</a>
-                    )}
-                    {isLink(d.repoUrl) && (isLink(d.demoUrl) || isLink(d.videoUrl)) && <span class="sep">|</span>}
-                    {isLink(d.demoUrl) && !isVideo(d.demoUrl) && (
-                      <a href={d.demoUrl} target="_blank" rel="noopener noreferrer" class="doc-link">[Live Demo]</a>
-                    )}
-                    {isLink(d.demoUrl) && !isVideo(d.demoUrl) && isLink(d.videoUrl) && <span class="sep">|</span>}
-                    {(isVideo(d.demoUrl) || isLink(d.videoUrl)) && (
-                      <a href={isVideo(d.demoUrl) ? d.demoUrl : d.videoUrl!} target="_blank" rel="noopener noreferrer" class="doc-link">[Video Demo]</a>
-                    )}
-                  </span>
-                </div>
-                <p class="project-summary">{d.summary}</p>
-                <p class="project-outcome"><strong>Hasil & Dampak:</strong> {d.outcome}</p>
-                <p class="project-stack"><strong>Tech Stack:</strong> {d.stack.join(', ')}</p>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-    </div>
-
-    {/* ===== HALAMAN 2 ===== */}
-    <div class="cv-page cv-page-break">
-      <section class="cv-section" aria-labelledby="cv-projects-p2">
-        <h2 id="cv-projects-p2" class="cv-heading">Lanjutan Proyek Pilihan</h2>
-        <div class="projects-list">
-          {page2Projects.map((proj) => {
-            const d = proj.data;
-            return (
-              <article class="cv-project-item cv-block">
-                <div class="item-head">
-                  <span class="item-title"><strong>{d.title}</strong></span>
-                  <span class="item-period">{d.period}</span>
-                </div>
-                <div class="project-links">
-                  <span class="role-desc">{d.role}</span>
-                  <span class="link-group">
-                    {isLink(d.repoUrl) && (
-                      <a href={d.repoUrl} target="_blank" rel="noopener noreferrer" class="doc-link">[GitHub Repository]</a>
-                    )}
-                    {isLink(d.repoUrl) && (isLink(d.demoUrl) || isLink(d.videoUrl)) && <span class="sep">|</span>}
-                    {isLink(d.demoUrl) && !isVideo(d.demoUrl) && (
-                      <a href={d.demoUrl} target="_blank" rel="noopener noreferrer" class="doc-link">[Live Demo]</a>
-                    )}
-                    {isLink(d.demoUrl) && !isVideo(d.demoUrl) && isLink(d.videoUrl) && <span class="sep">|</span>}
-                    {(isVideo(d.demoUrl) || isLink(d.videoUrl)) && (
-                      <a href={isVideo(d.demoUrl) ? d.demoUrl : d.videoUrl!} target="_blank" rel="noopener noreferrer" class="doc-link">[Video Demo]</a>
-                    )}
-                  </span>
-                </div>
-                <p class="project-summary">{d.summary}</p>
-                <p class="project-outcome"><strong>Hasil & Dampak:</strong> {d.outcome}</p>
-                <p class="project-stack"><strong>Tech Stack:</strong> {d.stack.join(', ')}</p>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
-      <section class="cv-section cv-block" aria-labelledby="cv-cert">
-        <h2 id="cv-cert" class="cv-heading">Sertifikasi & Pelatihan Terverifikasi</h2>
-        <ul class="cv-compact-list">
-          {cvTraining.map((t) => {
-            const link = t.driveUrl ?? t.verificationUrl;
-            return (
-              <li class="cv-list-item">
-                <div class="item-head">
-                  <span class="item-title"><strong>{t.name} ({t.hours ?? '936 Jam'})</strong></span>
-                  <span class="item-period">{t.period}</span>
-                </div>
-                <p class="item-meta">
-                  {t.issuer} · {t.note}
-                  {t.credentialId && link ? (
-                    <> · ID: <a href={link} target="_blank" rel="noopener noreferrer" class="id-link">{t.credentialId}</a></>
-                  ) : t.credentialId ? (
-                    <> · ID: {t.credentialId}</>
-                  ) : null}
-                </p>
-              </li>
-            );
-          })}
-          {cvCertifications.map((c) => {
-            const link = c.verificationUrl ?? c.driveUrl;
-            return (
-              <li class="cv-list-item">
-                <div class="item-head">
-                  <span class="item-title"><strong>{c.name}</strong>{c.hours && ` (${c.hours})`}</span>
-                  <span class="item-period">{c.year}</span>
-                </div>
-                <p class="item-meta">
-                  {c.issuer}
-                  {c.credentialId && link ? (
-                    <> · ID: <a href={link} target="_blank" rel="noopener noreferrer" class="id-link">{c.credentialId}</a></>
-                  ) : c.credentialId ? (
-                    <> · ID: {c.credentialId}</>
-                  ) : null}
-                </p>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-
-      <section class="cv-section cv-block" aria-labelledby="cv-org">
-        <h2 id="cv-org" class="cv-heading">Organisasi & Kepemimpinan</h2>
-        <ul class="cv-compact-list">
-          {cvOrganizations.map((o) => (
-            <li class="cv-list-item">
-              <div class="item-head">
-                <span class="item-title"><strong>{o.role}</strong> — {o.org}</span>
-                <span class="item-period">{o.period}</span>
+            {/* Proyek 02: WisataPas */}
+            <div class="visual-item">
+              <div class="visual-item-header">
+                <h3 class="visual-item-title">WisataPas: Sistem Rekomendasi Destinasi Wisata Hybrid</h3>
+                <span class="visual-item-period">2025</span>
               </div>
-              {o.note && <p class="item-meta">{o.note}</p>}
-            </li>
-          ))}
-        </ul>
-      </section>
+              <p class="visual-item-org">
+                Capstone Project DBS Foundation · 
+                <a href={projWisata.data.repoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[GitHub]</a> · 
+                <a href={projWisata.data.demoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[Live Demo]</a>
+              </p>
+              <p class="visual-item-text">
+                Sistem rekomendasi hybrid berbasis Deep Learning (RecommenderNet TensorFlow) dan Content-Based Filtering. Meraih predikat Capstone Terbaik dengan skor <strong>95,6 / 100</strong> dan mencatatkan Root Mean Squared Error (RMSE) 0,3329 pada data uji evaluasi.
+              </p>
+            </div>
+          </section>
+        </main>
+      </div>
 
-      <section class="cv-section cv-block" aria-labelledby="cv-achieve">
-        <h2 id="cv-achieve" class="cv-heading">Prestasi Kejuaraan</h2>
-        <ul class="cv-compact-list">
-          {cvAchievements.map((a) => (
-            <li class="cv-list-item">
-              <div class="item-head">
-                <span class="item-title"><strong>{a.title}</strong></span>
-                <span class="item-period">{a.year}</span>
+      {/* --- HALAMAN 2 (VISUAL) --- */}
+      <div class="cv-sheet visual-sheet visual-page-break">
+        {/* Sidebar Kiri Lanjutan */}
+        <aside class="visual-sidebar">
+          <div class="sidebar-block">
+            <h3 class="sidebar-title">Pencapaian</h3>
+            <ul class="sidebar-bullet-list">
+              <li>
+                <strong>Semi Finalist Samsung Innovation Campus Batch 5</strong> (2024)
+                <p class="sidebar-sub-item">Predikat Master (skor 95.63) tahap Coding & Programming.</p>
+              </li>
+              <li>
+                <strong>Juara 1 Basket Putra POK UIN Suka</strong> (2025)
+                <p class="sidebar-sub-item">Kapten tim delegasi peraih medali emas tingkat universitas.</p>
+              </li>
+              <li>
+                <strong>Juara 3 Basket 3x3 FeArstyc UNY</strong> (2024)
+                <p class="sidebar-sub-item">Kompetisi regional se-Daerah Istimewa Yogyakarta.</p>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-block">
+            <h3 class="sidebar-title">Organisasi</h3>
+            <ul class="sidebar-bullet-list">
+              <li>
+                <strong>Bendahara Umum</strong> — PK IMM Fak. Sains dan Teknologi UIN Suka (2024 – 2025)
+              </li>
+              <li>
+                <strong>Ketua Divisi Basket</strong> — UKM Olahraga UIN Sunan Kalijaga (2024 – 2025)
+              </li>
+              <li>
+                <strong>Media & Komunikasi</strong> — PK IMM Fak. Saintek (2023 – 2024)
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        {/* Konten Kanan Lanjutan */}
+        <main class="visual-main">
+          {/* Lanjutan Proyek */}
+          <section class="visual-section">
+            <h2 class="visual-heading">Lanjutan Proyek Unggulan</h2>
+
+            {/* Proyek 05: SIC5 */}
+            <div class="visual-item">
+              <div class="visual-item-header">
+                <h3 class="visual-item-title">Alat Komunikasi IoT Berbasis Machine Learning untuk Tunarungu</h3>
+                <span class="visual-item-period">2023 – 2024</span>
               </div>
-              {a.note && <p class="item-meta">{a.note}</p>}
-            </li>
-          ))}
-        </ul>
-      </section>
+              <p class="visual-item-org">
+                Samsung Innovation Campus Batch 5 · 
+                <a href={projSic.data.demoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[Video Demo]</a>
+              </p>
+              <p class="visual-item-text">
+                Prototipe Speech-to-Text cerdas berbasis ESP32 untuk transkripsi visual pengumuman audio di fasilitas publik. Lolos sebagai Semi Finalis Nasional Samsung Innovation Campus Batch 5 dan meraih predikat Master (skor 95,63) bidang Python, Algoritma, & Struktur Data.
+              </p>
+            </div>
+          </section>
+
+          {/* Pendidikan */}
+          <section class="visual-section">
+            <h2 class="visual-heading">Pendidikan</h2>
+            <div class="visual-item">
+              <div class="visual-item-header">
+                <h3 class="visual-item-title">S1 - Informatika</h3>
+                <span class="visual-item-period">2022 – 2026</span>
+              </div>
+              <p class="visual-item-org">Universitas Islam Negeri Sunan Kalijaga Yogyakarta · <strong>IPK 3.77 (Cumlaude)</strong></p>
+              <p class="visual-item-text">
+                Tugas Akhir: <em>Optimasi Portofolio Saham IDX30 Menggunakan Adaptive Genetic Algorithm (AGA) dan Walk-Forward Validation</em>
+              </p>
+            </div>
+
+            {hs && (
+              <div class="visual-item">
+                <div class="visual-item-header">
+                  <h3 class="visual-item-title">SMA - MAN Insan Cendekia Paser</h3>
+                  <span class="visual-item-period">2018 – 2021</span>
+                </div>
+                <p class="visual-item-org">Jurusan IPA · Kab. Paser, Kalimantan Timur · <strong>Nilai Rata-Rata: 91.48</strong></p>
+              </div>
+            )}
+          </section>
+
+          {/* Pelatihan */}
+          <section class="visual-section">
+            <h2 class="visual-heading">Pelatihan Industri</h2>
+            <div class="visual-item">
+              <div class="visual-item-header">
+                <h3 class="visual-item-title">Coding Camp powered by DBS Foundation</h3>
+                <span class="visual-item-period">2025</span>
+              </div>
+              <p class="visual-item-org">Dicoding Indonesia & Bank DBS · <strong>936 Jam · Predikat Nilai A (90.7)</strong></p>
+              <p class="visual-item-text">
+                Spesialisasi Machine Learning Engineer (14 modul teknis & soft skills) · ID: <a href="https://drive.google.com/file/d/1F6vzx5u3BFVmr2vBqHAUKHNVMeDJ33Gq/view" target="_blank" rel="noopener noreferrer" class="visual-link">CC25/GRAD/XXV-07/MC223D5Y0691</a>
+              </p>
+            </div>
+          </section>
+
+          {/* Sertifikasi */}
+          <section class="visual-section">
+            <h2 class="visual-heading">Sertifikasi Terverifikasi</h2>
+            <ul class="visual-cert-list">
+              {cvCertifications.map((c) => {
+                const link = c.verificationUrl ?? c.driveUrl;
+                return (
+                  <li>
+                    <div class="cert-title-row">
+                      <strong>{c.name}</strong>{c.hours && ` (${c.hours})`} — <span class="cert-year">{c.year}</span>
+                    </div>
+                    <div class="cert-issuer-row">
+                      <span>{c.issuer}</span>
+                      {c.credentialId && (
+                        <> · ID: {link ? <a href={link} target="_blank" rel="noopener noreferrer" class="visual-link">{c.credentialId}</a> : c.credentialId}</>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        </main>
+      </div>
     </div>
   </div>
 
+  {/* Client-side Controller untuk Switcher & URL Sync */}
   <script>
-    document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    function setupCvSwitcher() {
+      const switchBtns = document.querySelectorAll<HTMLButtonElement>('[data-switch-view]');
+      const atsView = document.getElementById('cv-ats-container');
+      const visualView = document.getElementById('cv-visual-container');
+      const printBtn = document.querySelector<HTMLButtonElement>('[data-print-action]');
+      const downloadLink = document.getElementById('download-active-pdf') as HTMLAnchorElement | null;
+
+      function setView(view: 'ats' | 'visual') {
+        switchBtns.forEach((btn) => {
+          const isActive = btn.getAttribute('data-switch-view') === view;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        if (view === 'ats') {
+          if (atsView) atsView.style.display = 'flex';
+          if (visualView) visualView.style.display = 'none';
+          if (downloadLink) {
+            downloadLink.href = '/cv-ats.pdf';
+            downloadLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Unduh CV ATS (PDF)</span>';
+          }
+        } else {
+          if (atsView) atsView.style.display = 'none';
+          if (visualView) visualView.style.display = 'flex';
+          if (downloadLink) {
+            downloadLink.href = '/cv-visual.pdf';
+            downloadLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Unduh CV Visual (PDF)</span>';
+          }
+        }
+
+        // Sync query parameter tanpa reload
+        const url = new URL(window.location.href);
+        url.searchParams.set('type', view);
+        window.history.replaceState({}, '', url.toString());
+      }
+
+      switchBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-switch-view') as 'ats' | 'visual';
+          setView(target);
+        });
+      });
+
+      printBtn?.addEventListener('click', () => {
+        window.print();
+      });
+
+      // Inisialisasi dari URL query param (?type=visual atau ?type=ats)
+      const params = new URLSearchParams(window.location.search);
+      const initialType = params.get('type') === 'visual' ? 'visual' : 'ats';
+      setView(initialType);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupCvSwitcher);
+    } else {
+      setupCvSwitcher();
+    }
   </script>
 </BaseLayout>
 
 <style>
-  .cv {
-    padding-block: var(--space-5) var(--space-7);
-    max-width: 50rem;
+  /* ==========================================================================
+     GLOBAL CV CONTAINER & ACTION BAR
+     ========================================================================== */
+  .cv-container {
+    padding-block: var(--space-4) var(--space-7);
+    max-width: 54rem;
     margin-inline: auto;
   }
+
   .actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-5);
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: 0.75rem 1.25rem;
+    box-shadow: var(--card-shadow);
   }
-  .back {
+
+  .back-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-1);
+    gap: 0.4rem;
     font-size: var(--step--1);
+    font-weight: 600;
     color: var(--text-2);
     text-decoration: none;
     transition: color 0.15s ease;
   }
-  .back:hover {
+  .back-link:hover {
     color: var(--accent);
   }
-  .buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
+
+  /* View Switcher Tabs */
+  .view-switcher {
+    display: inline-flex;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.2rem;
+    gap: 0.2rem;
   }
+
+  .switch-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: calc(var(--radius) - 2px);
+    border: none;
+    background: transparent;
+    color: var(--text-2);
+    font-size: var(--step--1);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .switch-btn:hover {
+    color: var(--text);
+  }
+  .switch-btn.active {
+    background: var(--accent);
+    color: var(--on-accent);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .export-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    min-height: 2.5rem;
-    padding: 0.45rem 1rem;
+    min-height: 2.25rem;
+    padding: 0.35rem 0.85rem;
     border-radius: var(--radius);
     border: 1px solid var(--line);
-    background: var(--bg-2);
+    background: var(--bg);
     color: var(--text);
     font-size: var(--step--1);
     font-weight: 600;
@@ -332,280 +840,642 @@ const page2Projects = allProjects.slice(3);
     border-color: var(--text-2);
   }
   .btn-primary {
-    background: var(--accent);
-    color: var(--on-accent);
-    border-color: var(--accent);
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
   }
   .btn-primary:hover {
-    filter: brightness(1.1);
+    filter: opacity(0.9);
   }
 
-  /* CV Core Typography & Layout */
-  .cv-page {
+  /* Shared Layout Structure */
+  .cv-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .cv-sheet {
+    background: #ffffff;
+    color: #111827;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border-radius: 4px;
+    border: 1px solid #e5e7eb;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  /* ==========================================================================
+     TIPE 1: ATS-FRIENDLY STYLES (Clean Minimalist A4 Layout)
+     ========================================================================== */
+  .ats-sheet {
+    padding: 2.25rem 2.5rem;
     display: flex;
     flex-direction: column;
     gap: 1.15rem;
-  }
-  .cv-page + .cv-page {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px dashed var(--line);
+    font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
-  .cv-header {
-    border-bottom: 2px solid var(--text);
+  .ats-header {
+    text-align: center;
+    border-bottom: 2px solid #111827;
     padding-bottom: 0.65rem;
   }
-  .cv-name {
+  .ats-name {
     margin: 0;
-    font-size: 1.85rem;
-    line-height: 1.15;
-    font-family: var(--font-heading);
-    letter-spacing: -0.02em;
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #111827;
+    text-transform: uppercase;
   }
-  .cv-role {
-    margin: 0.2rem 0 0;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 0.01em;
-  }
-  .cv-contact {
+  .ats-contact-line {
     margin: 0.35rem 0 0;
-    font-size: 0.85rem;
-    color: var(--text-2);
-    line-height: 1.45;
+    font-size: 0.84rem;
+    color: #374151;
+    line-height: 1.4;
   }
-  .cv-contact a {
-    color: var(--text);
+  .ats-contact-subline {
+    margin: 0.25rem 0 0;
+    font-size: 0.82rem;
+    color: #4b5563;
+    line-height: 1.4;
+  }
+  .ats-link {
+    color: #0369a1;
     text-decoration: underline;
     text-underline-offset: 2px;
   }
+  .sep {
+    color: #9ca3af;
+    margin-inline: 0.3rem;
+  }
 
-  .cv-section {
+  .ats-section {
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
   }
-  .cv-heading {
+  .ats-heading {
     margin: 0;
-    font-size: 0.85rem;
-    font-family: var(--font-body);
+    font-size: 0.86rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text);
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 0.25rem;
+    letter-spacing: 0.05em;
+    color: #111827;
+    border-bottom: 1px solid #d1d5db;
+    padding-bottom: 0.2rem;
   }
-
-  .cv-summary {
+  .ats-text {
     margin: 0;
-    font-size: 0.88rem;
-    line-height: 1.5;
-    color: var(--text);
+    font-size: 0.86rem;
+    line-height: 1.48;
+    color: #1f2937;
+    text-align: justify;
   }
 
-  .edu-block {
+  .ats-item {
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
   }
-  .item-head {
+  .ats-item + .ats-item {
+    margin-top: 0.35rem;
+  }
+  .ats-item-header {
     display: flex;
-    align-items: baseline;
     justify-content: space-between;
+    align-items: baseline;
     gap: 0.5rem;
   }
-  .item-title {
-    font-size: 0.92rem;
-    color: var(--text);
+  .ats-item-title {
+    font-size: 0.88rem;
+    color: #111827;
   }
-  .item-period {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-2);
+  .ats-item-period {
+    font-size: 0.82rem;
+    color: #4b5563;
+    font-variant-numeric: tabular-nums;
     flex-shrink: 0;
   }
-  .item-sub {
+  .ats-item-role {
     margin: 0;
-    font-size: 0.85rem;
-    color: var(--text-2);
+    font-size: 0.83rem;
+    color: #374151;
   }
-  .thesis-line {
+  .ats-item-sub {
+    margin: 0;
+    font-size: 0.84rem;
+    color: #374151;
+  }
+  .ats-thesis-line {
     margin: 0.15rem 0 0;
-    font-size: 0.85rem;
-    color: var(--text);
-    line-height: 1.4;
+    font-size: 0.83rem;
+    color: #1f2937;
   }
 
-  .skills-list {
+  .ats-item-links {
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  .skill-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    font-size: 0.85rem;
-    line-height: 1.4;
-  }
-  .skill-label {
-    color: var(--text);
-  }
-  .skill-values {
-    color: var(--text-2);
-  }
-
-  .projects-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  .cv-project-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.18rem;
-  }
-  .project-links {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
-    gap: 0.35rem;
+    align-items: center;
     font-size: 0.82rem;
+    color: #4b5563;
   }
-  .role-desc {
-    color: var(--text-2);
-    font-weight: 500;
-  }
-  .link-group {
+  .ats-links-group {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
   }
-  .doc-link {
-    color: var(--accent);
+  .ats-doc-link {
+    color: #0369a1;
     font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 1.5px;
   }
-  .sep {
-    color: var(--line);
-  }
-  .project-summary {
-    margin: 0;
-    font-size: 0.85rem;
-    line-height: 1.42;
-    color: var(--text);
-  }
-  .project-outcome {
-    margin: 0;
+
+  .ats-bullet-list {
+    margin: 0.15rem 0 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
     font-size: 0.84rem;
-    line-height: 1.4;
-    color: var(--text);
-  }
-  .project-stack {
-    margin: 0;
-    font-size: 0.8rem;
-    color: var(--text-2);
-    font-family: var(--font-mono);
+    line-height: 1.42;
+    color: #1f2937;
   }
 
-  .cv-compact-list {
+  .ats-skills-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .ats-skill-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    font-size: 0.84rem;
+    line-height: 1.4;
+  }
+  .ats-skill-cat {
+    color: #111827;
+  }
+  .ats-skill-items {
+    color: #374151;
+  }
+
+  .ats-compact-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .ats-compact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .ats-item-meta {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #4b5563;
+    line-height: 1.35;
+  }
+  .ats-id-link {
+    color: #0369a1;
+    text-decoration: underline;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  /* ==========================================================================
+     TIPE 2: VISUAL 2-KOLOM STYLES (Teal Sidebar ala SIAPkerja)
+     ========================================================================== */
+  .visual-sheet {
+    display: grid;
+    grid-template-columns: 32% 68%;
+    min-height: 100%;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  /* Sidebar Teal */
+  .visual-sidebar {
+    background: #177579; /* Brand Teal SIAPkerja */
+    color: #ffffff;
+    padding: 2rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+    box-sizing: border-box;
+  }
+
+  .visual-avatar-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.25rem;
+  }
+  .visual-avatar-img {
+    width: 7.25rem;
+    height: 7.25rem;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    object-fit: cover;
+    object-position: center 12%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .sidebar-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .sidebar-title {
+    margin: 0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    color: #ffffff;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.35);
+    padding-bottom: 0.25rem;
+    letter-spacing: 0.02em;
+  }
+
+  .sidebar-contact-list {
     margin: 0;
     padding: 0;
     list-style: none;
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
-  }
-  .cv-list-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.12rem;
-  }
-  .item-meta {
-    margin: 0;
-    font-size: 0.82rem;
-    color: var(--text-2);
+    font-size: 0.78rem;
     line-height: 1.35;
   }
-  .id-link {
-    color: var(--accent);
-    font-family: var(--font-mono);
+  .sidebar-contact-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    word-break: break-word;
+  }
+  .sidebar-icon {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: #a7f3d0;
+  }
+  .sidebar-contact-list a {
+    color: #ffffff;
     text-decoration: underline;
     text-underline-offset: 1.5px;
   }
 
-  /* Media Print Tuning untuk Garansi 2 Halaman A4 */
+  .sidebar-skills-list {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.79rem;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .sidebar-bullet-list {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-size: 0.79rem;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.95);
+  }
+  .sidebar-sub-item {
+    margin: 0.1rem 0 0;
+    font-size: 0.73rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .sidebar-badge-siap {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .siap-logo-text {
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+  }
+  .siap-sub-text {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* Main Column White */
+  .visual-main {
+    padding: 2.25rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    background: #ffffff;
+    box-sizing: border-box;
+  }
+
+  .visual-header {
+    border-bottom: 2px solid #111827;
+    padding-bottom: 0.65rem;
+  }
+  .visual-name {
+    margin: 0;
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #111827;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+  .visual-role {
+    margin: 0.25rem 0 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #177579;
+  }
+
+  .visual-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .visual-heading {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #111827;
+    border-bottom: 1.5px solid #e5e7eb;
+    padding-bottom: 0.2rem;
+  }
+
+  .visual-summary {
+    margin: 0;
+    font-size: 0.83rem;
+    line-height: 1.48;
+    color: #1f2937;
+    text-align: justify;
+  }
+  .visual-link {
+    color: #177579;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 1.5px;
+  }
+
+  .visual-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .visual-item + .visual-item {
+    margin-top: 0.35rem;
+  }
+  .visual-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .visual-item-title {
+    margin: 0;
+    font-size: 0.87rem;
+    font-weight: 700;
+    color: #111827;
+  }
+  .visual-item-period {
+    font-size: 0.8rem;
+    color: #6b7280;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .visual-item-org {
+    margin: 0;
+    font-size: 0.81rem;
+    color: #4b5563;
+    font-weight: 500;
+  }
+  .visual-item-text {
+    margin: 0;
+    font-size: 0.81rem;
+    line-height: 1.42;
+    color: #374151;
+    text-align: justify;
+  }
+
+  .visual-cert-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .visual-cert-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    font-size: 0.81rem;
+  }
+  .cert-title-row {
+    color: #111827;
+  }
+  .cert-year {
+    color: #6b7280;
+  }
+  .cert-issuer-row {
+    color: #4b5563;
+    font-size: 0.78rem;
+  }
+
+  /* ==========================================================================
+     MEDIA PRINT (A4 Exact Guarantee for Both Types)
+     ========================================================================== */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
   @media print {
-    .cv {
+    :global(html),
+    :global(body) {
+      width: 210mm !important;
+      margin: 0 !important;
       padding: 0 !important;
-      max-width: none !important;
-    }
-    .cv-page + .cv-page {
-      margin-top: 0 !important;
-      padding-top: 0 !important;
-      border-top: none !important;
-    }
-    .cv-name {
-      font-size: 19pt !important;
-    }
-    .cv-role {
-      font-size: 10.5pt !important;
-      color: #0369a1 !important;
-    }
-    .cv-contact {
-      font-size: 8.5pt !important;
-      color: #374151 !important;
-    }
-    .cv-heading {
-      font-size: 8.5pt !important;
+      background: #ffffff !important;
       color: #111827 !important;
-      border-bottom: 1px solid #d1d5db !important;
-      margin-top: 4pt !important;
-      padding-bottom: 1.5pt !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
-    .cv-summary {
-      font-size: 8.8pt !important;
-      line-height: 1.35 !important;
+
+    .cv-container {
+      width: 210mm !important;
+      max-width: 210mm !important;
+      padding: 0 !important;
+      margin: 0 !important;
     }
-    .item-title {
-      font-size: 9pt !important;
+
+    .no-print {
+      display: none !important;
     }
-    .item-period {
+
+    .cv-layout {
+      gap: 0 !important;
+    }
+
+    #cv-ats-container[style*="display: none"],
+    #cv-visual-container[style*="display: none"] {
+      display: none !important;
+    }
+
+    .cv-sheet {
+      width: 210mm !important;
+      max-width: 210mm !important;
+      min-height: 297mm !important;
+      max-height: 297mm !important;
+      box-sizing: border-box !important;
+      border: none !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      overflow: hidden !important;
+      page-break-after: always !important;
+      break-after: page !important;
+    }
+
+    .cv-sheet:last-child {
+      page-break-after: auto !important;
+      break-after: auto !important;
+    }
+
+    /* Print Tuning ATS */
+    .ats-sheet {
+      padding: 10mm 12mm !important;
+      gap: 2mm !important;
+    }
+    .ats-name {
+      font-size: 17pt !important;
+    }
+    .ats-contact-line, .ats-contact-subline {
       font-size: 8pt !important;
-      color: #4b5563 !important;
+      line-height: 1.25 !important;
     }
-    .item-sub, .thesis-line, .skill-row {
+    .ats-heading {
       font-size: 8.5pt !important;
-      line-height: 1.32 !important;
+      margin-top: 0.5mm !important;
+      padding-bottom: 0.5mm !important;
     }
-    .projects-list {
-      gap: 5pt !important;
-    }
-    .cv-project-item {
-      gap: 1.5pt !important;
-    }
-    .project-summary, .project-outcome {
-      font-size: 8.4pt !important;
-      line-height: 1.32 !important;
-    }
-    .project-stack {
-      font-size: 7.8pt !important;
-    }
-    .cv-compact-list {
-      gap: 3.5pt !important;
-    }
-    .item-meta {
-      font-size: 8.2pt !important;
+    .ats-text {
+      font-size: 8pt !important;
       line-height: 1.3 !important;
     }
-    .doc-link, .id-link {
-      color: #0369a1 !important;
-      text-decoration: underline !important;
+    .ats-item {
+      gap: 0.5mm !important;
+    }
+    .ats-bullet-list {
+      gap: 0.5mm !important;
+      padding-left: 14px !important;
+    }
+    .ats-bullet-list li {
+      font-size: 8pt !important;
+      line-height: 1.3 !important;
+    }
+    .ats-item-title {
+      font-size: 8.2pt !important;
+    }
+    .ats-item-period, .ats-item-role, .ats-item-sub, .ats-thesis-line {
+      font-size: 7.8pt !important;
+      line-height: 1.25 !important;
+    }
+    .ats-skills-grid {
+      gap: 1mm !important;
+    }
+    .ats-skill-line {
+      font-size: 7.8pt !important;
+      line-height: 1.25 !important;
+    }
+    .ats-compact-list {
+      gap: 1.2mm !important;
+    }
+    .ats-compact-item {
+      gap: 0 !important;
+    }
+    .ats-item-meta {
+      font-size: 7.6pt !important;
+      line-height: 1.22 !important;
+    }
+
+    /* Print Tuning Visual */
+    .visual-sheet {
+      grid-template-columns: 31% 69% !important;
+    }
+    .visual-sidebar {
+      background-color: #177579 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      padding: 10mm 5mm !important;
+      gap: 3.5mm !important;
+    }
+    .visual-avatar-img {
+      width: 25mm !important;
+      height: 25mm !important;
+    }
+    .sidebar-title {
+      font-size: 8.5pt !important;
+      padding-bottom: 0.8mm !important;
+    }
+    .sidebar-contact-list, .sidebar-skills-list, .sidebar-bullet-list {
+      font-size: 7.5pt !important;
+      line-height: 1.25 !important;
+    }
+    .visual-main {
+      padding: 10mm 8mm !important;
+      gap: 3mm !important;
+    }
+    .visual-name {
+      font-size: 17pt !important;
+    }
+    .visual-role {
+      font-size: 9.5pt !important;
+    }
+    .visual-heading {
+      font-size: 8.5pt !important;
+      padding-bottom: 0.8mm !important;
+    }
+    .visual-summary, .visual-item-text {
+      font-size: 7.8pt !important;
+      line-height: 1.28 !important;
+    }
+    .visual-item-title {
+      font-size: 8.2pt !important;
+    }
+    .visual-item-org, .visual-item-period {
+      font-size: 7.6pt !important;
+    }
+    .visual-cert-list li {
+      font-size: 7.6pt !important;
+      line-height: 1.25 !important;
+    }
+  }
+
+  @media (max-width: 44rem) {
+    .visual-sheet {
+      grid-template-columns: 1fr;
+    }
+    .visual-sidebar {
+      padding: 1.5rem;
+    }
+    .visual-main {
+      padding: 1.5rem;
     }
   }
 </style>

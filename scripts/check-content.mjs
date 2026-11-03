@@ -33,7 +33,7 @@ function scan(file) {
     if (SKILL_PERCENT.test(line) && /skill|bar|persen/i.test(file + line))
       errors.push(`${at}  dilarang memakai persentase skill`);
     if (NIK.test(line)) errors.push(`${at}  16 digit berurutan (mirip NIK) dilarang tampil`);
-    if (PHONE.test(line)) errors.push(`${at}  mirip nomor telepon: hapus kecuali Anda mengizinkan`);
+    if (PHONE.test(line) && !line.trim().startsWith('phone:')) errors.push(`${at}  mirip nomor telepon: hapus kecuali Anda mengizinkan`);
   });
 }
 
