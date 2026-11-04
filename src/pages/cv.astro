@@ -27,7 +27,7 @@ const e = p.education;
 const hs = p.highSchool;
 const exp = p.experience ?? [];
 
-const cvRole = "Informatics Graduate | Data & Machine Learning Enthusiast";
+const cvRole = "Machine Learning Engineer / Data Analyst";
 const bare = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '');
 const isVideo = (u?: string | null) => !!u && /(youtube\.com|youtu\.be)/i.test(u);
 
@@ -79,7 +79,7 @@ const cleanPhone = p.contact.phone || '081257780379';
     <nav class="actions no-print" aria-label="Kontrol Tampilan & Ekspor CV">
       <a class="back-link" href="/">
         <ArrowLeft size={16} aria-hidden="true" />
-        <span>Kembali ke Beranda</span>
+        <span>Kembali ke Portofolio</span>
       </a>
 
       <div class="view-switcher" role="tablist" aria-label="Pilih Format CV">
@@ -92,7 +92,7 @@ const cleanPhone = p.contact.phone || '081257780379';
           aria-controls="cv-ats-container"
         >
           <Layers size={15} aria-hidden="true" />
-          <span>Tipe 1: Standar ATS (1 Kolom)</span>
+          <span>Format Standar ATS</span>
         </button>
         <button
           type="button"
@@ -103,18 +103,18 @@ const cleanPhone = p.contact.phone || '081257780379';
           aria-controls="cv-visual-container"
         >
           <Briefcase size={15} aria-hidden="true" />
-          <span>Tipe 2: Visual Modern (2 Kolom)</span>
+          <span>Format Visual Modern</span>
         </button>
       </div>
 
       <div class="export-buttons">
         <button type="button" class="btn btn-primary" data-print-action>
           <Printer size={16} aria-hidden="true" />
-          <span>Cetak / Simpan PDF</span>
+          <span>Cetak Dokumen (A4)</span>
         </button>
         <a class="btn btn-outline" href="/cv.pdf" download id="download-active-pdf">
           <Download size={16} aria-hidden="true" />
-          <span>Unduh cv.pdf (A4 Resmi)</span>
+          <span>Unduh Berkas PDF (ATS)</span>
         </a>
       </div>
     </nav>
@@ -464,7 +464,7 @@ const cleanPhone = p.contact.phone || '081257780379';
           <section class="visual-section">
             <h2 class="visual-heading">Tentang Saya</h2>
             <p class="visual-summary">
-              Kunjungi portofolio proyek saya di: <a href={p.siteUrl} target="_blank" rel="noopener noreferrer" class="visual-link">{bare(p.siteUrl)}</a> | Lulusan S1 Informatika UIN Sunan Kalijaga (IPK 3,77, Cumlaude) dengan keahlian inti pada Machine Learning, analisis data kuantitatif, dan data pipeline berbasis Python. Memiliki rekam jejak dalam merancang sistem optimasi portofolio saham (Algoritma Genetika Adaptif), sistem rekomendasi hybrid (WisataPas), dan workstation kuantitatif (IDX Quant Studio). Kompetensi teknis ini divalidasi melalui predikat Full Graduate Coding Camp DBS Foundation 2025 (Nilai A / 90,7). Dengan memadukan daya analitik dan pengalaman manajerial sebagai Ketua Divisi Basket serta Bendahara Umum IMM Fakultas, saya siap memberikan dampak nyata di dunia industri.
+              Lulusan S1 Informatika UIN Sunan Kalijaga (IPK 3,77, Predikat Cumlaude) dengan spesialisasi pada Machine Learning, analisis data kuantitatif, dan rekayasa data pipeline berbasis Python. Berpengalaman merancang sistem optimasi portofolio investasi saham berbasis Adaptive Genetic Algorithm (AGA), sistem rekomendasi hybrid Deep Learning, dan workstation analitik finansial. Teruji menyelesaikan program 936 jam DBS Foundation Coding Camp dengan predikat Nilai A (90,7) serta memiliki rekam jejak kepemimpinan organisasi yang adaptif dan berorientasi hasil.
             </p>
           </section>
 
@@ -478,7 +478,7 @@ const cleanPhone = p.contact.phone || '081257780379';
                 </div>
                 <p class="visual-item-org">{item.company} · {item.location}</p>
                 <p class="visual-item-text">
-                  Berpengalaman dalam mengelola dan mengembangkan operasional bisnis keluarga (Surya Food House) melalui pendekatan pemasaran digital dan analisis data. Memimpin kurasi konten dan manajemen interaksi pelanggan di Instagram (@suryafoodhouse) untuk membangun brand awareness, serta mengeksekusi kampanye bertarget berdasarkan pemetaan demografi audiens. Melalui analisis tren konversi, memberikan insight strategis yang memandu strategi pengadaan stok dan merumuskan inovasi menu berbasis data guna meningkatkan efisiensi operasional.
+                  Mengelola strategi pemasaran digital, analisis data transaksi, dan pengembangan produk pada unit usaha CV. Surya Nugraha House (Surya Food House). Memimpin orkestrasi konten digital (@suryafoodhouse) untuk meningkatkan brand awareness dan retensi pelanggan melalui kampanye bertarget. Mengintegrasikan analisis tren penjualan dan pola konsumsi ke dalam perumusan inovasi menu baru serta manajemen stok bahan baku guna memastikan efisiensi biaya operasional.
                 </p>
               </div>
             ))}
@@ -666,14 +666,14 @@ const cleanPhone = p.contact.phone || '081257780379';
           if (visualView) visualView.style.display = 'none';
           if (downloadLink) {
             downloadLink.href = '/cv-ats.pdf';
-            downloadLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Unduh CV ATS (PDF)</span>';
+            downloadLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Unduh Berkas PDF (ATS)</span>';
           }
         } else {
           if (atsView) atsView.style.display = 'none';
           if (visualView) visualView.style.display = 'flex';
           if (downloadLink) {
             downloadLink.href = '/cv-visual.pdf';
-            downloadLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Unduh CV Visual (PDF)</span>';
+            downloadLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Unduh Berkas PDF (Visual)</span>';
           }
         }
 
@@ -759,8 +759,8 @@ const cleanPhone = p.contact.phone || '081257780379';
   .switch-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.4rem 0.85rem;
+    gap: 0.4rem;
+    padding: 0.45rem 0.95rem;
     border-radius: calc(var(--radius) - 2px);
     border: none;
     background: transparent;
@@ -772,11 +772,12 @@ const cleanPhone = p.contact.phone || '081257780379';
   }
   .switch-btn:hover {
     color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
   }
   .switch-btn.active {
-    background: var(--accent);
-    color: var(--on-accent);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background: #177579;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(23, 117, 121, 0.35);
   }
 
   .export-buttons {
