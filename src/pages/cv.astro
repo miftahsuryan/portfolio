@@ -16,6 +16,7 @@ import {
   GraduationCap,
 } from '@lucide/astro';
 import formalPhoto from '../assets/profile/foto_profile_formal.jpg';
+import formalPhotoSquare from '../assets/profile/foto_profile_square.jpg';
 import { getProfile, getSkillGroups, getProjects, hasCvPdf, isLink } from '../lib/content';
 
 const p = getProfile();
@@ -48,9 +49,7 @@ const cvTraining = p.training.filter((t) =>
   t.name.toLowerCase().includes('coding camp') || t.name.toLowerCase().includes('dbs')
 );
 
-const cvAchievements = p.achievements.filter(
-  (a) => !a.title.toLowerCase().includes('samsung')
-);
+const cvAchievements = p.achievements;
 
 const cvOrganizations = p.organizations.filter(
   (o) => !o.role.toLowerCase().includes('panitia')
@@ -104,7 +103,7 @@ const cleanPhone = p.contact.phone || '081257780379';
           aria-controls="cv-visual-container"
         >
           <Briefcase size={15} aria-hidden="true" />
-          <span>Tipe 2: Visual 2-Kolom (SIAPkerja)</span>
+          <span>Tipe 2: Visual Modern (2 Kolom)</span>
         </button>
       </div>
 
@@ -209,7 +208,27 @@ const cleanPhone = p.contact.phone || '081257780379';
           ))}
         </section>
 
-        {/* Pengalaman Proyek Unggulan (Halaman 1: Proyek 01) */}
+        {/* Keahlian Teknis (Hard Skills) */}
+        <section class="ats-section">
+          <h2 class="ats-heading">Keahlian Teknis (Skills)</h2>
+          <div class="ats-skills-grid">
+            {groups.map((g) => (
+              <div class="ats-skill-line">
+                <span class="ats-skill-cat"><strong>{g.category}:</strong></span>
+                <span class="ats-skill-items">{g.items.map((i) => i.name).join(', ')}</span>
+              </div>
+            ))}
+            <div class="ats-skill-line">
+              <span class="ats-skill-cat"><strong>Bahasa:</strong></span>
+              <span class="ats-skill-items">Bahasa Indonesia (Penutur Asli), Bahasa Inggris (TOEC Skor 443 · TBI English for Business Communication 86%)</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* --- HALAMAN 2 (ATS) --- */}
+      <div class="cv-sheet ats-sheet ats-page-break">
+        {/* Pengalaman Proyek & Riset Pilihan (1 Subsection Lengkap) */}
         <section class="ats-section">
           <h2 class="ats-heading">Pengalaman Proyek & Riset Pilihan</h2>
 
@@ -261,17 +280,9 @@ const cleanPhone = p.contact.phone || '081257780379';
               <li>Membuktikan ketahanan strategi melalui backtest Walk-Forward 40:30:30 bebas look-ahead bias dengan raihan Alpha <strong>+15,68% vs IHSG</strong> pada pengujian out-of-sample riil.</li>
             </ul>
           </article>
-        </section>
-      </div>
-
-      {/* --- HALAMAN 2 (ATS) --- */}
-      <div class="cv-sheet ats-sheet ats-page-break">
-        {/* Lanjutan Proyek (Proyek 03 & 05) */}
-        <section class="ats-section">
-          <h2 class="ats-heading">Lanjutan Proyek Riset & Rekayasa Perangkat Lunak</h2>
 
           {/* Proyek 03: WisataPas */}
-          <article class="ats-item">
+          <article class="ats-item" style="margin-top: 0.35rem;">
             <div class="ats-item-header">
               <span class="ats-item-title"><strong>{projWisata.data.title}</strong></span>
               <span class="ats-item-period">{projWisata.data.period}</span>
@@ -295,43 +306,6 @@ const cleanPhone = p.contact.phone || '081257780379';
               <li>Meraih predikat <strong>Capstone Project Terbaik</strong> Coding Camp DBS Foundation 2025 dengan skor <strong>95,6 / 100</strong> dan mencatatkan Root Mean Squared Error (RMSE) 0,3329 pada data uji evaluasi.</li>
             </ul>
           </article>
-
-          {/* Proyek 05: SIC5 IoT Tunarungu */}
-          <article class="ats-item" style="margin-top: 0.35rem;">
-            <div class="ats-item-header">
-              <span class="ats-item-title"><strong>{projSic.data.title}</strong></span>
-              <span class="ats-item-period">{projSic.data.period}</span>
-            </div>
-            <div class="ats-item-links">
-              <span>{projSic.data.role}</span>
-              <span class="ats-links-group">
-                {isLink(projSic.data.demoUrl) && (
-                  <a href={projSic.data.demoUrl} target="_blank" rel="noopener noreferrer" class="ats-doc-link">[Video Demonstrasi Produk]</a>
-                )}
-              </span>
-            </div>
-            <ul class="ats-bullet-list">
-              <li>Merancang dan menguji prototipe perangkat keras IoT berbasis mikrokontroler ESP32 dan model Speech-to-Text untuk mengonversi pengumuman audio di fasilitas publik menjadi teks visual ramah tunarungu.</li>
-              <li>Terpilih sebagai <strong>Semi Finalis Nasional Samsung Innovation Campus Batch 5 (2024)</strong> dan meraih predikat <strong>Master (skor 95,63)</strong> pada tahap seleksi Coding & Programming (Python, Algorithm & Data Structure).</li>
-            </ul>
-          </article>
-        </section>
-
-        {/* Keahlian Teknis (Hard Skills) */}
-        <section class="ats-section">
-          <h2 class="ats-heading">Keahlian Teknis (Skills)</h2>
-          <div class="ats-skills-grid">
-            {groups.map((g) => (
-              <div class="ats-skill-line">
-                <span class="ats-skill-cat"><strong>{g.category}:</strong></span>
-                <span class="ats-skill-items">{g.items.map((i) => i.name).join(', ')}</span>
-              </div>
-            ))}
-            <div class="ats-skill-line">
-              <span class="ats-skill-cat"><strong>Bahasa:</strong></span>
-              <span class="ats-skill-items">Bahasa Indonesia (Penutur Asli), Bahasa Inggris (TOEC Skor 443 · TBI English for Business Communication 86%)</span>
-            </div>
-          </div>
         </section>
 
         {/* Pelatihan & Sertifikasi Terverifikasi */}
@@ -402,7 +376,7 @@ const cleanPhone = p.contact.phone || '081257780379';
     </div>
 
     {/* =========================================================================
-        TIPE 2: CV VISUAL MODERN 2-KOLOM (Gaya SIAPkerja — Sesuai PDF 2)
+        TIPE 2: CV VISUAL MODERN 2-KOLOM (Format Portofolio Eksekutif)
         ========================================================================= */}
     <div class="cv-layout cv-visual-view" id="cv-visual-container" style="display: none;">
       {/* --- HALAMAN 1 (VISUAL) --- */}
@@ -411,7 +385,7 @@ const cleanPhone = p.contact.phone || '081257780379';
         <aside class="visual-sidebar">
           <div class="visual-avatar-wrap">
             <Image
-              src={formalPhoto}
+              src={formalPhotoSquare}
               alt={p.name}
               class="visual-avatar-img"
               width={260}
@@ -478,11 +452,6 @@ const cleanPhone = p.contact.phone || '081257780379';
               <li>English (TOEC Skor 443 · TBI 86%)</li>
             </ul>
           </div>
-
-          <div class="sidebar-badge-siap">
-            <span class="siap-logo-text">SIAPkerja 2026</span>
-            <span class="siap-sub-text">Terverifikasi Standar Kemnaker</span>
-          </div>
         </aside>
 
         {/* Konten Kanan (Putih) */}
@@ -515,40 +484,29 @@ const cleanPhone = p.contact.phone || '081257780379';
             ))}
           </section>
 
+          {/* Pendidikan */}
           <section class="visual-section">
-            <h2 class="visual-heading">Pengalaman Proyek Pilihan</h2>
-
-            {/* Proyek 01: IDX30 AGA */}
+            <h2 class="visual-heading">Pendidikan</h2>
             <div class="visual-item">
               <div class="visual-item-header">
-                <h3 class="visual-item-title">Optimasi Portofolio Saham IDX30 (Adaptive Genetic Algorithm)</h3>
-                <span class="visual-item-period">2025 – 2026</span>
+                <h3 class="visual-item-title">S1 - Informatika</h3>
+                <span class="visual-item-period">2022 – 2026</span>
               </div>
-              <p class="visual-item-org">
-                Machine Learning (Proyek Skripsi) · 
-                <a href={projAga.data.repoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[GitHub]</a> · 
-                <a href={projAga.data.demoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[Live Demo]</a>
-              </p>
+              <p class="visual-item-org">Universitas Islam Negeri Sunan Kalijaga Yogyakarta · <strong>IPK 3.77 (Cumlaude)</strong></p>
               <p class="visual-item-text">
-                Mengoptimalkan bobot portofolio 22 konstituen saham IDX30 dengan penalti konsentrasi HHI dan operator adaptif. Menghasilkan Total Return <strong>46,51%</strong> (vs IDX30 13,48%), <strong>Sharpe Ratio 2,1036</strong>, dan Max Drawdown -15,74% pada validasi 4-fase expanding Walk-Forward. Signifikansi performa terbukti secara inferensial (<em>p &lt; 0,001</em>).
+                Tugas Akhir: <em>Optimasi Portofolio Saham IDX30 Menggunakan Adaptive Genetic Algorithm (AGA) dan Walk-Forward Validation</em>
               </p>
             </div>
 
-            {/* Proyek 02: WisataPas */}
-            <div class="visual-item">
-              <div class="visual-item-header">
-                <h3 class="visual-item-title">WisataPas: Sistem Rekomendasi Destinasi Wisata Hybrid</h3>
-                <span class="visual-item-period">2025</span>
+            {hs && (
+              <div class="visual-item">
+                <div class="visual-item-header">
+                  <h3 class="visual-item-title">SMA - MAN Insan Cendekia Paser</h3>
+                  <span class="visual-item-period">2018 – 2021</span>
+                </div>
+                <p class="visual-item-org">Jurusan IPA · Kab. Paser, Kalimantan Timur · <strong>Nilai Rata-Rata: 91.48</strong></p>
               </div>
-              <p class="visual-item-org">
-                Capstone Project DBS Foundation · 
-                <a href={projWisata.data.repoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[GitHub]</a> · 
-                <a href={projWisata.data.demoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[Live Demo]</a>
-              </p>
-              <p class="visual-item-text">
-                Sistem rekomendasi hybrid berbasis Deep Learning (RecommenderNet TensorFlow) dan Content-Based Filtering. Meraih predikat Capstone Terbaik dengan skor <strong>95,6 / 100</strong> dan mencatatkan Root Mean Squared Error (RMSE) 0,3329 pada data uji evaluasi.
-              </p>
-            </div>
+            )}
           </section>
         </main>
       </div>
@@ -593,11 +551,43 @@ const cleanPhone = p.contact.phone || '081257780379';
 
         {/* Konten Kanan Lanjutan */}
         <main class="visual-main">
-          {/* Lanjutan Proyek */}
+          {/* Pengalaman Proyek Pilihan (1 Subsection Lengkap) */}
           <section class="visual-section">
-            <h2 class="visual-heading">Lanjutan Proyek Unggulan</h2>
+            <h2 class="visual-heading">Pengalaman Proyek Pilihan</h2>
 
-            {/* Proyek 05: SIC5 */}
+            {/* Proyek 01: IDX30 AGA */}
+            <div class="visual-item">
+              <div class="visual-item-header">
+                <h3 class="visual-item-title">Optimasi Portofolio Saham IDX30 (Adaptive Genetic Algorithm)</h3>
+                <span class="visual-item-period">2025 – 2026</span>
+              </div>
+              <p class="visual-item-org">
+                Machine Learning (Proyek Skripsi) · 
+                <a href={projAga.data.repoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[GitHub]</a> · 
+                <a href={projAga.data.demoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[Live Demo]</a>
+              </p>
+              <p class="visual-item-text">
+                Mengoptimalkan bobot portofolio 22 konstituen saham IDX30 dengan penalti konsentrasi HHI dan operator adaptif. Menghasilkan Total Return <strong>46,51%</strong> (vs IDX30 13,48%), <strong>Sharpe Ratio 2,1036</strong>, dan Max Drawdown -15,74% pada validasi 4-fase expanding Walk-Forward. Signifikansi performa terbukti secara inferensial (<em>p &lt; 0,001</em>).
+              </p>
+            </div>
+
+            {/* Proyek 02: WisataPas */}
+            <div class="visual-item">
+              <div class="visual-item-header">
+                <h3 class="visual-item-title">WisataPas: Sistem Rekomendasi Destinasi Wisata Hybrid</h3>
+                <span class="visual-item-period">2025</span>
+              </div>
+              <p class="visual-item-org">
+                Capstone Project DBS Foundation · 
+                <a href={projWisata.data.repoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[GitHub]</a> · 
+                <a href={projWisata.data.demoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[Live Demo]</a>
+              </p>
+              <p class="visual-item-text">
+                Sistem rekomendasi hybrid berbasis Deep Learning (RecommenderNet TensorFlow) dan Content-Based Filtering. Meraih predikat Capstone Terbaik dengan skor <strong>95,6 / 100</strong> dan mencatatkan Root Mean Squared Error (RMSE) 0,3329 pada data uji evaluasi.
+              </p>
+            </div>
+
+            {/* Proyek 03: SIC5 IoT Tunarungu */}
             <div class="visual-item">
               <div class="visual-item-header">
                 <h3 class="visual-item-title">Alat Komunikasi IoT Berbasis Machine Learning untuk Tunarungu</h3>
@@ -613,32 +603,7 @@ const cleanPhone = p.contact.phone || '081257780379';
             </div>
           </section>
 
-          {/* Pendidikan */}
-          <section class="visual-section">
-            <h2 class="visual-heading">Pendidikan</h2>
-            <div class="visual-item">
-              <div class="visual-item-header">
-                <h3 class="visual-item-title">S1 - Informatika</h3>
-                <span class="visual-item-period">2022 – 2026</span>
-              </div>
-              <p class="visual-item-org">Universitas Islam Negeri Sunan Kalijaga Yogyakarta · <strong>IPK 3.77 (Cumlaude)</strong></p>
-              <p class="visual-item-text">
-                Tugas Akhir: <em>Optimasi Portofolio Saham IDX30 Menggunakan Adaptive Genetic Algorithm (AGA) dan Walk-Forward Validation</em>
-              </p>
-            </div>
-
-            {hs && (
-              <div class="visual-item">
-                <div class="visual-item-header">
-                  <h3 class="visual-item-title">SMA - MAN Insan Cendekia Paser</h3>
-                  <span class="visual-item-period">2018 – 2021</span>
-                </div>
-                <p class="visual-item-org">Jurusan IPA · Kab. Paser, Kalimantan Timur · <strong>Nilai Rata-Rata: 91.48</strong></p>
-              </div>
-            )}
-          </section>
-
-          {/* Pelatihan */}
+          {/* Pelatihan Industri */}
           <section class="visual-section">
             <h2 class="visual-heading">Pelatihan Industri</h2>
             <div class="visual-item">
@@ -653,7 +618,7 @@ const cleanPhone = p.contact.phone || '081257780379';
             </div>
           </section>
 
-          {/* Sertifikasi */}
+          {/* Sertifikasi Terverifikasi */}
           <section class="visual-section">
             <h2 class="visual-heading">Sertifikasi Terverifikasi</h2>
             <ul class="visual-cert-list">
@@ -1080,7 +1045,7 @@ const cleanPhone = p.contact.phone || '081257780379';
     border-radius: 50%;
     border: 3px solid rgba(255, 255, 255, 0.9);
     object-fit: cover;
-    object-position: center 12%;
+    object-position: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
 
@@ -1154,24 +1119,7 @@ const cleanPhone = p.contact.phone || '081257780379';
     color: rgba(255, 255, 255, 0.8);
   }
 
-  .sidebar-badge-siap {
-    margin-top: auto;
-    padding-top: 1rem;
-    border-top: 1px dashed rgba(255, 255, 255, 0.25);
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-  }
-  .siap-logo-text {
-    font-size: 0.82rem;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    color: #ffffff;
-  }
-  .siap-sub-text {
-    font-size: 0.68rem;
-    color: rgba(255, 255, 255, 0.75);
-  }
+
 
   /* Main Column White */
   .visual-main {
@@ -1428,6 +1376,8 @@ const cleanPhone = p.contact.phone || '081257780379';
     .visual-avatar-img {
       width: 25mm !important;
       height: 25mm !important;
+      object-fit: cover !important;
+      object-position: center !important;
     }
     .sidebar-title {
       font-size: 8.5pt !important;

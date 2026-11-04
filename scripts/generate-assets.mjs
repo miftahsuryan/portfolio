@@ -201,7 +201,7 @@ async function run() {
     fs.copyFileSync(path.join(PUBLIC, 'cv-ats.pdf'), path.join(PUBLIC, 'cv.pdf'));
     console.log('✓ public/cv.pdf synced with ATS version');
 
-    // 2b. Generate CV Visual (2-Column SIAPkerja Teal)
+    // 2b. Generate CV Visual (2-Column Modern Teal)
     console.log('Generating public/cv-visual.pdf from http://localhost:4321/cv?type=visual ...');
     await cvPage.goto('http://localhost:4321/cv?type=visual', { waitUntil: 'networkidle', timeout: 12000 });
     await cvPage.waitForTimeout(1000);
