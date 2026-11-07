@@ -26,8 +26,8 @@ gallery:
     alt: "Antarmuka terminal riset kuantitatif dan web dashboard interaktif Streamlit untuk simulasi alokasi portofolio saham IDX30"
     caption: "Terminal Riset & Investasi Kuantitatif Streamlit: Desain institusional FactSet/Bloomberg, simulasi real-time, dan kalkulator alokasi lot saham BEI"
   - image: "src/assets/projects/AGA/wfo_cumulative_equity_drawdown.png"
-    alt: "Grafik perbandingan kurva pertumbuhan modal (equity curve) dan drawdown out-of-sample strategi AGA terhadap benchmark"
-    caption: "Kinerja Out-of-Sample: Return kumulatif 46,49% mengungguli Standard GA (33,90%), Equal Weight (38,51%), dan Indeks IDX30 (13,48%)"
+    alt: "Grafik perbandingan kurva pertumbuhan modal (equity curve) 1 tahun strategi AGA terhadap seluruh benchmark"
+    caption: "Perbandingan Pertumbuhan Modal (1 Tahun): Trajektori nilai portofolio AGA mencapai 1,4649× (Return 46,49%), mengungguli Equal Weight (38,51%), SGA (33,90%), dan IDX30 (13,48%)"
   - image: "src/assets/projects/AGA/wfo_comparative_metrics_bar.png"
     alt: "Diagram batang komparatif 6 metrik kinerja finansial out-of-sample strategi AGA terhadap seluruh benchmark"
     caption: "Perbandingan Komprehensif 6 Metrik: Outperformance konsisten pada Total Return, Sharpe Ratio, dan perlindungan Max Drawdown"
@@ -65,20 +65,21 @@ Untuk mencegah konsentrasi modal ekstrem dan menjamin diversifikasi portofolio, 
 - **γ = 1000,0**: Pengali penalti keras (*hard penalty multiplier*) untuk pelanggaran batas alokasi.
 
 ### 2. Operator Genetik Adaptif (Srinivas & Patnaik)
-Probabilitas *crossover* (P_c) dan mutasi (P_m) diskalakan secara otomatis per individu berdasarkan sebaran varians nilai fitness populasi generasi berjalan:
+Probabilitas *crossover* ($P_c$) dan mutasi ($P_m$) diskalakan secara otomatis per individu berdasarkan sebaran varians nilai fitness populasi generasi berjalan:
 
-> - **Probabilitas Crossover Adaptif (P_c):**
->   - Jika `f_c ≤ f_avg` → `k1 − [ (k1 − k3)(f_avg − f_c) / (f_avg − f_min) ]`
+> Misalkan `f_c = min(f_1, f_2)` (fitness terbaik dari dua induk), `f_ind = (f_1 + f_2) / 2` (rata-rata fitness induk), `f_avg` adalah rata-rata fitness populasi, dan `f_min` adalah fitness minimum (terbaik pada formulasi minimasi):
+>
+> - **Probabilitas Crossover Adaptif ($P_c$):**
+>   - Jika `f_c ≤ f_avg` → `max( k1 − [ (k1 − k3)(f_avg − f_c) / (f_avg − f_min) ], k3 )`
 >   - Jika `f_c > f_avg` → `k2`
 >
-> - **Probabilitas Mutasi Adaptif (P_m):**
->   - Jika `f_i ≤ f_avg` → `k4 − [ (k4 − k6)(f_avg − f_i) / (f_avg − f_min) ]`
->   - Jika `f_i > f_avg` → `k5`
+> - **Probabilitas Mutasi Adaptif ($P_m$):**
+>   - Jika `f_ind ≤ f_avg` → `max( k4 − [ (k4 − k6)(f_avg − f_ind) / (f_avg − f_min) ], k6 )`
+>   - Jika `f_ind > f_avg` → `k5`
 
-**Hyperparameter Optimal:**
-- `k1 = 0,9`, `k2 = 0,9`, `k3 = 0,1`
-- `k4 = 0,9`, `k5 = 0,9`, `k6 = 0,3`
-- Ukuran Populasi: `M = 500` individu, Jumlah Generasi: `G = 88`.
+**Hyperparameter Optimal (Anggaran Setara 44.000 NFE):**
+- **Adaptive GA (AGA):** Ukuran Populasi $M = 500$, Generasi $G = 88$ ($500 \times 88 = 44.000$ NFE), $k_1 = 0,9$, $k_2 = 0,9$, $k_3 = 0,1$, $k_4 = 0,9$, $k_5 = 0,9$, $k_6 = 0,3$.
+- **Standard GA (SGA):** Ukuran Populasi $M = 440$, Generasi $G = 100$ ($440 \times 100 = 44.000$ NFE), parameter statis $P_c = 0,5$, $P_m = 0,9$.
 
 Mekanisme ini menjaga diversitas eksplorasi kromosom pada generasi awal dan mempercepat konvergensi presisi pada generasi akhir tanpa terjebak di optimum lokal.
 
@@ -91,7 +92,7 @@ Hasil bobot kontinu dikonversi secara presisi menjadi jumlah **Lot Saham Riil (1
 > **Jumlah Lot_i = ⌊ (w_i × Modal Investasi) / (Harga_i × 100) ⌋**
 
 ## Metodologi Pengujian: Walk-Forward Optimization (WFO)
-Kinerja strategi dievaluasi secara ketat menggunakan simulasi *out-of-sample Walk-Forward Optimization* (WFO) sepanjang **4 fase temporal bergulir (*rolling forward windows*)** periode 2025–2026. Evaluasi ini memperhitungkan friksi pasar riil:
+Kinerja strategi dievaluasi secara ketat menggunakan simulasi *out-of-sample Walk-Forward Optimization* (WFO) sepanjang **4 fase temporal bergulir (*rolling forward windows*)** periode 30 Januari 2025 s.d. 26 Januari 2026 (235 hari bursa). Evaluasi ini memperhitungkan friksi pasar riil:
 - **Biaya Akuisisi (Beli)**: Komisi broker 0,15%.
 - **Biaya Likuidasi (Jual)**: 0,25% (0,15% broker + 0,10% PPh Final transaksi bursa).
 - **Risk-Free Rate**: 6,00% per tahun (mengacu pada benchmark BI-Rate Bank Indonesia).
@@ -99,23 +100,33 @@ Kinerja strategi dievaluasi secara ketat menggunakan simulasi *out-of-sample Wal
 
 ---
 
-## Ringkasan Performa Out-of-Sample (vs Benchmark)
+## Ringkasan Performa Out-of-Sample (Kumulatif 4× Rebalancing)
 
 | Peringkat | Strategi Investasi | Total Return (%) | Annualized Return (%) | Annualized Volatility (%) | Sharpe Ratio | Max Drawdown (%) | Biaya Transaksi Bersih (%) | Nilai Akhir Portofolio (Rp 100 Juta) |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| 🥇 | **Adaptive Genetic Algorithm (AGA)** | **46,49%** | **50,59%** | **21,21%** | **2,1025** | **-15,74%** | 0,43% | **Rp 146.491.400** |
-| 🥈 | **Equal Weight Benchmark (1/N)** | 38,51% | 41,82% | 22,44% | 1,5961 | -18,78% | 0,15% | Rp 138.514.200 |
-| 🥉 | **Standard Genetic Algorithm (SGA)** | 33,90% | 36,75% | 21,26% | 1,4467 | -17,35% | 0,50% | Rp 133.897.000 |
-| 4 | **IDX30 Market Index Benchmark** | 13,48% | 14,53% | 22,63% | 0,3767 | -17,14% | 0,38% | Rp 113.482.900 |
+| 🥇 | **Adaptive Genetic Algorithm (AGA, 4× Rebalanced)** | **46,49%** | **50,59%** | **21,21%** | **2,1025** | **-15,74%** | 0,43% | **Rp 146.491.368** (1,4649×) |
+| 🥈 | **Equal Weight Benchmark (1/N Buy & Hold)** | 38,51% | 41,82% | 22,44% | 1,5961 | -18,78% | 0,15% | Rp 138.514.208 (1,3851×) |
+| 🥉 | **Standard Genetic Algorithm (SGA, 4× Rebalanced)** | 33,90% | 36,75% | 21,26% | 1,4467 | -17,35% | 0,50% | Rp 133.897.009 (1,3390×) |
+| 4 | **IDX30 Market Index Benchmark (4× Rebalanced)** | 13,48% | 14,53% | 22,63% | 0,3767 | -17,14% | 0,38% | Rp 113.482.850 (1,1348×) |
 
-> **Temuan Kunci:** Strategi AGA menghasilkan **Total Return +33,01% lebih tinggi** dan **Sharpe Ratio +458% lebih tinggi (2,1025 vs 0,3767)** dibanding indeks pasar resmi IDX30, sekaligus menekan risiko Maximum Drawdown ke level **-15,74%** (terendah dan paling terkendali di antara seluruh strategi benchmark).
+> **Temuan Kunci:** Strategi AGA menghasilkan **Total Return +33,01% lebih tinggi** (`46,49%` vs `13,48%`) dan **Sharpe Ratio +458% lebih tinggi** (`2,1025` vs `0,3767`) dibanding indeks pasar resmi IDX30, sekaligus menekan risiko Maximum Drawdown ke level **-15,74%** (terendah dan paling terkendali di antara seluruh strategi benchmark).
+
+### Evaluasi Kinerja Per Fase Terisolasi (Out-of-Sample Window 3 Bulanan)
+Evaluasi kinerja out-of-sample pada masing-masing jendela temporal 3 bulan independen (masing-masing diinisialisasi biaya masuk 0,15% dan diurutkan berdasarkan Sharpe Ratio):
+
+| Fase WFO | Rentang Waktu (OOS) | Peringkat 1 (Sharpe Terbaik) | Total Return Peringkat 1 | Sharpe Peringkat 1 | Ringkasan Performa AGA vs Benchmark |
+| :---: | :---: | :---: | :---: | :---: | :--- |
+| **Fase 1** | Feb – Apr 2025 | **AGA (Fase 1)** | **-1,55%** | **-0,3882** | **AGA**: Return -1,55% \| SGA: -5,10% \| Equal Weight: -2,46% \| IDX30: -4,74% |
+| **Fase 2** | Mei – Jul 2025 | **AGA (Fase 2)** | **+25,82%** | **9,2911** | **AGA**: Return +25,82% \| SGA: +22,54% \| Equal Weight: +19,92% \| IDX30: +6,10% |
+| **Fase 3** | Agu – Okt 2025 | **AGA (Fase 3)** | **+8,23%** | **1,8788** | **AGA**: Return +8,23% \| Equal Weight: +7,90% \| IDX30: +7,71% \| SGA: +3,54% |
+| **Fase 4** | Nov 2025 – Jan 2026 | **SGA (Fase 4)** | **+11,05%** | **4,3036** | **SGA**: Return +11,05% \| AGA: +9,02% \| Equal Weight: +8,95% \| IDX30: +4,01% |
 
 ---
 
 ## Validasi Uji Hipotesis Statistik Inferensial
-Untuk membuktikan bahwa keunggulan performa AGA bukan kebetulan stokastik, dilakukan pengujian inferensial ketat pada **80 eksperimen independen** (10 *runs* × 4 fase WFO × 2 algoritma):
+Untuk membuktikan bahwa keunggulan performa optimasi AGA bukan artefak kebetulan stokastik (*random seed*), dilakukan evaluasi stabilitas inferensial ketat pada **80 eksperimen berpasangan** (4 fase WFO × 10 *runs* dengan populasi awal bersama `shared_population`, `SEED = 29..38`, di bawah anggaran setara 44.000 NFE):
 
-1. **Uji Normalitas Shapiro-Wilk**: Mengevaluasi distribusi selisih metrik (Δ = Metrik_AGA − Metrik_SGA).
+1. **Uji Normalitas Shapiro-Wilk**: Mengevaluasi sebaran distribusi selisih berpasangan (Δ = Metrik_AGA − Metrik_SGA).
 2. **Uji Hipotesis Terarah**: Jika Δ berdistribusi normal, diterapkan **Paired Student's t-test** dua arah; jika non-normal, diterapkan **Wilcoxon Signed-Rank test** non-parametrik.
 
 | Fase WFO | Metrik yang Diuji | Rerata SGA ± SD | Rerata AGA ± SD | Uji Normalitas | p-value Normalitas | Uji Hipotesis | Nilai Statistik | p-value | Kesimpulan (α = 0,05) |
@@ -124,10 +135,12 @@ Untuk membuktikan bahwa keunggulan performa AGA bukan kebetulan stokastik, dilak
 | **Fase 2** | Fitness Objektif | 0,0283 ± 0,0017 | **0,0222 ± 0,0006** | Shapiro-Wilk | 0,5009 | Paired t-test | t = -9,456 | **p < 0,00001** | Signifikan Statistik |
 | **Fase 3** | Fitness Objektif | 0,0049 ± 0,0025 | **-0,0008 ± 0,0011** | Shapiro-Wilk | 0,5127 | Paired t-test | t = -8,005 | **p < 0,00001** | Signifikan Statistik |
 | **Fase 4** | Fitness Objektif | -0,0020 ± 0,0016 | **-0,0072 ± 0,0009** | Shapiro-Wilk | 0,3674 | Paired t-test | t = -8,772 | **p < 0,00001** | Signifikan Statistik |
-| **Fase 1** | Sharpe Ratio | 0,0410 ± 0,0046 | **0,0469 ± 0,0027** | Shapiro-Wilk | 0,4636 | Paired t-test | t = 3,114 | **p = 0,0124** | Signifikan Statistik |
-| **Fase 2** | Sharpe Ratio | 0,0258 ± 0,0067 | **0,0336 ± 0,0021** | Shapiro-Wilk | 0,0386 | Wilcoxon | W = 0,000 | **p = 0,00195** | Signifikan Statistik |
+| **Fase 1** | Sharpe Ratio (In-Sample) | 0,0410 ± 0,0046 | **0,0469 ± 0,0027** | Shapiro-Wilk | 0,4636 | Paired t-test | t = 3,114 | **p = 0,0124** | Signifikan Statistik |
+| **Fase 2** | Sharpe Ratio (In-Sample) | 0,0258 ± 0,0067 | **0,0336 ± 0,0021** | Shapiro-Wilk | 0,0386 | Wilcoxon | W = 0,000 | **p = 0,00195** | Signifikan Statistik |
+| **Fase 3** | Sharpe Ratio (In-Sample) | 0,0518 ± 0,0077 | **0,0551 ± 0,0036** | Shapiro-Wilk | 0,3171 | Paired t-test | t = 1,946 | p = 0,0835 | Tidak Signifikan (p > 0,05) |
+| **Fase 4** | Sharpe Ratio (In-Sample) | 0,0569 ± 0,0061 | **0,0614 ± 0,0042** | Shapiro-Wilk | 0,9144 | Paired t-test | t = 1,651 | p = 0,1331 | Tidak Signifikan (p > 0,05) |
 
-> Pada seluruh 4 fase temporal, AGA membuktikan **peningkatan fitness fungsi objektif yang signifikan secara statistik (p < 0,001)** dengan standar deviasi yang jauh lebih konsisten, membuktikan bahwa kontrol parameter adaptif meningkatkan stabilitas konvergensi secara nyata.
+> Pada seluruh 4 fase temporal, AGA membuktikan **peningkatan fitness fungsi objektif yang signifikan secara statistik (p < 0,001)** dengan standar deviasi yang 2×–3× jauh lebih konsisten, membuktikan bahwa kontrol parameter adaptif meningkatkan stabilitas konvergensi secara nyata.
 
 ---
 
@@ -153,7 +166,7 @@ Aplikasi dideploy secara publik sebagai **Quantitative Research & Investment Ter
 
 ### 3. Tiga Tab Riset Interaktif Terdedikasi
 - **Tab 1 — Walk-Forward Performance (OOS)**:
-  - *High-Precision KPI Scorecards*: Total Out-of-Sample Return (**46,49%**), Annualized Sharpe Ratio (**2,1025**), Annualized Return (**50,59%**), Maximum Drawdown (**-15,74%**), dan Terminal Portfolio Value (**Rp 146.491.400** dari modal Rp 100 Juta).
+  - *High-Precision KPI Scorecards*: Total Out-of-Sample Return (**46,49%**), Annualized Sharpe Ratio (**2,1025**), Annualized Return (**50,59%**), Maximum Drawdown (**-15,74%**), dan Terminal Portfolio Value (**Rp 146.491.368** dari modal Rp 100 Juta).
   - *Kurva Harian Dual-Axis Plotly*: Trajektori pertumbuhan modal nominal (IDR) dan kurva drawdown (%) dengan garis demarkasi vertikal fase rebalancing (`Rebalance: Phase 2`, `Rebalance: Phase 3`, `Rebalance: Phase 4`).
   - *Actionable IDX Lot Allocation Engine*: Mengonversi bobot kontinu $\mathbf{w}$ menjadi rekomendasi lot saham bulat riil sesuai aturan BEI (**1 Lot = 100 lembar**) dan estimasi modal terpakai:
     `Jumlah Lot_i = ⌊ (w_i × Modal Investasi) / (Harga_i × 100) ⌋`
@@ -173,23 +186,25 @@ Aplikasi dideploy secara publik sebagai **Quantitative Research & Investment Ter
 
 ```text
 .
-├── app.py                          # Terminal Riset Web Interaktif Streamlit (Dual-Mode)
+├── app.py                                 # Terminal Riset Web Interaktif Streamlit (Dual-Mode)
 ├── data/
-│   └── raw/                        # Data historis konstituen & harga saham BEI (2022-2026)
+│   └── raw/                               # Data historis konstituen & harga saham BEI (2022-2026)
+├── docs/
+│   └── CV_PORTFOLIO_HIGHLIGHTS.md         # Ringkasan sorotan proyek & draf CV bilingual
 ├── notebooks/
-│   ├── 01_data_scraping.ipynb      # Pipeline otomatisasi scraping Yahoo Finance
-│   └── 02_idx30_portfolio_aga.ipynb# Eksperimen skripsi lengkap & analisis inferensial
+│   ├── 01_data_scraping.ipynb             # Pipeline otomatisasi scraping Yahoo Finance
+│   └── 02_idx30_portfolio_optimization_aga.ipynb # Eksperimen skripsi lengkap & analisis inferensial
 ├── results/
-│   ├── figures/                    # 19 grafik resolusi tinggi visualisasi skripsi (.png)
-│   └── tables/                     # Ringkasan data performa kuantitatif (.csv)
-└── src/                            # Package Python modular berstandar industri
-    ├── backtest.py                 # Multi-phase WFO backtest engine dengan friksi trading
-    ├── config.py                   # Parameter konstanta, hyperparameter, dan split waktu
-    ├── data_loader.py              # Preprocessing data pasar, filter likuiditas & return
-    ├── objectives.py               # Fungsi objektif Mean-Variance berpenalti HHI & repair
-    ├── optimizers.py               # Implementasi algoritma SGA dan Adaptive GA (AGA)
-    ├── statistics.py               # Modul uji statistik inferensial (t-test, Wilcoxon, Holm)
-    └── visualization.py            # Modul plotting kurva publikasi riset
+│   ├── figures/                           # 19 grafik resolusi tinggi visualisasi skripsi (.png)
+│   └── tables/                            # Ringkasan data performa kuantitatif (.csv)
+└── src/                                   # Package Python modular berstandar industri
+    ├── backtest.py                        # Multi-phase WFO backtest engine dengan friksi trading
+    ├── config.py                          # Parameter konstanta, hyperparameter, dan split waktu
+    ├── data_loader.py                     # Preprocessing data pasar, filter likuiditas & return
+    ├── objectives.py                      # Fungsi objektif Mean-Variance berpenalti HHI & repair
+    ├── optimizers.py                      # Implementasi algoritma SGA dan Adaptive GA (AGA)
+    ├── statistics.py                      # Modul uji inferensial (Shapiro-Wilk, Paired t-test, Wilcoxon)
+    └── visualization.py                   # Modul plotting kurva publikasi riset
 ```
 
 ---
