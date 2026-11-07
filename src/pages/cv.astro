@@ -152,7 +152,7 @@ const cleanPhone = p.contact.phone || '081257780379';
         <section class="ats-section">
           <h2 class="ats-heading">Ringkasan Profesional</h2>
           <p class="ats-text">
-            Lulusan S1 Informatika UIN Sunan Kalijaga (IPK 3,77/4,00, Cumlaude) dengan keahlian inti pada Machine Learning, analisis data kuantitatif, dan data pipeline berbasis Python. Memiliki rekam jejak dalam merancang sistem optimasi portofolio investasi saham dengan Algoritma Genetika Adaptif (menghasilkan Total Return 46,51% dan Sharpe Ratio 2,10) serta arsitektur sistem rekomendasi hybrid. Teruji menyelesaikan program intensif 936 jam Coding Camp DBS Foundation dengan predikat Nilai A (90,7) dan memiliki pengalaman kepemimpinan sebagai Bendahara Umum serta Ketua Divisi Olahraga mahasiswa. Terbiasa bekerja dalam ekosistem spec-driven development dan siap memberikan dampak nyata di dunia industri.
+            Lulusan S1 Informatika UIN Sunan Kalijaga (IPK 3,77/4,00, Cumlaude) dengan keahlian inti pada Machine Learning, analisis data kuantitatif, dan data pipeline berbasis Python. Memiliki rekam jejak dalam merancang sistem optimasi portofolio investasi saham dengan Algoritma Genetika Adaptif (menghasilkan Total Return 46,49% dan Sharpe Ratio 2,1025) serta arsitektur sistem rekomendasi hybrid. Teruji menyelesaikan program intensif 936 jam Coding Camp DBS Foundation dengan predikat Nilai A (90,7) dan memiliki pengalaman kepemimpinan sebagai Bendahara Umum serta Ketua Divisi Olahraga mahasiswa. Terbiasa bekerja dalam ekosistem spec-driven development dan siap memberikan dampak nyata di dunia industri.
           </p>
         </section>
 
@@ -253,8 +253,8 @@ const cleanPhone = p.contact.phone || '081257780379';
               </span>
             </div>
             <ul class="ats-bullet-list">
-              <li>Mengembangkan engine optimasi alokasi bobot 22 konstituen saham IDX30 menggunakan Adaptive Genetic Algorithm (AGA) dengan operator probabilitas adaptif Srinivas & Patnaik dan penalti diversifikasi Herfindahl-Hirschman Index (HHI).</li>
-              <li>Mencapai <strong>Total Return 46,51%</strong> (mengungguli tolok ukur pasar IDX30 sebesar +33,03%), <strong>Sharpe Ratio 2,1036</strong> (vs 0,3767), dan <strong>Max Drawdown -15,74%</strong> pada validasi 4-fase expanding Walk-Forward.</li>
+              <li>Mengembangkan engine optimasi alokasi bobot 22 konstituen saham IDX30 menggunakan Adaptive Genetic Algorithm (AGA) dengan penalti diversifikasi HHI (λ_div = 0,90) dan batas bobot 10% (w_max = 0,10).</li>
+              <li>Mencapai <strong>Total Return 46,49%</strong> (mengungguli tolok ukur pasar IDX30 sebesar +33,01%), <strong>Sharpe Ratio 2,1025</strong> (vs 0,3767), dan <strong>Max Drawdown -15,74%</strong> pada validasi 4-fase expanding Walk-Forward.</li>
               <li>Memvalidasi keunggulan performa model melalui 80 kali simulasi stokastik dengan uji hipotesis inferensial berpasangan (Shapiro-Wilk, Paired t-test, dan Wilcoxon Signed-Rank, <em>p &lt; 0,001</em>).</li>
               <li>Mendeploy terminal riset kuantitatif interaktif berbasis Streamlit Cloud dengan kalkulator alokasi lot saham riil bursa (1 lot = 100 lembar).</li>
             </ul>
@@ -567,7 +567,7 @@ const cleanPhone = p.contact.phone || '081257780379';
                 <a href={projAga.data.demoUrl} target="_blank" rel="noopener noreferrer" class="visual-link">[Live Demo]</a>
               </p>
               <p class="visual-item-text">
-                Mengoptimalkan bobot portofolio 22 konstituen saham IDX30 dengan penalti konsentrasi HHI dan operator adaptif. Menghasilkan Total Return <strong>46,51%</strong> (vs IDX30 13,48%), <strong>Sharpe Ratio 2,1036</strong>, dan Max Drawdown -15,74% pada validasi 4-fase expanding Walk-Forward. Signifikansi performa terbukti secara inferensial (<em>p &lt; 0,001</em>).
+                Mengoptimalkan bobot portofolio 22 konstituen saham IDX30 dengan penalti konsentrasi HHI (λ_div = 0,90), batas alokasi 10%, dan operator adaptif. Menghasilkan Total Return <strong>46,49%</strong> (vs IDX30 13,48%), <strong>Sharpe Ratio 2,1025</strong>, dan Max Drawdown -15,74% pada validasi 4-fase expanding Walk-Forward. Signifikansi performa terbukti secara inferensial (<em>p &lt; 0,001</em>).
               </p>
             </div>
 

@@ -19,7 +19,7 @@ groups:
       - name: "Adaptive Genetic Algorithm (AGA)"
         projectSlugs: ["proyek-1", "proyek-2"]
         evidence:
-          - "Skripsi S1 Optimasi Portofolio Saham IDX30 (46,51% Total Return)"
+          - "Skripsi S1 Optimasi Portofolio Saham IDX30 (46,49% Total Return)"
           - "Modul Walk-Forward AGA Optimizer pada IDX Quant Studio"
       - name: "Hybrid Recommender System"
         projectSlugs: ["proyek-3"]
@@ -42,7 +42,7 @@ groups:
       - name: "Quantitative Portfolio Optimization"
         projectSlugs: ["proyek-1", "proyek-2"]
         evidence:
-          - "Walk-Forward Optimization Saham IDX30 (2,1036 Sharpe Ratio)"
+          - "Walk-Forward Optimization Saham IDX30 (2,1025 Sharpe Ratio)"
           - "Damodaran Sectoral Valuation & Screening Hub pada IDX Quant Studio"
           - "Backtest OOS Walk-Forward 40:30:30 AGA (+15,68% Alpha vs IHSG)"
       - name: "Data Engineering & ETL"
